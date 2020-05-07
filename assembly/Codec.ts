@@ -3,6 +3,7 @@
  * @name Codec
  * @description
  * IMPORTANT! Interfaces are not yet supported in AssemblyScript.
+ * The interface will be enforced only by the Editor and not the Compiler!
  * The base Codec interface. All supported types by the library must implement this interface.
  * This interface represents the base functions required by every encoding/decoding type
  */
