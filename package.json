@@ -34,7 +34,7 @@
     "@assemblyscript/loader": "^0.9.4"
   },
   "devDependencies": {
-    "@as-pect/cli": "^3.1.5",
+    "@as-pect/cli": "3.1.5",
     "assemblyscript": "^0.9.4"
   }
 }
