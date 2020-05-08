@@ -1,8 +1,6 @@
-export type BYTE_LENGTH = 8 | 16 | 32 | 64;
-
 export class Bytes {
 
-    static toUint(b: u8[], bytesLength: u32) {
+    static toUint(b: u8[], bytesLength: u32): void {
         // TODO
     }
 

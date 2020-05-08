@@ -25,7 +25,7 @@ describe("Bool", () => {
 	});
 
 	itThrows('when provided invalid bool value', () => {
-		Bool.fromU8a([5]);
+		Bool.fromU8a([0x05]);
 	})
 
 });
