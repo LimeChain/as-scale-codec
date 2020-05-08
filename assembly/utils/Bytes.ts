@@ -1,7 +1,33 @@
+export const enum BIT_LENGTH {
+    INT_8 = 1,
+    INT_16 = 2,
+    INT_32 = 4,
+    INT_64 = 8
+}
+
 export class Bytes {
 
-    static toUint(b: u8[], bytesLength: u32): void {
-        // TODO
+    static putUint16(b: u8[], v: u16): void {
+        b[0] = u8(v);
+        b[1] = u8(v >> 8);
+    }
+
+    static putUint32(b: u8[], v: u32): void {
+        b[0] = u8(v);
+        b[1] = u8(v >> 8);
+        b[2] = u8(v >> 16);
+        b[3] = u8(v >> 24)
+    }
+
+    static putUint64(b: u8[], v: u64): void {
+        b[0] = u8(v);
+        b[1] = u8(v >> 8);
+        b[2] = u8(v >> 16);
+        b[3] = u8(v >> 24);
+        b[4] = u8(v >> 32);
+        b[5] = u8(v >> 40);
+        b[6] = u8(v >> 48);
+        b[7] = u8(v >> 56)
     }
 
     static toUint16(b: u8[]): u16 {

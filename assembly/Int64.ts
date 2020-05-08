@@ -1,17 +1,18 @@
-import { Codec } from "./Codec";
-import { Bytes } from "./utils/Bytes";
+import { Bytes, BIT_LENGTH } from "./utils/Bytes";
+import { AbstractInt } from "./AbstractInt";
 
-/** Representation for a Int value in the system. */
-export class Int64 implements Codec {
+/** Representation for a Int64 value in the system. */
+export class Int64 extends AbstractInt<i64> {
 
-    constructor(public value: i64) {
-        this.value = value;
+    constructor(value: i64) {
+        super(value, BIT_LENGTH.INT_64)
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification */
     toU8a(): u8[] {
-        // TODO
-        return [];
+        let bytesEncoded = new Array<u8>(this.bitLength); //Bytes length / 8
+        Bytes.putUint64(bytesEncoded, this.value);
+        return bytesEncoded;
     }
 
     /**
@@ -19,13 +20,6 @@ export class Int64 implements Codec {
      */
     toString(): string {
         return this.value.toString();
-    }
-
-    /**
-     * @description The length of Uint8Array when the value is encoded
-     */
-    public encodedLength(): i64 {
-        return 64 / 8;
     }
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */

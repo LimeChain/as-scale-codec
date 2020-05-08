@@ -1,31 +1,25 @@
-import { Codec } from "./Codec";
-import { Bytes } from "./utils/Bytes";
+import { Bytes, BIT_LENGTH } from "./utils/Bytes";
+import { AbstractInt } from "./AbstractInt";
 
-/** Representation for a Int value in the system. */
-export class Int16 implements Codec {
+/** Representation for a Int16 value in the system. */
+export class Int16 extends AbstractInt<i16>  {
 
-    constructor(public value: i16) {
-        this.value = value;
+    constructor(value: i16) {
+        super(value, BIT_LENGTH.INT_16)
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification */
     toU8a(): u8[] {
-        // TODO
-        return [];
+        let bytesEncoded = new Array<u8>(this.bitLength);
+        Bytes.putUint16(bytesEncoded, this.value);
+        return bytesEncoded;
     }
-
+    
     /**
      * @description Returns the string representation of the value
      */
     toString(): string {
         return this.value.toString();
-    }
-
-    /**
-     * @description The length of Uint8Array when the value is encoded
-     */
-    public encodedLength(): i32 {
-        return 16/8;
     }
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
