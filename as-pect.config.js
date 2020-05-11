@@ -2,7 +2,7 @@ module.exports = {
   /**
    * A set of globs passed to the glob package that qualify typescript files for testing.
    */
-  include: ["assembly/__tests__/**/*.spec.ts"],
+  include: ["assembly/__tests__/**/Hash.spec.ts"],
   /**
    * A set of globs passed to the glob package that quality files to be added to each test.
    */
@@ -23,7 +23,7 @@ module.exports = {
   /**
    * Add your required AssemblyScript imports here.
    */
-  imports(memory, createImports, instantiateSync, binary) {
+  imports (memory, createImports, instantiateSync, binary) {
     let instance; // Imports can reference this
     const myImports = {
       // put your web assembly imports here, and return the module
