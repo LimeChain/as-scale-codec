@@ -17,12 +17,12 @@ export class Bytes {
             u64(b[4]) << 32 | u64(b[5]) << 40 | u64(b[6]) << 48 | u64(b[7]) << 56
     }
 
-    static copy (input: u8[], out: StaticArray<u8>): void {
+    static copyFromPosition (input: u8[], out: Array<u8>, position: i32 = 0): void {
         for (let i = 0; i < out.length; i++) {
             if (input.length <= i) {
                 break;
             }
-            out[i] = input[i];
+            out[position + i] = input[i];
         }
     }
 }

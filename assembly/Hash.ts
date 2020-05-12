@@ -1,35 +1,43 @@
 import { Codec } from "./Codec";
 import { Bytes } from './utils/Bytes';
 
-export class Hash implements Codec {
-    constructor(public data: StaticArray<u8>) {
-        this.data = data;
+export class Hash extends Array<u8> implements Codec {
+
+    constructor() {
+        super(32);
     }
 
-    toU8a (): u8[] {
-        return [];
+    // Encodes
+    public toU8a (): u8[] {
+        const result: u8[] = new Array<u8>(this.encodedLength());
+        Bytes.copyFromPosition(this, result);
+
+        return result;
     }
 
     public toString (): string {
+        return "0x" + this.join('');
+    }
 
-        // const stringBuffer = new Array<string>(this.encodedLength());
-        // for (let i = 0; i < this.data.length; i++) {
-        //     const byte = this.data[i];
-        //     stringBuffer[i] = ('0' + (byte & 0xFF).toString()).slice(-2);
+    static bytesToHash (bytes: u8[]): Hash {
+        let hash = new Hash();
+        if (bytes.length > 32) {
+            bytes = bytes.slice(bytes.length - 32);
+        }
 
-        // }
-
-        // return "0x" + this.data.toString(16);
+        const position: i32 = 32 - bytes.length;
+        Bytes.copyFromPosition(bytes, hash, position);
+        return hash;
     }
 
     public encodedLength (): i32 {
         return 32;
     }
 
+    // Decodes
     static fromU8a (input: u8[]): Hash {
-        let resultedArray: StaticArray<u8> = new StaticArray<u8>(32);
-        Bytes.copy(input, resultedArray);
-
-        return new Hash(resultedArray);
+        const hash: Hash = new Hash();
+        Bytes.copyFromPosition(input, hash);
+        return hash;
     }
 }
