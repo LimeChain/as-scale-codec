@@ -29,23 +29,21 @@ const decodeInteger = function (input: u8[]) {
 
     // >4 byte mode
     const topSixBits = byte >> 2;
-    const byteLen = uint(topSixBits) + 4
+    const byteLen = uint(topSixBits) + 4;
 
-    buf:= make([]byte, byteLen)
-    _, err = sd.Reader.Read(buf)
-    if err != nil {
-        return 0, err
-    }
+    const buf = new Array<u8>(byteLen);
+    // buf:= make([]byte, byteLen)
+    // _, err = sd.Reader.Read(buf)
 
-    if byteLen == 4 {
+    if (byteLen == 4) {
         o = uint64(binary.LittleEndian.Uint32(buf))
-    } else if byteLen > 4 && byteLen < 8 {
+    } else if (byteLen > 4 && byteLen < 8) {
         tmp:= make([]byte, 8)
         copy(tmp, buf)
         o = binary.LittleEndian.Uint64(tmp)
     } else {
-        err = errors.New("could not decode invalid integer")
+        throw new Error('could not decode invalid integer');
     }
 
-    return o, err
+    return o;
 }
