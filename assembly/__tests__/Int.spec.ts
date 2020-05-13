@@ -1,7 +1,7 @@
 import { Int8 } from "../Int8";
 import { Int16 } from "../Int16";
 import { Int32 } from "../Int32";
-import { Int64 } from "../Int64"; 
+import { Int64 } from "../Int64";
 
 describe("Int8", () => {
 

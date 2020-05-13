@@ -23,7 +23,7 @@ module.exports = {
   /**
    * Add your required AssemblyScript imports here.
    */
-  imports(memory, createImports, instantiateSync, binary) {
+  imports (memory, createImports, instantiateSync, binary) {
     let instance; // Imports can reference this
     const myImports = {
       // put your web assembly imports here, and return the module

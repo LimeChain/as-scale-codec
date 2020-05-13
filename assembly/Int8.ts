@@ -8,22 +8,8 @@ export class Int8 extends AbstractInt<i8> {
         super(value, BIT_LENGTH.INT_8)
     }
 
-    /** Encodes the value as u8[] as per the SCALE codec specification */
-    toU8a(): u8[] {
-        let bytesEncoded = new Array<u8>(1); //Bytes length / 8
-        bytesEncoded[0] = this.value;
-        return bytesEncoded;
-    }
-
-    /**
-     * @description Returns the string representation of the value
-     */
-    toString(): string {
-        return this.value.toString();
-    }
-
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
-    static fromU8a(value: u8[]): Int8 {        
+    static fromU8a (value: u8[]): Int8 {
         if (value.length != 1) {
             throw new Error('cannot decode invalid i8 encoded value');
         }
