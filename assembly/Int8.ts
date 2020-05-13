@@ -1,8 +1,10 @@
-import { Codec } from "./Codec";
+import { AbstractInt } from "./AbstractInt";
+import { BIT_LENGTH } from "./utils/Bytes";
 
-/** Representation for a Int value in the system. */
-export class Int8 implements Codec {
+/** Representation for a Int8 value in the system. */
+export class Int8 extends AbstractInt<i8> {
 
+<<<<<<< HEAD
     constructor(public value: i8) {
         this.value = value;
     }
@@ -27,6 +29,10 @@ export class Int8 implements Codec {
      */
     public encodedLength (): i32 {
         return 1;
+=======
+    constructor(value: i8) {
+        super(value, BIT_LENGTH.INT_8)
+>>>>>>> 6b60df31fe8d87ded6a01890a5575a8333c8646f
     }
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
