@@ -101,3 +101,4 @@ export class Bytes {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 }
+
