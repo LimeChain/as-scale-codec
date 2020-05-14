@@ -24,4 +24,14 @@ export class Bytes {
 
         return result;
     }
+
+    static copyFromPosition (input: u8[], out: Array<u8>, position: i32 = 0): void {
+        for (let i = 0; i < out.length; i++) {
+            if (input.length <= i) {
+                break;
+            }
+            out[position + i] = input[i];
+        }
+    }
 }
+
