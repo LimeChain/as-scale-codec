@@ -10,7 +10,6 @@ export class Int16 extends AbstractInt<i16>  {
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
     static fromU8a(value: u8[]): Int16 {
-        Bytes.getEmptyBytes(BIT_LENGTH.INT_16);
         var res = Bytes.toUint<u16>(value, BIT_LENGTH.INT_16);
         return new Int16(res);
     }

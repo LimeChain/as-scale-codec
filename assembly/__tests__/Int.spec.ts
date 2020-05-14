@@ -95,9 +95,9 @@ describe("Int16", () => {
     })
 
     it("should decode int16", () => {
-        expect<Int16>(Int16.fromU8a([0x01, 0])).toStrictEqual(new Int16(1));
-        expect<Int16>(Int16.fromU8a([0xf, 0])).toStrictEqual(new Int16(15));
-        expect<Int16>(Int16.fromU8a([0x10, 0])).toStrictEqual(new Int16(16));
+        expect<Int16>(Int16.fromU8a([0x01])).toStrictEqual(new Int16(1));
+        expect<Int16>(Int16.fromU8a([0xf])).toStrictEqual(new Int16(15));
+        expect<Int16>(Int16.fromU8a([0x10])).toStrictEqual(new Int16(16));
         expect<Int16>(Int16.fromU8a([0x7f, 0])).toStrictEqual(new Int16(127));
         expect<Int16>(Int16.fromU8a([0xff, 0xff])).toStrictEqual(new Int16(-1));
         expect<Int16>(Int16.fromU8a([0xf1, 0xff])).toStrictEqual(new Int16(-15));
@@ -137,8 +137,8 @@ describe("Int32", () => {
     })
 
     it("should decode int32", () => {
-        expect<Int32>(Int32.fromU8a([0x01, 0, 0, 0])).toStrictEqual(new Int32(1));
-        expect<Int32>(Int32.fromU8a([0xff, 0x3f, 0, 0])).toStrictEqual(new Int32(16383));
+        expect<Int32>(Int32.fromU8a([0x01])).toStrictEqual(new Int32(1));
+        expect<Int32>(Int32.fromU8a([0xff, 0x3f])).toStrictEqual(new Int32(16383));
         expect<Int32>(Int32.fromU8a([0xff, 0xff, 0xff, 0x3f])).toStrictEqual(new Int32(1073741823));
         expect<Int32>(Int32.fromU8a([0xff, 0xff, 0xff, 0xff])).toStrictEqual(new Int32(-1));
         expect<Int32>(Int32.fromU8a([0x01, 0xc0, 0xff, 0xff])).toStrictEqual(new Int32(-16383));
@@ -183,8 +183,8 @@ describe("Int64", () => {
     })
 
     it("should decode int64", () => {
-        expect<Int64>(Int64.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0])).toStrictEqual(new Int64(1));
-        expect<Int64>(Int64.fromU8a([0xff, 0x3f, 0, 0, 0, 0, 0, 0])).toStrictEqual(new Int64(16383));
+        expect<Int64>(Int64.fromU8a([0x01])).toStrictEqual(new Int64(1));
+        expect<Int64>(Int64.fromU8a([0xff, 0x3f])).toStrictEqual(new Int64(16383));
         expect<Int64>(Int64.fromU8a([0xff, 0xff, 0xff, 0x3f, 0, 0, 0, 0])).toStrictEqual(new Int64(1073741823));
         expect<Int64>(Int64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f])).toStrictEqual(new Int64(9223372036854775807));
         expect<Int64>(Int64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new Int64(-1));
