@@ -8,6 +8,10 @@ export const enum BIT_LENGTH {
 
 export class Bytes {
 
+    static getEmptyBytes(n: i32): u8[] {
+        return new Array<u8>(n);
+    }
+
     static putUint<T extends number> (b: u8[], v: T, bitLength: number): void {
         b[0] = u8(v);
 
