@@ -7,7 +7,9 @@ export class Hash extends Array<u8> implements Codec {
         super(32);
     }
 
-    // Encodes
+    /**
+    * @description  Encodes Hash as u8[] as per the SCALE codec specification
+    */
     public toU8a (): u8[] {
         const result: u8[] = new Array<u8>(this.encodedLength());
         Bytes.copyToPosition(this, result);
@@ -15,10 +17,16 @@ export class Hash extends Array<u8> implements Codec {
         return result;
     }
 
+    /**
+    * @description  Return string representation of Hash
+    */
     public toString (): string {
         return "0x" + this.join('');
     }
 
+    /**
+    * @description  Instantiate Hash from bytes cropped from the left.
+    */
     static bytesToHash (bytes: u8[]): Hash {
         let hash = new Hash();
         if (bytes.length > 32) {
@@ -30,11 +38,16 @@ export class Hash extends Array<u8> implements Codec {
         return hash;
     }
 
+    /**
+    * @description The length of encoded Hash
+    */
     public encodedLength (): i32 {
         return 32;
     }
 
-    // Decodes
+    /**
+    * @description Instantiates Hash from u8[] SCALE encoded bytes
+    */
     static fromU8a (input: u8[]): Hash {
         const hash: Hash = new Hash();
         Bytes.copyToPosition(input, hash);
