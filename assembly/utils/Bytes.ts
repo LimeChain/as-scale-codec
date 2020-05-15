@@ -87,10 +87,20 @@ export class Bytes {
         }
 
         if (mode == 1) {
+            if (i32(input.length) < BIT_LENGTH.INT_16) {
+                // Todo: Refactor as exception handling is not recommended 
+                // Return null for errors
+                throw new Error('Invalid input: expected 2 bytes array');
+            }
             return Bytes.decode2Bytes([input[0], input[1]]);
         }
 
         if (mode == 2) {
+            if (i32(input.length) < BIT_LENGTH.INT_32) {
+                // Todo: Refactor as exception handling is not recommended 
+                // Return null for errors
+                throw new Error('Invalid input: expected 4 bytes array');
+            }
             return Bytes.decode4Bytes([input[0], input[1], input[2], input[3]]);
         }
 
@@ -104,22 +114,10 @@ export class Bytes {
     }
 
     static decode2Bytes (bytes: u8[]): i64 {
-        if (i32(bytes.length) != BIT_LENGTH.INT_16) {
-            // Todo: Refactor as exception handling is not recommended 
-            // Return null for errors
-            throw new Error('Invalid input: expected 2 bytes array');
-        }
-
         return i64(Bytes.toUint<u16>(bytes, BIT_LENGTH.INT_16) >> 2)
     }
 
     static decode4Bytes (bytes: u8[]): i64 {
-        if (i32(bytes.length) != BIT_LENGTH.INT_32) {
-            // Todo: Refactor as exception handling is not recommended 
-            // Return null for errors
-            throw new Error('Invalid input: expected 4 bytes array');
-        }
-
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 }
