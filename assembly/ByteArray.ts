@@ -6,14 +6,17 @@ export class ByteArray extends Array<u8> implements Codec {
         super(length);
     }
 
+    /**
+    * @description  Encodes ByteArray as u8[] as per the SCALE codec specification
+    */
     public toU8a (): u8[] {
         return [];
     }
 
-    public encodedLength (): i32 {
-        return this.length;
-    }
 
+    /**
+    * @description Instantiates ByteArray from u8[] SCALE encoded bytes (Decode)
+    */
     static fromU8a (input: u8[]): ByteArray {
         const bytesLength = Bytes.decodeInt(input);
         const bytesArray = new ByteArray(i32(bytesLength));

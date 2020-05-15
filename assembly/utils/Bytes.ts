@@ -49,8 +49,14 @@ export class Bytes {
     }
 
     static decodeUint (input: u8[]): u64 {
+        if (input.length == 0) {
+            // Todo: Refactor as exception handling is not recommended 
+            // Return null for errors
+            throw new Error('Invalid input: Byte array should not be empty');
+        }
+
         const mode = input[0] & 3;
-        if (mode <= 2) {
+        if (i32(mode) <= BIT_LENGTH.INT_16) {
             return u64(Bytes.decodeSmallInt(input, mode));
         }
 
@@ -60,16 +66,18 @@ export class Bytes {
         const buf = new Array<u8>(byteLen);
         Bytes.copyToPosition(input, buf);
 
-        if (byteLen == 4) {
+        if (i32(byteLen) == BIT_LENGTH.INT_32) {
             return u64(Bytes.toUint<u32>(buf, BIT_LENGTH.INT_32));
         }
 
-        if (byteLen > 4 && byteLen < 8) {
+        if (i32(byteLen) > BIT_LENGTH.INT_32 && i32(byteLen) < BIT_LENGTH.INT_64) {
             const tmp = new Array<u8>(8);
             Bytes.copyToPosition(buf, tmp);
             return Bytes.toUint<i64>(tmp, BIT_LENGTH.INT_64);
         }
 
+        // Todo: Refactor as exception handling is not recommended 
+        // Return null for errors
         throw new Error('Invalid integer');
     }
 
@@ -83,10 +91,12 @@ export class Bytes {
         }
 
         if (mode == 2) {
-            return Bytes.decode3Bytes([input[0], input[1], input[2], input[3]]);
+            return Bytes.decode4Bytes([input[0], input[1], input[2], input[3]]);
         }
 
-        throw new Error("Small int: mode does not exists");
+        // Todo: Refactor as exception handling is not recommended 
+        // Return null for errors
+        throw new Error("Small int: mode is invalid");
     }
 
     static decodeByte (byte: u8): i64 {
@@ -94,10 +104,22 @@ export class Bytes {
     }
 
     static decode2Bytes (bytes: u8[]): i64 {
+        if (i32(bytes.length) != BIT_LENGTH.INT_16) {
+            // Todo: Refactor as exception handling is not recommended 
+            // Return null for errors
+            throw new Error('Invalid input: expected 2 bytes array');
+        }
+
         return i64(Bytes.toUint<u16>(bytes, BIT_LENGTH.INT_16) >> 2)
     }
 
-    static decode3Bytes (bytes: u8[]): i64 {
+    static decode4Bytes (bytes: u8[]): i64 {
+        if (i32(bytes.length) != BIT_LENGTH.INT_32) {
+            // Todo: Refactor as exception handling is not recommended 
+            // Return null for errors
+            throw new Error('Invalid input: expected 4 bytes array');
+        }
+
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 }

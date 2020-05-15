@@ -4,12 +4,12 @@ describe("ByteArray", () => {
 
     it("should decode bytes array", () => {
         const TEST_DATA_VAL: Array<Array<u8>> = [
-            [0x04, 0x01],
-            [0x04, 0xff],
-            [0x08, 0x01, 0x01],
-            appendEmptyBytesTo([0x01, 0x01], 64),
-            appendEmptyBytesTo([0xfd, 0xff], 16383),
-            appendEmptyBytesTo([0x02, 0x00, 0x01, 0x00], 16384)
+            [0x04, 0x01], // Output: [0x01]
+            [0x04, 0xff], // Output: [0xff]
+            [0x08, 0x01, 0x01], // Output: [0x01, 0x01]
+            appendEmptyBytesTo([0x01, 0x01], 64), // Output: appendEmptyBytesTo([], 64),
+            appendEmptyBytesTo([0xfd, 0xff], 16383), // Output: appendEmptyBytesTo([], 16383),
+            appendEmptyBytesTo([0x02, 0x00, 0x01, 0x00], 16384) // Output: appendEmptyBytesTo([], 16384),
         ];
 
         const TEST_DATA_OUT: Array<Array<u8>> = [
