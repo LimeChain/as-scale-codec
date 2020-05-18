@@ -12,7 +12,7 @@ export class Hash extends Array<u8> implements Codec {
     */
     public toU8a (): u8[] {
         const result: u8[] = new Array<u8>(this.encodedLength());
-        Bytes.copyFromPosition(this, result);
+        Bytes.copyToPosition(this, result);
 
         return result;
     }
@@ -34,7 +34,7 @@ export class Hash extends Array<u8> implements Codec {
         }
 
         const position: i32 = 32 - bytes.length;
-        Bytes.copyFromPosition(bytes, hash, position);
+        Bytes.copyToPosition(bytes, hash, position);
         return hash;
     }
 
@@ -50,7 +50,7 @@ export class Hash extends Array<u8> implements Codec {
     */
     static fromU8a (input: u8[]): Hash {
         const hash: Hash = new Hash();
-        Bytes.copyFromPosition(input, hash);
+        Bytes.copyToPosition(input, hash);
         return hash;
     }
 }
