@@ -8,7 +8,7 @@ export class Int32 extends AbstractInt<i32> {
         super(value, BIT_LENGTH.INT_32)
     }
 
-    /** Instantiates new Bool from u8[] SCALE encoded bytes */
+    /** Instantiates new Int32 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[]): Int32 {
         var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32);
         return new Int32(res);
