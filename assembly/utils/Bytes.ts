@@ -18,7 +18,7 @@ export class Bytes {
 
     static toUint<T extends number> (b: u8[], bitLength: i32): T {
         const buf = new Array<u8>(bitLength);
-        Bytes.copy(b, buf);
+        Bytes.copy<u8>(b, buf);
 
         let result: T = <T>buf[0];
         for (let i: i32 = 1; i < bitLength; i++) {
@@ -31,7 +31,7 @@ export class Bytes {
     /**
     * @description Copy src elements in dst at provided position. 
     */
-    static copy (src: u8[], dst: Array<u8>, start: i32 = 0): void {
+    static copy<T> (src: T[], dst: Array<T>, start: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
             if (src.length <= i) {
                 break;
@@ -70,7 +70,7 @@ export class Bytes {
         Bytes.putUint<u8>(bytesBuffer, lengthByte, BIT_LENGTH.INT_8);
         Bytes.putUint<u64>(o, i64(i), BIT_LENGTH.INT_64);
 
-        Bytes.copy(o.slice(0, numBytes), bytesBuffer, 1);
+        Bytes.copy<u8>(o.slice(0, numBytes), bytesBuffer, 1);
 
         return numBytes + 1;
     }
@@ -96,7 +96,7 @@ export class Bytes {
         const byteLen = u8(topSixBits) + 4;
 
         const buf = new Array<u8>(byteLen);
-        Bytes.copy(input, buf);
+        Bytes.copy<u8>(input, buf);
 
         if (i32(byteLen) == BIT_LENGTH.INT_32) {
             return u64(Bytes.toUint<u32>(buf, BIT_LENGTH.INT_32));
@@ -104,7 +104,7 @@ export class Bytes {
 
         if (i32(byteLen) > BIT_LENGTH.INT_32 && i32(byteLen) < BIT_LENGTH.INT_64) {
             const tmp = new Array<u8>(8);
-            Bytes.copy(buf, tmp);
+            Bytes.copy<u8>(buf, tmp);
             return Bytes.toUint<i64>(tmp, BIT_LENGTH.INT_64);
         }
 

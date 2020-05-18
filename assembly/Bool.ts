@@ -11,7 +11,7 @@ export class Bool implements Codec {
      * true -> [1]
      * false -> [0]
      */
-    toU8a(): u8[] {
+    toU8a (): u8[] {
         let bytesEncoded = new Array<u8>(1);
         bytesEncoded[0] = this.value ? 0x01 : 0x00;
         return bytesEncoded;
@@ -20,14 +20,14 @@ export class Bool implements Codec {
     /**
      * @description Returns the string representation of the value
      */
-    toString(): string {
+    toString (): string {
         return `${this.value}`;
     }
 
     /**
      * @description The length of Uint8Array when the value is encoded
      */
-    public encodedLength(): i32 {
+    public encodedLength (): i32 {
         return 1;
     }
 
