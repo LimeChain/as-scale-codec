@@ -2,6 +2,42 @@ import { ByteArray } from "../ByteArray";
 
 describe("ByteArray", () => {
 
+    it("should encode bytes array", () => {
+        const TEST_DATA_VAL: Array<Array<u8>> = [
+            [0x01, 0x01, 0x01],
+            [0xff],
+            [0x01, 0x01],
+            appendEmptyBytesTo([], 32),
+            appendEmptyBytesTo([], 64),
+            appendEmptyBytesTo([], 16384)
+        ];
+
+        const TEST_DATA_OUT: Array<Array<u8>> = [
+            [0x0c, 0x01, 0x01, 0x01],
+            [0x04, 0xff],
+            [0x08, 0x01, 0x01],
+            appendEmptyBytesTo([0x80], 32),
+            appendEmptyBytesTo([0x01, 0x01], 64),
+            appendEmptyBytesTo([0x02, 0x00, 0x01, 0x00], 16384)
+        ];
+
+        const ENCODED_BYTES: Array<i32> = [
+            4,
+            2,
+            3,
+            33,
+            66,
+            16388
+        ];
+
+        for (let i = 0; i < TEST_DATA_VAL.length; i++) {
+            const encodedBytes = new ByteArray(TEST_DATA_VAL[i]).toU8a();
+
+            expect<i32>(encodedBytes.length).toStrictEqual(ENCODED_BYTES[i]);
+            expect<u8[]>(encodedBytes).toStrictEqual(TEST_DATA_OUT[i]);
+        }
+    });
+
     it("should decode bytes array", () => {
         const TEST_DATA_VAL: Array<Array<u8>> = [
             [0x04, 0x01], // Output: [0x01]
@@ -30,6 +66,11 @@ describe("ByteArray", () => {
             expect<Array<u8>>(byteArray).toStrictEqual(TEST_DATA_OUT[i]);
         }
 
+    });
+
+    it("should return hex representation of byte array", () => {
+        const byteArray = ByteArray.fromU8a([0x08, 0x01, 0x01]);
+        expect<string>(byteArray.toString()).toStrictEqual("0x0101");
     });
 });
 
