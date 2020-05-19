@@ -1,5 +1,4 @@
 import { Bytes } from "./utils/Bytes"
-import { ByteArray } from "./ByteArray";
 
 export class ScaleString extends Array<u8> {
     constructor(input: string) {
