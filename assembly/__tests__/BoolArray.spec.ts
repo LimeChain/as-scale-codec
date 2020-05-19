@@ -14,4 +14,14 @@ describe("Bool Array", () => {
         const boolTest2: u8[] = [0x0c, 0x01, 0x00, 0x01];
         expect<Array<bool>>(BoolArray.fromU8a(boolTest2)).toStrictEqual([true, false, true]);
     });
+
+    itThrows("should throw because of invalid bytes", () => {
+        const boolTest: u8[] = [0x0c, 0x00, 0x01, 0xff];
+        BoolArray.fromU8a(boolTest);
+    });
+
+    itThrows("should throw on incorrect encoding", () => {
+        const boolTest: u8[] = [0x0c]; // Encoded length = 3, actual data length = 0
+        BoolArray.fromU8a(boolTest);
+    });
 });

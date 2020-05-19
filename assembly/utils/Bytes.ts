@@ -43,17 +43,17 @@ export class Bytes {
     static encodeInteger (bytesBuffer: u8[], i: i32): i32 {
         if (i < 1 << 6) {
             Bytes.putUint<u8>(bytesBuffer, u8(i) << 2, BIT_LENGTH.INT_8);
-            return 1
+            return BIT_LENGTH.INT_8
         }
 
         if (i < 1 << 14) {
             Bytes.putUint<u16>(bytesBuffer, u16(i << 2) + 1, BIT_LENGTH.INT_16);
-            return 2;
+            return BIT_LENGTH.INT_16;
         }
 
         if (i < 1 << 30) {
             Bytes.putUint<u32>(bytesBuffer, u32(i << 2) + 2, BIT_LENGTH.INT_32);
-            return 4;
+            return BIT_LENGTH.INT_32;
         }
 
         const o = new Array<u8>(8);
