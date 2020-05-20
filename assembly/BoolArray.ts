@@ -31,6 +31,10 @@ export class BoolArray extends Array<bool> {
         const boolArrayLength = new BytesReader(input).decodeUint();
         const boolArrayStart = i32(input.length - boolArrayLength);
 
+        if (boolArrayStart < 1) {
+            throw new Error('Incorrectly encoded input');
+        }
+
         const boolArray: BoolArray = new BoolArray([]);
         for (let i = 0; i < boolArrayLength; i++) {
             boolArray.push(Bool.fromU8a([input[boolArrayStart + i]]).value);
