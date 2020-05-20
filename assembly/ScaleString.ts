@@ -21,7 +21,7 @@ export class ScaleString extends ByteArray {
      * @description Returns the string representation
      */
     toString (): string {
-        return `${this.value}`;
+        return this.value;
     }
 
     /**
@@ -29,9 +29,14 @@ export class ScaleString extends ByteArray {
     */
     static fromU8a (input: u8[]): ScaleString {
         const bytesLength = i32(Bytes.decodeInt(input));
-        const buff = new Uint8Array(bytesLength);
+        const stringStart = i32(input.length - bytesLength);
 
-        const bytes = input.slice(i32(input.length - bytesLength));
+        if (stringStart < 1) {
+            throw new Error('Incorrectly encoded input');
+        }
+
+        const bytes = input.slice(stringStart);
+        const buff = new Uint8Array(bytesLength);
         Bytes.copyToTyped(bytes, buff);
 
         return new ScaleString(String.UTF8.decode(buff.buffer));

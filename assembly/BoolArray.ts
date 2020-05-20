@@ -27,13 +27,13 @@ export class BoolArray extends Array<bool> {
     */
     static fromU8a (input: u8[]): BoolArray {
         const boolArrayLength = Bytes.decodeInt(input);
-        if (boolArrayLength > input.length) {
+        const boolArrayStart = i32(input.length - boolArrayLength);
+
+        if (boolArrayStart < 1) {
             throw new Error('Incorrectly encoded input');
         }
 
-        const boolArrayStart = i32(input.length - boolArrayLength);
         const boolArray: BoolArray = new BoolArray([]);
-
         for (let i = 0; i < boolArrayLength; i++) {
             boolArray.push(Bool.fromU8a([input[boolArrayStart + i]]).value);
         }
