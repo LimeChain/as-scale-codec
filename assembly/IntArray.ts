@@ -1,6 +1,6 @@
-import { Bytes } from "./utils/Bytes";
-import {Int64} from "./Int64";
+import { Bytes} from "./utils/Bytes";
 import {BytesReader} from "./utils/BytesReader";
+import {BytesWriter} from "./utils/BytesWriter";
 
 
 export class IntArray extends Array<i64> {
@@ -10,15 +10,21 @@ export class IntArray extends Array<i64> {
     }
 
     /**
-     * @description  Encodes BoolArray as u8[] as per the SCALE codec specification
+     * @description  Encodes IntArray as u8[] as per the SCALE codec specification
      */
     public toU8a (): u8[] {
-        // TODO
-        return [];
+        const bytesWriter = new BytesWriter();
+        bytesWriter.encodeInteger(this.length);
+
+        for (let i = 0; i < this.length; i++) {
+            bytesWriter.encodeInteger(this[i]);
+        }
+
+        return bytesWriter.bytes;
     }
 
     /**
-     * @description Instantiates BoolArray from u8[] SCALE encoded bytes (Decode)
+     * @description Instantiates IntArray from u8[] SCALE encoded bytes (Decode)
      */
     static fromU8a (input: u8[]): IntArray {
         const bytesReader = new BytesReader(input);

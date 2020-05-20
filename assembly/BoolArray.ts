@@ -1,6 +1,7 @@
 import { Bool } from "./Bool";
 import { Bytes } from "./utils/Bytes";
 import {BytesReader} from "./utils/BytesReader";
+import {BytesWriter} from "./utils/BytesWriter";
 
 
 export class BoolArray extends Array<bool> {
@@ -13,14 +14,14 @@ export class BoolArray extends Array<bool> {
     * @description  Encodes BoolArray as u8[] as per the SCALE codec specification
     */
     public toU8a (): u8[] {
-        let bytesBuffer = new Array<u8>(this.length);
-        const encodedBytes: i32 = Bytes.encodeInteger(bytesBuffer, this.length);
+        const bytesWriter = new BytesWriter();
+        bytesWriter.encodeInteger(this.length);
 
         for (let i = 0; i < this.length; i++) {
-            bytesBuffer[encodedBytes + i] = this[i] ? 0x01 : 0x00;
+            bytesWriter.encodeBool(this[i]);
         }
 
-        return bytesBuffer;
+        return bytesWriter.bytes;
     }
 
     /**
