@@ -1,4 +1,5 @@
 import { Bytes } from "./utils/Bytes"
+import {BytesReader} from "./utils/BytesReader";
 
 export class ByteArray extends Array<u8> {
     constructor(input: u8[]) {
@@ -39,7 +40,7 @@ export class ByteArray extends Array<u8> {
     * @description Instantiates ByteArray from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ByteArray {
-        const bytesLength = Bytes.decodeInt(input);
+        const bytesLength = new BytesReader(input).decodeUint();
         const bytes = input.slice(i32(input.length - bytesLength));
 
         return new ByteArray(bytes);

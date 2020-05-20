@@ -1,5 +1,6 @@
 import { Bool } from "./Bool";
 import { Bytes } from "./utils/Bytes";
+import {BytesReader} from "./utils/BytesReader";
 
 
 export class BoolArray extends Array<bool> {
@@ -26,7 +27,7 @@ export class BoolArray extends Array<bool> {
     * @description Instantiates BoolArray from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): BoolArray {
-        const boolArrayLength = Bytes.decodeInt(input);
+        const boolArrayLength = new BytesReader(input).decodeUint();
         const boolArrayStart = i32(input.length - boolArrayLength);
 
         const boolArray: BoolArray = new BoolArray([]);
