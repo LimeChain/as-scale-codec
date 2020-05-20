@@ -44,8 +44,12 @@ describe("IntArray", () => {
         }
     });
 
-    it("should return hex representation of int array", () => {
+    itThrows("should throw on incorrect encoding", () => {
+        const invalidEncodedArray1: u8[] = [0x10, 0x04];
+        IntArray.fromU8a(invalidEncodedArray1);
 
+        const invalidEncodedArray2: u8[] = [0x10];
+        IntArray.fromU8a(invalidEncodedArray2);
     });
 });
 
