@@ -59,5 +59,17 @@ export class Bytes {
         }
     }
 
+    static decodeByte (byte: u8): i64 {
+        return i64(byte >> 2);
+    }
+
+    static decode2Bytes (bytes: u8[]): i64 {
+        return i64(Bytes.toUint<u16>(bytes, BIT_LENGTH.INT_16) >> 2)
+    }
+
+    static decode4Bytes (bytes: u8[]): i64 {
+        return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
+    }
+
 }
 

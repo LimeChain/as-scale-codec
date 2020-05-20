@@ -3,7 +3,7 @@ import {BIT_LENGTH, Bytes} from "./Bytes";
 export class BytesReader {
 
     readonly bytes: u8[];
-    private readBytes: i32 = 0;
+    public readBytes: i32 = 0;
 
     constructor(bytes: u8[]) {
         this.bytes = bytes;
@@ -47,7 +47,7 @@ export class BytesReader {
     private decodeSmallInt (mode: u8): i64 {
         let result: i64;
         if (mode == 0) {
-            result = this.decodeByte(this.bytes[this.readBytes]);
+            result = Bytes.decodeByte(this.bytes[this.readBytes]);
             this.readBytes++;
         } else if (mode == 1) {
             if (i32(this.bytes.length) < BIT_LENGTH.INT_16) {
@@ -55,7 +55,7 @@ export class BytesReader {
                 // Return null for errors
                 throw new Error('Invalid input: expected 2 bytes array');
             }
-            result = this.decode2Bytes([this.bytes[this.readBytes], this.bytes[this.readBytes + 1]]);
+            result = Bytes.decode2Bytes([this.bytes[this.readBytes], this.bytes[this.readBytes + 1]]);
             this.readBytes+= 2;
         } else if (mode == 2) {
             if (i32(this.bytes.length) < BIT_LENGTH.INT_32) {
@@ -63,7 +63,7 @@ export class BytesReader {
                 // Return null for errors
                 throw new Error('Invalid input: expected 4 bytes array');
             }
-            result = this.decode4Bytes([this.bytes[this.readBytes], this.bytes[this.readBytes + 1], this.bytes[this.readBytes + 2], this.bytes[this.readBytes + 3]]);
+            result = Bytes.decode4Bytes([this.bytes[this.readBytes], this.bytes[this.readBytes + 1], this.bytes[this.readBytes + 2], this.bytes[this.readBytes + 3]]);
             this.readBytes += 4;
         } else {
             // Todo: Refactor as exception handling is not recommended
@@ -71,17 +71,5 @@ export class BytesReader {
             throw new Error("Small int: mode is invalid");
         }
         return result;
-    }
-
-    private decodeByte (byte: u8): i64 {
-        return i64(byte >> 2);
-    }
-
-    private decode2Bytes (bytes: u8[]): i64 {
-        return i64(Bytes.toUint<u16>(bytes, BIT_LENGTH.INT_16) >> 2)
-    }
-
-    private decode4Bytes (bytes: u8[]): i64 {
-        return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 }
