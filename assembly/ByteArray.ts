@@ -3,7 +3,7 @@ import { Bytes } from "./utils/Bytes"
 export class ByteArray extends Array<u8> {
     constructor(input: u8[]) {
         super(input.length);
-        Bytes.copy(input, this);
+        Bytes.copy<u8>(input, this);
     }
 
     /**
@@ -13,7 +13,7 @@ export class ByteArray extends Array<u8> {
         let bytesBuffer = new Array<u8>(this.length);
         const encodedBytes: i32 = Bytes.encodeInteger(bytesBuffer, this.length);
 
-        Bytes.copy(this, bytesBuffer, i32(encodedBytes));
+        Bytes.copy<u8>(this, bytesBuffer, i32(encodedBytes));
 
         return bytesBuffer;
     }
