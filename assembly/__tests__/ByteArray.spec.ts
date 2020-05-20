@@ -70,7 +70,7 @@ describe("ByteArray", () => {
 
     it("should return hex representation of byte array", () => {
         const byteArray = ByteArray.fromU8a([0x08, 0x01, 0x01]);
-        expect<string>(byteArray.toString()).toStrictEqual("0x0101");
+        expect<string>(byteArray.toHexString()).toStrictEqual("0x0101");
     });
 });
 

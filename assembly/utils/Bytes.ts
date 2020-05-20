@@ -29,9 +29,21 @@ export class Bytes {
     }
 
     /**
-    * @description Copy src elements in dst at provided position. 
+    * @description Copy u8[] src elements in u8[] dst at provided position. 
     */
     static copy (src: u8[], dst: Array<u8>, start: i32 = 0): void {
+        for (let i = 0; i < dst.length; i++) {
+            if (src.length <= i) {
+                break;
+            }
+            dst[start + i] = src[i];
+        }
+    }
+
+    /**
+    * @description Copy u8[] src elements in Uint8Array dst at provided position. 
+    */
+    static copyToTyped (src: u8[], dst: Uint8Array, start: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
             if (src.length <= i) {
                 break;
