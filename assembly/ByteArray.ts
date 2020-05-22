@@ -1,4 +1,6 @@
 import { Bytes } from "./utils/Bytes"
+import {BytesReader} from "./utils/BytesReader";
+import {BytesWriter} from "./utils/BytesWriter";
 
 export class ByteArray extends Array<u8> {
     constructor(input: u8[]) {
@@ -10,12 +12,9 @@ export class ByteArray extends Array<u8> {
     * @description  Encodes ByteArray as u8[] as per the SCALE codec specification
     */
     public toU8a (): u8[] {
-        let bytesBuffer = new Array<u8>(this.length);
-        const encodedBytes: i32 = Bytes.encodeInteger(bytesBuffer, this.length);
-
-        Bytes.copy<u8>(this, bytesBuffer, i32(encodedBytes));
-
-        return bytesBuffer;
+        const bytesWriter = new BytesWriter();
+        bytesWriter.encodeInteger(this.length);
+        return bytesWriter.bytes.concat(this);
     }
 
     /**
@@ -39,7 +38,7 @@ export class ByteArray extends Array<u8> {
     * @description Instantiates ByteArray from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ByteArray {
-        const bytesLength = Bytes.decodeInt(input);
+        const bytesLength = new BytesReader(input).decodeUint();
         const bytes = input.slice(i32(input.length - bytesLength));
 
         return new ByteArray(bytes);
