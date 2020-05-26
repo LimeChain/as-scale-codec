@@ -29,16 +29,15 @@ export class ScaleString extends ByteArray {
     * @description Instantiates String from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ScaleString {
-        const bytesReader = new BytesReader(input);
-        bytesReader.decodeUint();
-        const stringStart = i32(input.length - bytesReader.readBytes);
+        const bytesLength = i32(Bytes.decodeUint(input));
+        const stringStart = i32(input.length - bytesLength);
 
         if (stringStart < 1) {
             throw new Error('Incorrectly encoded input');
         }
 
         const bytes = input.slice(stringStart);
-        const buff = new Uint8Array(bytesReader.readBytes);
+        const buff = new Uint8Array(bytesLength);
         Bytes.copyToTyped(bytes, buff);
 
         return new ScaleString(String.UTF8.decode(buff.buffer));

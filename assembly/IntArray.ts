@@ -1,6 +1,6 @@
-import { Bytes} from "./utils/Bytes";
-import {BytesReader} from "./utils/BytesReader";
-import {BytesWriter} from "./utils/BytesWriter";
+import { Bytes } from "./utils/Bytes";
+import { BytesReader } from "./utils/BytesReader";
+import { BytesWriter } from "./utils/BytesWriter";
 
 
 export class IntArray extends Array<i64> {
