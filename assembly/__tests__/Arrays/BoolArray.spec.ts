@@ -1,4 +1,4 @@
-import { BoolArray } from "../BoolArray";
+import { BoolArray } from "../../Arrays/BoolArray";
 
 describe("Bool Array", () => {
 
