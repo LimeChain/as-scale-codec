@@ -1,9 +1,9 @@
-import { Codec } from "./Codec";
+import { Codec } from "./interfaces/Codec";
 import { Bytes } from './utils/Bytes';
 
 export class Hash extends Array<u8> implements Codec {
 
-    constructor() {
+    constructor () {
         super(32);
     }
 

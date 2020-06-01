@@ -1,12 +1,11 @@
 import { Bytes } from "./utils/Bytes"
-import { ByteArray } from "./ByteArray";
-import { BytesReader } from "./utils/BytesReader";
+import { ByteArray } from "./Arrays/ByteArray";
 
 export class ScaleString extends ByteArray {
 
-    private readonly value: string;
+    public readonly value: string;
 
-    constructor(input: string) {
+    constructor (input: string) {
         super([]);
         this.value = input;
 
@@ -29,7 +28,7 @@ export class ScaleString extends ByteArray {
     * @description Instantiates String from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ScaleString {
-        const bytesLength = i32(Bytes.decodeUint(input));
+        const bytesLength = i32(Bytes.decodeLength(input).length);
         const stringStart = i32(input.length - bytesLength);
 
         if (stringStart < 1) {

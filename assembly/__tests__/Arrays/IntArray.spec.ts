@@ -1,4 +1,4 @@
-import { IntArray } from "../IntArray";
+import { IntArray } from "../../Arrays/IntArray";
 
 describe("IntArray", () => {
 

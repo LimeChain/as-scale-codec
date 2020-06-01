@@ -1,9 +1,11 @@
-import { Codec } from "./Codec";
+import { Codec } from "./interfaces/Codec";
 
 /** Representation for a boolean value in the system. */
 export class Bool implements Codec {
 
-    constructor(public value: bool) {
+    public readonly value: bool
+
+    constructor (value: bool) {
         this.value = value;
     }
 

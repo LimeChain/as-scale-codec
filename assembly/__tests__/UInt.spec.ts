@@ -1,7 +1,7 @@
-import { UInt8 } from "../UInt8";
-import { UInt16 } from "../UInt16";
-import { UInt32 } from "../UInt32";
-import { UInt64 } from "../UInt64";
+import { UInt8 } from "../UInt/UInt8";
+import { UInt16 } from "../UInt/UInt16";
+import { UInt32 } from "../UInt/UInt32";
+import { UInt64 } from "../UInt/UInt64";
 
 describe("UInt8", () => {
 

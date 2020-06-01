@@ -1,14 +1,14 @@
-import {BIT_LENGTH, Bytes} from "./Bytes";
+import { BIT_LENGTH, Bytes } from "./Bytes";
 
-export class BytesWriter {
+export class BytesBuffer {
 
     public bytes: Array<u8>;
 
-    constructor() {
+    constructor () {
         this.bytes = new Array<u8>();
     }
 
-    encodeInteger (i: i64): void {
+    encodeLength (i: i64): void {
         if (i < 1 << 6) {
             Bytes.appendUint<u8>(this.bytes, u8(i) << 2, BIT_LENGTH.INT_8);
         } else if (i < 1 << 14) {
@@ -34,8 +34,7 @@ export class BytesWriter {
         }
     }
 
-    encodeBool(b: bool): void {
-        this.bytes.push(b ? 0x01 : 0x00);
+    write (input: u8[]): void {
+        Bytes.copy(input, this.bytes, this.bytes.length);
     }
-
 }
