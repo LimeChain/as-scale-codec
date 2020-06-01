@@ -51,7 +51,7 @@ export class BytesReader {
             throw new Error('Invalid input: Byte array should not be empty');
         }
 
-        const mode = this.bytes[0] & 3;
+        const mode = this.bytes[this.readBytes] & 3;
         if (i32(mode) <= BIT_LENGTH.INT_16) {
             return [u64(this.decodeSmallInt(mode)), 0];
         }
@@ -60,23 +60,16 @@ export class BytesReader {
         const byteLen = u8(topSixBits) + 4;
         const buf = new Array<u8>(byteLen);
         Bytes.copy<u8>(this.bytes, buf);
+        Bytes.reverse(buf);
 
-        if (i32(byteLen) > BIT_LENGTH.INT_32 && i32(byteLen) < BIT_LENGTH.INT_64) {
-            const tmp = new Array<u8>(8);
-            Bytes.copy<u8>(buf, tmp);
-            return [Bytes.toUint<i64>(tmp, BIT_LENGTH.INT_64), 0];
-        }
+        trace(buf.toString());
+        trace(buf.length.toString());
+        const loByteArray = buf.slice(0, BIT_LENGTH.INT_64 * 8);
+        const hiByteArray = buf.slice(BIT_LENGTH.INT_64 * 8);
+        trace(loByteArray.toString());
+        trace(hiByteArray.toString());
 
-        // TODO support for > 4 bytes Integers
-
-        // const topSixBits: u8 = this.bytes[0] >> 2;
-        // const byteLen: i32 = topSixBits + 4;
-        // const buf = new Array<u8>(byteLen);
-        // Bytes.copy<u8>(this.bytes, buf);
-        //
-        // trace(this.bytes.toString());
-
-        return []
+        return [];
     }
 
     private decodeSmallInt (mode: u8): i64 {

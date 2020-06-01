@@ -72,5 +72,16 @@ export class Bytes {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 
+    /**
+     * @description Reverses the sequence of the bytes in the array
+     */
+    static reverse (bytes: u8[]): void {
+        for (let i = bytes.length / 2 - 1; i >= 0; i--) {
+            const oppositeIndex = bytes.length - 1 - i;
+            const tempByte: u8 = bytes[i];
+            bytes[i] = bytes[oppositeIndex];
+            bytes[oppositeIndex] = tempByte;
+        }
+    }
 }
 
