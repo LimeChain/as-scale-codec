@@ -11,7 +11,7 @@ export class BytesBuffer {
     /**
     * @description Encodes array length
     */
-    encodeLength (i: i64): void {
+    encodeCompactInt (i: i64): void {
         if (i < 1 << 6) {
             Bytes.appendUint<u8>(this.bytes, u8(i) << 2, BIT_LENGTH.INT_8);
         } else if (i < 1 << 14) {

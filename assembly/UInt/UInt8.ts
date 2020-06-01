@@ -1,5 +1,5 @@
 import { BIT_LENGTH } from "../utils/Bytes";
-import { AbstractInt } from "../Int/AbstractInt";
+import { AbstractInt } from "../AbstractInt";
 
 /** Representation for a UInt8 value in the system. */
 export class UInt8 extends AbstractInt<u8> {

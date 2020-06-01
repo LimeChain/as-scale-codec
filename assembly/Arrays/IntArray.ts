@@ -1,4 +1,3 @@
-import { Bytes } from "../utils/Bytes";
 import { CompactInt } from "../Int/CompactInt";
 import { AbstractArray } from "./AbstractArray";
 

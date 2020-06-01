@@ -5,7 +5,7 @@
  * each element should return after decoding
  * @param
  * value - Decoded value
- * decBytes - Number of bytes value has been fit
+ * decBytes - Number of decoded bytes
  */
 
 export class DecodedData<T> {

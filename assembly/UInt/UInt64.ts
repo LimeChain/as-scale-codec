@@ -1,5 +1,5 @@
 import { Bytes, BIT_LENGTH } from "../utils/Bytes";
-import { AbstractInt } from "../Int/AbstractInt";
+import { AbstractInt } from "../AbstractInt";
 
 /** Representation for a UInt64 value in the system. */
 export class UInt64 extends AbstractInt<u64> {

@@ -7,10 +7,17 @@ import { BytesBuffer } from "../utils/BytesBuffer";
 export class CompactInt implements Codec {
 
     public readonly value: i64;
-    protected bitLength: i32 = BIT_LENGTH.INT_8;
+    protected bitLength: i32;
 
     constructor (value: i64) {
         this.value = value;
+
+        if (value < 1 << 6) this.bitLength = BIT_LENGTH.INT_8;
+        else if (value < 1 << 14) this.bitLength = BIT_LENGTH.INT_16;
+        else if (value < 1 << 30) this.bitLength = BIT_LENGTH.INT_32;
+        else {
+            this.bitLength = BIT_LENGTH.INT_64;
+        }
     }
 
     /**
@@ -18,7 +25,7 @@ export class CompactInt implements Codec {
     */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
-        bytesBuffer.encodeLength(this.value);
+        bytesBuffer.encodeCompactInt(this.value);
 
         return bytesBuffer.bytes;
     }
@@ -38,21 +45,11 @@ export class CompactInt implements Codec {
     }
 
     /**
-     * @description CompactInt could be 1, 2, 4, 8 bytes. Set bytes dynamically
-     */
-    public setEncodedLength (encodedLength: i32): void {
-        this.bitLength = encodedLength;
-    }
-
-    /**
      * @description Instantiates Compact Int from u8[] SCALE encoded bytes
      * Compact Int decodes int8, int16, int32, int64 size correctly  
      */
     static fromU8a (value: u8[]): CompactInt {
-        const decodedData = Bytes.decodeLength(value);
-        const compactInt = new CompactInt(decodedData.length);
-
-        compactInt.setEncodedLength(decodedData.bytes);
-        return compactInt;
+        const decodedData = Bytes.decodeCompactInt(value);
+        return new CompactInt(decodedData.value);
     }
 }
