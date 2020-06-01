@@ -1,4 +1,4 @@
-import { DecodedLength } from "./../interfaces/DecodedLength";
+import { DecodedLength } from "../interfaces/DecodedLength";
 
 export const enum BIT_LENGTH {
     INT_8 = 1,
@@ -134,18 +134,6 @@ export class Bytes {
 
     static decode4Bytes (bytes: u8[]): i64 {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
-    }
-
-    /**
-     * @description Reverses the sequence of the bytes in the array
-     */
-    static reverse (bytes: u8[]): void {
-        for (let i = bytes.length / 2 - 1; i >= 0; i--) {
-            const oppositeIndex = bytes.length - 1 - i;
-            const tempByte: u8 = bytes[i];
-            bytes[i] = bytes[oppositeIndex];
-            bytes[oppositeIndex] = tempByte;
-        }
     }
 }
 
