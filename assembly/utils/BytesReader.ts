@@ -58,6 +58,7 @@ export class BytesReader {
         const topSixBits = this.bytes[0] >> 2;
         const byteLen = u8(topSixBits) + 4;
         const valueLE = this.bytes.slice(1);
+        // @ts-ignore
         const buffer = valueLE.dataStart;
         const lo = load<u64>(buffer, 0);
         const hi = load<u64>(buffer, 1 * sizeof<u64>());

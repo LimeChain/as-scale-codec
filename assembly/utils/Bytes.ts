@@ -2,8 +2,7 @@ export const enum BIT_LENGTH {
     INT_8 = 1,
     INT_16 = 2,
     INT_32 = 4,
-    INT_64 = 8,
-    INT_128 = 16
+    INT_64 = 8
 }
 
 
@@ -30,6 +29,7 @@ export class Bytes {
 
         let result: T = <T>buf[0];
         for (let i: i32 = 1; i < bitLength; i++) {
+            // @ts-ignore
             result |= (buf[i] as T) << 8 * u8(i);
         }
 

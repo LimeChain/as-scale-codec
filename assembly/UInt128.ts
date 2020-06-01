@@ -1,5 +1,4 @@
 import { u128 } from "as-bignum";
-import { BIT_LENGTH, Bytes } from "./utils/Bytes";
 import {BytesReader} from "./utils/BytesReader";
 
 /** Representation for a UInt128 value in the system. */
