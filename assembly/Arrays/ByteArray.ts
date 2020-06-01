@@ -22,6 +22,9 @@ export class ByteArray extends AbstractArray<Byte, u8> {
         return result;
     }
 
+    /**
+    * @description BoolArray elements decryption implementation
+    */
     public decodeElement (value: u8[]): DecodedData<u8> {
         const scaleByte = Byte.fromU8a([value[0]]);
 
@@ -31,6 +34,9 @@ export class ByteArray extends AbstractArray<Byte, u8> {
         )
     }
 
+    /**
+    * @description Instantiates ScaleByteArray from u8[] SCALE encoded bytes (Decode)
+    */
     static fromU8a (input: u8[]): ByteArray {
         return AbstractArray.fromU8a<ByteArray>(input);
     }

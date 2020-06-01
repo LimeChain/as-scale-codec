@@ -12,6 +12,9 @@ export abstract class AbstractArray<ScaleType extends Codec, BaseType> extends A
         Bytes.copy<BaseType>(input, this);
     }
 
+    /**
+    * @description  Encodes values of all elements in u8[] successively as per the SCALE codec specification
+    */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
         bytesBuffer.encodeLength(this.length);
@@ -24,8 +27,15 @@ export abstract class AbstractArray<ScaleType extends Codec, BaseType> extends A
         return bytesBuffer.bytes;
     }
 
+    /**
+    * @description Each child class has to provide decryption implementation for elements
+    */
     public abstract decodeElement (value: u8[]): DecodedData<BaseType>;
 
+
+    /**
+    * @description  Instantiates type of ScaleArray from u8[] SCALE encoded bytes (Decode)
+    */
     static fromU8a<TypeOfScaleArray> (input: u8[]): TypeOfScaleArray {
         const data = Bytes.decodeLength(input);
         let bytes = input.slice(data.bytes);

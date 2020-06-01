@@ -11,6 +11,9 @@ export class Byte implements Codec {
         this.bitLength = BIT_LENGTH.INT_8;
     }
 
+    /**
+    * @description Encodes Byte as u8[] as per the SCALE codec specification
+    */
     public toU8a (): u8[] {
         return [this.value];
     }

@@ -13,6 +13,9 @@ export class CompactInt implements Codec {
         this.value = value;
     }
 
+    /**
+    * @description  Encodes the value as u8[] as per the SCALE codec specification
+    */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
         bytesBuffer.encodeLength(this.value);
@@ -41,6 +44,10 @@ export class CompactInt implements Codec {
         this.bitLength = encodedLength;
     }
 
+    /**
+     * @description Instantiates Compact Int from u8[] SCALE encoded bytes
+     * Compact Int decodes int8, int16, int32, int64 size correctly  
+     */
     static fromU8a (value: u8[]): CompactInt {
         const decodedData = Bytes.decodeLength(value);
         const compactInt = new CompactInt(decodedData.length);

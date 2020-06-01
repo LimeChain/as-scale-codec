@@ -8,6 +8,9 @@ export class BytesBuffer {
         this.bytes = new Array<u8>();
     }
 
+    /**
+    * @description Encodes array length
+    */
     encodeLength (i: i64): void {
         if (i < 1 << 6) {
             Bytes.appendUint<u8>(this.bytes, u8(i) << 2, BIT_LENGTH.INT_8);
@@ -34,6 +37,9 @@ export class BytesBuffer {
         }
     }
 
+    /**
+    * @description Push input in this.bytes
+    */
     write (input: u8[]): void {
         Bytes.copy(input, this.bytes, this.bytes.length);
     }
