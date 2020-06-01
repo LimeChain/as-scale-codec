@@ -51,25 +51,17 @@ export class BytesReader {
             throw new Error('Invalid input: Byte array should not be empty');
         }
 
-        const mode = this.bytes[this.readBytes] & 3;
+        const mode = this.bytes[this.readBytes] & 0x03;
         if (i32(mode) <= BIT_LENGTH.INT_16) {
             return [u64(this.decodeSmallInt(mode)), 0];
         }
-
         const topSixBits = this.bytes[0] >> 2;
         const byteLen = u8(topSixBits) + 4;
-        const buf = new Array<u8>(byteLen);
-        Bytes.copy<u8>(this.bytes, buf);
-        Bytes.reverse(buf);
-
-        trace(buf.toString());
-        trace(buf.length.toString());
-        const loByteArray = buf.slice(0, BIT_LENGTH.INT_64 * 8);
-        const hiByteArray = buf.slice(BIT_LENGTH.INT_64 * 8);
-        trace(loByteArray.toString());
-        trace(hiByteArray.toString());
-
-        return [];
+        const valueLE = this.bytes.slice(1);
+        const buffer = valueLE.dataStart;
+        const lo = load<u64>(buffer, 0);
+        const hi = load<u64>(buffer, 1 * sizeof<u64>());
+        return [lo, hi];
     }
 
     private decodeSmallInt (mode: u8): i64 {
