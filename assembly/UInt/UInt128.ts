@@ -1,5 +1,5 @@
 import { u128 } from "as-bignum";
-import { Bytes } from "./utils/Bytes";
+import { Bytes } from "../utils/Bytes";
 
 /** Representation for a UInt128 value in the system. */
 export class UInt128 extends u128 {

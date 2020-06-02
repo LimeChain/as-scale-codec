@@ -1,4 +1,4 @@
-import {UInt128} from "../UInt128";
+import {UInt128} from "../UInt/UInt128";
 
 describe("BigInt", () => {
 
