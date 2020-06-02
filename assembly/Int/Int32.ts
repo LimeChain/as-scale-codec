@@ -1,10 +1,10 @@
-import { Bytes, BIT_LENGTH } from "./utils/Bytes";
-import { AbstractInt } from "./AbstractInt";
+import { Bytes, BIT_LENGTH } from "../utils/Bytes";
+import { AbstractInt } from "../AbstractInt";
 
 /** Representation for a Int32 value in the system. */
 export class Int32 extends AbstractInt<i32> {
 
-    constructor(value: i32) {
+    constructor (value: i32) {
         super(value, BIT_LENGTH.INT_32)
     }
 

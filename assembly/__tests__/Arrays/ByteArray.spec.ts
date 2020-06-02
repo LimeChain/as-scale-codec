@@ -1,4 +1,4 @@
-import { ByteArray } from "../ByteArray";
+import { ByteArray } from "../../Arrays/ByteArray";
 
 describe("ByteArray", () => {
 

@@ -1,10 +1,10 @@
-import { Bytes, BIT_LENGTH } from "./utils/Bytes";
-import { AbstractInt } from "./AbstractInt";
+import { Bytes, BIT_LENGTH } from "../utils/Bytes";
+import { AbstractInt } from "../AbstractInt";
 
 /** Representation for a Int64 value in the system. */
 export class Int64 extends AbstractInt<i64> {
 
-    constructor(value: i64) {
+    constructor (value: i64) {
         super(value, BIT_LENGTH.INT_64)
     }
 

@@ -1,10 +1,10 @@
-import { AbstractInt } from "./AbstractInt";
-import { BIT_LENGTH } from "./utils/Bytes";
+import { AbstractInt } from "../AbstractInt";
+import { BIT_LENGTH } from "../utils/Bytes";
 
 /** Representation for a Int8 value in the system. */
 export class Int8 extends AbstractInt<i8> {
 
-    constructor(value: i8) {
+    constructor (value: i8) {
         super(value, BIT_LENGTH.INT_8)
     }
 

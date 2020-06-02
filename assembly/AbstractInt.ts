@@ -1,13 +1,13 @@
-import { Codec } from "./Codec";
+import { Codec } from "./interfaces/Codec";
 import { Bytes, BIT_LENGTH } from "./utils/Bytes";
 
 /** Representation for a Int value in the system. */
 export abstract class AbstractInt<T extends number> implements Codec {
 
     protected bitLength: i32;
-    readonly value: T;
+    public readonly value: T;
 
-    constructor(value: T, bitLength: i32) {
+    constructor (value: T, bitLength: i32) {
         this.value = value;
         this.bitLength = bitLength;
     }
