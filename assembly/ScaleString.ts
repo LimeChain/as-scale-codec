@@ -28,7 +28,7 @@ export class ScaleString extends ByteArray {
     * @description Instantiates String from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ScaleString {
-        const bytesLength = i32(Bytes.decodeLength(input).length);
+        const bytesLength = i32(Bytes.decodeCompactInt(input).value);
         const stringStart = i32(input.length - bytesLength);
 
         if (stringStart < 1) {

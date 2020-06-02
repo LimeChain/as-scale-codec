@@ -1,4 +1,4 @@
-import { DecodedLength } from "../interfaces/DecodedLength";
+import { DecodedData } from "./../interfaces/DecodedData";
 
 export const enum BIT_LENGTH {
     INT_8 = 1,
@@ -62,8 +62,8 @@ export class Bytes {
     }
 
 
-    // Decrypt length from u8[] input
-    static decodeLength (input: u8[]): DecodedLength {
+    // Decode compact int from u8[] input
+    static decodeCompactInt (input: u8[]): DecodedData<u64> {
         if (input.length == 0) {
             // Todo: Refactor as exception handling is not recommended
             // Return null for errors
@@ -82,13 +82,13 @@ export class Bytes {
         Bytes.copy<u8>(input, buf);
 
         if (i32(byteLen) == BIT_LENGTH.INT_32) {
-            return new DecodedLength(BIT_LENGTH.INT_32, u64(Bytes.toUint<u32>(buf, BIT_LENGTH.INT_32)));
+            return new DecodedData<u64>(u64(Bytes.toUint<u32>(buf, BIT_LENGTH.INT_32)), BIT_LENGTH.INT_32);
         }
 
         if (i32(byteLen) > BIT_LENGTH.INT_32 && i32(byteLen) < BIT_LENGTH.INT_64) {
             const tmp = new Array<u8>(8);
             Bytes.copy<u8>(buf, tmp);
-            return new DecodedLength(BIT_LENGTH.INT_64, Bytes.toUint<i64>(tmp, BIT_LENGTH.INT_64));
+            return new DecodedData<u64>(Bytes.toUint<i64>(tmp, BIT_LENGTH.INT_64), BIT_LENGTH.INT_64);
         }
 
         // Todo: Refactor as exception handling is not recommended
@@ -96,9 +96,9 @@ export class Bytes {
         throw new Error('Invalid integer');
     }
 
-    static decodeSmallInt (input: u8[], mode: u8): DecodedLength {
+    static decodeSmallInt (input: u8[], mode: u8): DecodedData<u64> {
         if (mode == 0) {
-            return new DecodedLength(BIT_LENGTH.INT_8, u64(Bytes.decodeByte(input[0])));
+            return new DecodedData<u64>(u64(Bytes.decodeByte(input[0])), BIT_LENGTH.INT_8);
         }
 
         if (mode == 1) {
@@ -107,7 +107,7 @@ export class Bytes {
                 // Return null for errors
                 throw new Error('Invalid input: expected 2 bytes array');
             }
-            return new DecodedLength(BIT_LENGTH.INT_16, u64(Bytes.decode2Bytes([input[0], input[1]])));
+            return new DecodedData<u64>(u64(Bytes.decode2Bytes([input[0], input[1]])), BIT_LENGTH.INT_16);
         }
 
         if (mode == 2) {
@@ -116,7 +116,7 @@ export class Bytes {
                 // Return null for errors
                 throw new Error('Invalid input: expected 4 bytes array');
             }
-            return new DecodedLength(BIT_LENGTH.INT_32, u64(Bytes.decode4Bytes([input[0], input[1], input[2], input[3]])));
+            return new DecodedData<u64>(u64(Bytes.decode4Bytes([input[0], input[1], input[2], input[3]])), BIT_LENGTH.INT_32);
         }
 
         // Todo: Refactor as exception handling is not recommended
@@ -136,4 +136,3 @@ export class Bytes {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 }
-

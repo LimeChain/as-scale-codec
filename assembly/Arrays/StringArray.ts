@@ -10,8 +10,8 @@ export class StringArray extends AbstractArray<ScaleString, string>{
     * @description BoolArray elements decryption implementation
     */
     public decodeElement (value: u8[]): DecodedData<string> {
-        const stringLength = Bytes.decodeLength(value);
-        const encodedStringLength = i32(stringLength.bytes + stringLength.length);
+        const stringLength = Bytes.decodeCompactInt(value);
+        const encodedStringLength = i32(stringLength.decBytes + stringLength.value);
 
         return new DecodedData<string>(
             ScaleString.fromU8a(value.slice(0, encodedStringLength)).value,

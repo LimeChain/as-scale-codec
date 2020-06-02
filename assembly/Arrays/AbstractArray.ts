@@ -5,11 +5,11 @@ import { BytesBuffer } from "../utils/BytesBuffer";
 
 import { DecodedData } from "../interfaces/DecodedData";
 
-export abstract class AbstractArray<ScaleType extends Codec, BaseType> extends Array<BaseType> {
+export abstract class AbstractArray<ScaleType extends Codec, NativeType> extends Array<NativeType> {
 
-    constructor (input: BaseType[]) {
+    constructor (input: NativeType[]) {
         super(input.length);
-        Bytes.copy<BaseType>(input, this);
+        Bytes.copy<NativeType>(input, this);
     }
 
     /**
@@ -17,7 +17,7 @@ export abstract class AbstractArray<ScaleType extends Codec, BaseType> extends A
     */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
-        bytesBuffer.encodeLength(this.length);
+        bytesBuffer.encodeCompactInt(this.length);
 
         for (let i = 0; i < this.length; i++) {
             const element = instantiate<ScaleType>(this[i]);
@@ -30,19 +30,19 @@ export abstract class AbstractArray<ScaleType extends Codec, BaseType> extends A
     /**
     * @description Each child class has to provide decryption implementation for elements
     */
-    public abstract decodeElement (value: u8[]): DecodedData<BaseType>;
+    public abstract decodeElement (value: u8[]): DecodedData<NativeType>;
 
 
     /**
     * @description  Instantiates type of ScaleArray from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a<TypeOfScaleArray> (input: u8[]): TypeOfScaleArray {
-        const data = Bytes.decodeLength(input);
-        let bytes = input.slice(data.bytes);
+        const data = Bytes.decodeCompactInt(input);
+        let bytes = input.slice(data.decBytes);
 
         const scaleArray = instantiate<TypeOfScaleArray>([]);
 
-        for (let i: u64 = 0; i < data.length; i++) {
+        for (let i: u64 = 0; i < data.value; i++) {
             const element = scaleArray.decodeElement(bytes);
             scaleArray.push(element.value);
 
