@@ -55,8 +55,6 @@ export class BytesReader {
         if (i32(mode) <= BIT_LENGTH.INT_16) {
             return [u64(this.decodeSmallInt(mode)), 0];
         }
-        const topSixBits = this.bytes[0] >> 2;
-        const byteLen = u8(topSixBits) + 4;
         const valueLE = this.bytes.slice(1);
         // @ts-ignore
         const buffer = valueLE.dataStart;
