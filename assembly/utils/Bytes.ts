@@ -50,21 +50,6 @@ export class Bytes {
     }
 
     /**
-     * Copies one Array into another by a given start position
-     * @param src - Source array from which we are copying
-     * @param dst - Destination array to which we are copying
-     * @param start - The start index of the Source array that we are copying from
-     */
-    static copyFrom<T>(src: T[], dst: Array<T>, start: i32 = 0): void {
-        for (let i = 0; i < dst.length; i++) {
-            if (i + start >= src.length) {
-                break;
-            }
-            dst[i] = src[start + i];
-        }
-    }
-
-    /**
     * @description Copy u8[] src elements in Uint8Array dst at provided position.
     */
     static copyToTyped (src: u8[], dst: Uint8Array, start: i32 = 0): void {
@@ -109,30 +94,6 @@ export class Bytes {
         // Todo: Refactor as exception handling is not recommended
         // Return null for errors
         throw new Error('Invalid integer');
-    }
-
-    /**
-     * Decodes a compact encoded U128 number
-     * @param input - array of bytes
-     * @returns u64 - returns High and Low u64 values for representing the u128 number
-     */
-    static decodeU128(input: u8[]): u64[] {
-        if (input.length == 0) {
-            // Todo: Refactor as exception handling is not recommended
-            // Return null for errors
-            throw new Error('Invalid input: Byte array should not be empty');
-        }
-
-        const mode = input[0] & 0x03;
-        if (i32(mode) <= BIT_LENGTH.INT_16) {
-            return [u64(Bytes.decodeSmallInt(input, mode).value), 0];
-        }
-
-        const valueLE = input.slice(1);
-        const buffer = valueLE.dataStart;
-        const lo = load<u64>(buffer, 0);
-        const hi = valueLE.length <= 8 ? 0 : load<u64>(buffer, 1 * sizeof<u64>());
-        return [lo, hi];
     }
 
     static decodeSmallInt (input: u8[], mode: u8): DecodedData<u64> {
