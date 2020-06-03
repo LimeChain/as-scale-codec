@@ -38,7 +38,7 @@ export class Bytes {
 
 
     /**
-    * @description Copy u8[] src elements in u8[] dst at provided position. 
+    * @description Copy u8[] src elements in u8[] dst at provided position.
     */
     static copy<T> (src: T[], dst: Array<T>, start: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
@@ -50,7 +50,7 @@ export class Bytes {
     }
 
     /**
-    * @description Copy u8[] src elements in Uint8Array dst at provided position. 
+    * @description Copy u8[] src elements in Uint8Array dst at provided position.
     */
     static copyToTyped (src: u8[], dst: Uint8Array, start: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
@@ -136,3 +136,4 @@ export class Bytes {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
     }
 }
+
