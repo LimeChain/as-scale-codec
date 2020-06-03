@@ -185,8 +185,10 @@ describe("UInt64", () => {
 describe("UInt128", () => {
 
     it("should encode uint128", () => {
+        const v0 = UInt128.fromString("1");
+        log(v0.toU8a().toString())
 
-    })
+    });
 
     it("should decode uint128", () => {
         const v0 = UInt128.fromU8a([0x00]);
