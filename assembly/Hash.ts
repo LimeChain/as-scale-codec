@@ -3,8 +3,9 @@ import { Bytes } from './utils/Bytes';
 
 export class Hash extends Array<u8> implements Codec {
 
-    constructor () {
+    constructor (value: u8[]) {
         super(32);
+        Bytes.copy(value, this);
     }
 
     /**
@@ -28,7 +29,7 @@ export class Hash extends Array<u8> implements Codec {
     * @description  Instantiate Hash from bytes cropped from the left.
     */
     static bytesToHash (bytes: u8[]): Hash {
-        let hash = new Hash();
+        let hash = new Hash([]);
         if (bytes.length > 32) {
             bytes = bytes.slice(bytes.length - 32);
         }
@@ -49,8 +50,6 @@ export class Hash extends Array<u8> implements Codec {
     * @description Instantiates Hash from u8[] SCALE encoded bytes
     */
     static fromU8a (input: u8[]): Hash {
-        const hash: Hash = new Hash();
-        Bytes.copy<u8>(input, hash);
-        return hash;
+        return new Hash(input);
     }
 }
