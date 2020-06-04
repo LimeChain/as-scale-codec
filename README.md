@@ -20,8 +20,8 @@ Scale codec is used as a communication mechanism between Polkadot Host and Polka
 | String | <ul><li>- [x] Yes</li></ul> |  |  |
 </td><td>
 
-| Numbers | Int | UInt |
-| ------- | --- | ---- |
+|   | Int | UInt |
+| - | --- | ---- |
 |8| <ul><li>- [x] Yes</li></ul>  | <ul><li>- [x] Yes</li></ul> |
 |16| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
 |32| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
