@@ -6,6 +6,10 @@ Scale codec is used as a communication mechanism between Polkadot Host and Polka
 
 # Supported types
 
+<table>
+<tr><th>Types support </th><th>Numeric types</th></tr>
+<tr><td>
+
 | Types | Support | Arrays | Support |
 | ----- | :-----: | ------ | ------- |  
 | Fixed width number |  <ul><li>- [x] Yes</li></ul>  | Int Array | <ul><li>- [x] Yes</li></ul> |
@@ -14,7 +18,7 @@ Scale codec is used as a communication mechanism between Polkadot Host and Polka
 | Bool | <ul><li>- [x] Yes</li></ul> | String Array | <ul><li>- [x] Yes</li></ul> |
 | Hash | <ul><li>- [x] Yes</li></ul> | UInt128 Array | <ul><li>- [ ] In Progress</li></ul> |
 | String | <ul><li>- [x] Yes</li></ul> |  |  |
-
+</td><td>
 
 | Numbers | Int | UInt |
 | ------- | --- | ---- |
@@ -23,6 +27,7 @@ Scale codec is used as a communication mechanism between Polkadot Host and Polka
 |32| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
 |64| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
 |128| <ul><li>- [ ] No</li></ul>  | <ul><li>- [x] Yes</li></ul> |
+</td></tr></table>
 
 ## Special Types
 
@@ -41,7 +46,7 @@ npm install as-scale-codec
 Every type has function **toU8a**. It encodes type value into an array of bytes
 
 ```jsx
-u128.fromU64(18446744073709551615)import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
+import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
 import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
 import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
 
