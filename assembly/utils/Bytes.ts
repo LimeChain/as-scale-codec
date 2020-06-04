@@ -4,7 +4,8 @@ export const enum BIT_LENGTH {
     INT_8 = 1,
     INT_16 = 2,
     INT_32 = 4,
-    INT_64 = 8
+    INT_64 = 8,
+    INT_128 = 16
 }
 
 export class Bytes {
@@ -134,6 +135,46 @@ export class Bytes {
 
     static decode4Bytes (bytes: u8[]): i64 {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
+    }
+
+    /**
+     * Removes the last ZERO bytes of an Array
+     * @param bytes
+     */
+    static trimEmptyBytes (bytes: u8[]): void {
+        for (let i = bytes.length - 1; i > 0; i --) {
+            if (bytes[i] === 0) {
+                bytes.pop();
+            } else {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Reverses the array of bytes
+     * @param bytes
+     */
+    static reverse (bytes: u8[]): void {
+        for (let i = bytes.length / 2 - 1; i >= 0; i--) {
+            const opposite = bytes.length - 1 - i;
+            const temp:u8 = bytes[opposite];
+            bytes[opposite] = bytes[i];
+            bytes[i] = temp;
+        }
+    }
+
+    /**
+     * Adds Empty Bytes at the start of the provided bytes array
+     * @param bytes - the array of bytes to which it will add empty bytes
+     * @param paddingLength - number of empty bytes to add
+     */
+    static padBytesWithZeros(bytes: u8[], paddingLength: i32): void {
+        assert(paddingLength >= bytes.length, "invalid padding provided");
+        const numberOfZeros = paddingLength - bytes.length;
+        for (let i = 0; i < numberOfZeros; i++) {
+            bytes.unshift(0);
+        }
     }
 }
 
