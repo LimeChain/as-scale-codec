@@ -152,28 +152,15 @@ export class Bytes {
     }
 
     /**
-     * Reverses the array of bytes
-     * @param bytes
-     */
-    static reverse (bytes: u8[]): void {
-        for (let i = bytes.length / 2 - 1; i >= 0; i--) {
-            const opposite = bytes.length - 1 - i;
-            const temp:u8 = bytes[opposite];
-            bytes[opposite] = bytes[i];
-            bytes[i] = temp;
-        }
-    }
-
-    /**
-     * Adds Empty Bytes at the start of the provided bytes array
+     * Appends Empty Bytes to the provided bytes array
      * @param bytes - the array of bytes to which it will add empty bytes
-     * @param paddingLength - number of empty bytes to add
+     * @param targetLength - number of empty bytes to add
      */
-    static padBytesWithZeros(bytes: u8[], paddingLength: i32): void {
-        assert(paddingLength >= bytes.length, "invalid padding provided");
-        const numberOfZeros = paddingLength - bytes.length;
+    static appendZeroBytes(bytes: u8[], targetLength: i32): void {
+        assert(targetLength >= bytes.length, "invalid padding provided");
+        const numberOfZeros = targetLength - bytes.length;
         for (let i = 0; i < numberOfZeros; i++) {
-            bytes.unshift(0);
+            bytes.push(0);
         }
     }
 }

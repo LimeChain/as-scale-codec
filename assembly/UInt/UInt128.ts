@@ -38,15 +38,6 @@ export class UInt128 {
         return this.value.toString();
     }
 
-    /**
-     * Instantiates new UInt128 from Low and High U64 Numbers
-     * @param lo
-     * @param hi
-     */
-    static fromLowHighValues(lo: u64, hi: u64): UInt128 {
-        return new UInt128(new u128(lo, hi));
-    }
-
     /** Instantiates new UInt128 from u8[] SCALE encoded bytes */
     static fromU8a(input: u8[]): UInt128 {
         if (input.length == 0) {
@@ -57,16 +48,15 @@ export class UInt128 {
 
         const mode = input[0] & 0x03;
         if (i32(mode) <= 2) {
-            return UInt128.fromLowHighValues(u64(Bytes.decodeSmallInt(input, mode).value), 0);
+            return new UInt128(new u128(u64(Bytes.decodeSmallInt(input, mode).value), 0));
         }
 
         const topSixBits = input[0] >> 2;
         const byteLength = topSixBits + 4;
 
         const value = input.slice(1, byteLength + 1);
-        Bytes.reverse(value);
-        Bytes.padBytesWithZeros(value, BIT_LENGTH.INT_128);
+        Bytes.appendZeroBytes(value, BIT_LENGTH.INT_128);
 
-        return new UInt128(u128.fromBytesBE(value));
+        return new UInt128(u128.fromBytesLE(value));
     }
 }
