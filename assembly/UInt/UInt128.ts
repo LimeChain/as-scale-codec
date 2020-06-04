@@ -1,9 +1,8 @@
 import { u128 } from "as-bignum";
 import {BIT_LENGTH, Bytes} from "../utils/Bytes";
-import { Codec } from "../interfaces/Codec";
 
 /** Representation for a UInt128 value in the system. */
-export class UInt128 implements Codec {
+export class UInt128 {
 
     readonly value: u128;
 
