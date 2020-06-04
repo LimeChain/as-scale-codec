@@ -28,7 +28,7 @@ export class BytesBuffer {
             }
 
             const topSixBits: u8 = u8(numBytes - 4);
-            const lengthByte: u8 = topSixBits << 2 + 3;
+            const lengthByte: u8 = (topSixBits << 2) + 3;
 
             Bytes.putUint<u8>(this.bytes, lengthByte, BIT_LENGTH.INT_8);
             Bytes.putUint<u64>(o, i64(i), BIT_LENGTH.INT_64);

@@ -4,7 +4,8 @@ export const enum BIT_LENGTH {
     INT_8 = 1,
     INT_16 = 2,
     INT_32 = 4,
-    INT_64 = 8
+    INT_64 = 8,
+    INT_128 = 16
 }
 
 export class Bytes {
@@ -134,6 +135,33 @@ export class Bytes {
 
     static decode4Bytes (bytes: u8[]): i64 {
         return i64(Bytes.toUint<u32>(bytes, BIT_LENGTH.INT_32) >> 2);
+    }
+
+    /**
+     * Removes the last ZERO bytes of an Array
+     * @param bytes
+     */
+    static trimEmptyBytes (bytes: u8[]): void {
+        for (let i = bytes.length - 1; i > 0; i --) {
+            if (bytes[i] === 0) {
+                bytes.pop();
+            } else {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Appends Empty Bytes to the provided bytes array
+     * @param bytes - the array of bytes to which it will add empty bytes
+     * @param targetLength - number of empty bytes to add
+     */
+    static appendZeroBytes(bytes: u8[], targetLength: i32): void {
+        assert(targetLength >= bytes.length, "invalid padding provided");
+        const numberOfZeros = targetLength - bytes.length;
+        for (let i = 0; i < numberOfZeros; i++) {
+            bytes.push(0);
+        }
     }
 }
 
