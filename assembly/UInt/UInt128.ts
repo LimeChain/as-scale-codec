@@ -1,13 +1,24 @@
 import { u128 } from "as-bignum";
 import {BIT_LENGTH, Bytes} from "../utils/Bytes";
+import {Codec} from "../interfaces/Codec";
 
 /** Representation for a UInt128 value in the system. */
-export class UInt128 {
+export class UInt128 implements Codec {
 
-    readonly value: u128;
+    public readonly value: u128;
+    protected bitLength: i32;
 
     constructor (value: u128) {
         this.value = value;
+
+        if (value < u128.fromU32(1 << 6)) this.bitLength = BIT_LENGTH.INT_8;
+        else if (value < u128.fromU32(1 << 14)) this.bitLength = BIT_LENGTH.INT_16;
+        else if (value < u128.fromU32(1 << 30)) this.bitLength = BIT_LENGTH.INT_32;
+        else {
+            const valueInBytes = this.value.toBytes();
+            Bytes.trimEmptyBytes(valueInBytes);
+            this.bitLength = 1 + valueInBytes.length;
+        }
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification */
@@ -36,6 +47,13 @@ export class UInt128 {
 
     toString(): string {
         return this.value.toString();
+    }
+
+    /**
+     * @description The length of Int when the value is encoded
+     */
+    public encodedLength (): i32 {
+        return this.bitLength;
     }
 
     /** Instantiates new UInt128 from u8[] SCALE encoded bytes */
