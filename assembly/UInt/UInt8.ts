@@ -24,9 +24,7 @@ export class UInt8 extends AbstractInt<u8> {
 
     /** Instantiates new UInt8 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[]): UInt8 {
-        if (value.length != 1) {
-            throw new Error('cannot decode invalid i8 encoded value');
-        }
+        assert(value.length == 1, 'Uint8: cannot decode invalid u8 encoded value');
         return new UInt8(value[0]);
     }
 }
