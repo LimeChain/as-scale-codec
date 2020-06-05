@@ -41,10 +41,7 @@ export class Byte implements Codec {
 
     /** Instantiates new Byte from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[]): Byte {
-        if (value.length != 1) {
-            throw new Error('cannot decode invalid byte'); // TODO use null
-        }
-
+        assert(value.length == 1, 'Byte: cannot decode invalid type');
         return new Byte(value[0]);
     }
 }

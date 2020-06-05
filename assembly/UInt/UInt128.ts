@@ -72,12 +72,7 @@ export class UInt128 implements Codec {
 
     /** Instantiates new UInt128 from u8[] SCALE encoded bytes */
     static fromU8a(input: u8[]): UInt128 {
-        if (input.length == 0) {
-            // Todo: Refactor as exception handling is not recommended
-            // Return null for errors
-            throw new Error('Invalid input: Byte array should not be empty');
-        }
-
+        assert(input.length != 0, 'Invalid input: Byte array should not be empty');
         const mode = input[0] & 0x03;
         if (i32(mode) <= 2) {
             return new UInt128(new u128(u64(Bytes.decodeSmallInt(input, mode).value), 0));
