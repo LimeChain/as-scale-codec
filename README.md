@@ -2,12 +2,10 @@
 
 **as-scale-codec** is AssemblyScript implementation of Polkadot SCALE Codec. The codec is used as a communication mechanism between Polkadot Hosts and Polkadot Runtimes.
 
-This AssemblyScript implementation of the codec is funded by [Web3 Foundation](https://web3.foundation/) via their [Open Grants Program](https://github.com/w3f/Open-Grants-Program)! :pray:
-
-[WEB3 Badge](./web3_badge_black.png)
-
 More detailed information about the SCALE codec specification can be found [here](https://substrate.dev/docs/en/knowledgebase/advanced/codec).
 
+This AssemblyScript implementation of the codec is funded by [Web3 Foundation](https://web3.foundation/) via their [Open Grants Program](https://github.com/w3f/Open-Grants-Program)! :pray:
+![WEB3 Badge](./web3_badge_black.png)
 # Supported types
 The following table shows the status of the types and their arrays:
 
