@@ -1,33 +1,33 @@
 <h2 align="center">AssemblyScript SCALE Codec</h2>
 
-**as-scale-codec** is AssemblyScript implementation of Polkadot Scale Codec.
+**as-scale-codec** is AssemblyScript implementation of Polkadot SCALE Codec.
 
-Scale codec is used as a communication mechanism between Polkadot Host and Polkadot Runtime
+SCALE codec is used as a communication mechanism between Polkadot Host and Polkadot Runtime.
+
+This AssemblyScript implementation of the codec is funded by [Web3 Foundation](https://web3.foundation/) via their [Open Grants Program](https://github.com/w3f/Open-Grants-Program)! :pray:
+
+
 
 # Supported types
+The following table shows the status of the types and their arrays:
 
-<table>
-<tr><th>Types support </th><th>Numeric types</th></tr>
-<tr><td>
+|       Type        |       Support      | Array Support | 
+|----------------------|:--------------------:|:------:|
+| `Fixed width number` | ✅ | ✅ |
+| `Compact Int`        | ✅ |✅ |
+| `Big Integer` | :small_orange_diamond: *Limited Support* | :small_orange_diamond: *Limited Support* |
+| `Byte` |✅ |✅ | 
+| `Bool` | ✅| ✅|
+| `Hash` |✅ | :heavy_minus_sign: |
+| `String` | ✅|✅ | 
 
-| Types | Support | Arrays | Support |
-| ----- | :-----: | ------ | ------- |  
-| Fixed width number |  <ul><li>- [x] Yes</li></ul>  | Int Array | <ul><li>- [x] Yes</li></ul> |
-| Compact Int | <ul><li>- [x] Yes</li></ul> | Byte Array  | <ul><li>- [x] Yes</li></ul> |
-| Byte | <ul><li>- [x] Yes</li></ul> | Bool Array | <ul><li>- [x] Yes</li></ul> |
-| Bool | <ul><li>- [x] Yes</li></ul> | String Array | <ul><li>- [x] Yes</li></ul> |
-| Hash | <ul><li>- [x] Yes</li></ul> | UInt128 Array | <ul><li>- [ ] In Progress</li></ul> |
-| String | <ul><li>- [x] Yes</li></ul> |  |  |
-</td><td>
+The following table shows the status of the fixed width numbers:
 
-|   | Int | UInt |
-| - | --- | ---- |
-|8| <ul><li>- [x] Yes</li></ul>  | <ul><li>- [x] Yes</li></ul> |
-|16| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
-|32| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
-|64| <ul><li>- [x] Yes</li></ul> | <ul><li>- [x] Yes</li></ul> |
-|128| <ul><li>- [ ] No</li></ul>  | <ul><li>- [x] Yes</li></ul> |
-</td></tr></table>
+| Тype | `8` | `16` | `32` | `64` | `128` | `256` | 
+|--|:--:|:--:|:--:|:--:|:--:|:--:|
+| `int` | ✅ | ✅| ✅|✅ | :heavy_minus_sign:|  :heavy_minus_sign:|
+| `uint` | ✅ | ✅| ✅|✅ |✅ |:heavy_minus_sign:|
+
 
 ## Special Types
 
@@ -43,7 +43,7 @@ npm install as-scale-codec
 
 ### Encoding
 
-Every type has function **toU8a**. It encodes type value into an array of bytes
+Every type has а **toU8a** function . It encodes type value into an array of bytes
 
 ```jsx
 import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
@@ -102,7 +102,7 @@ scaleUInt128.toU8a() // => [0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 
 ### Decoding
 
-Every type has a **static** function **fromU8a**. It decodes an array of bytes to a desired type
+Every type has a **static** function **fromU8a**. It decodes an array of bytes to the desired type
 
 ```jsx
 import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
@@ -144,7 +144,7 @@ UInt128.fromU8a([0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xf
 
 ### Encoding
 
-Every array has function **toU8a**. It encodes array values into an array of bytes
+Every array has **toU8a** function. It encodes the array values into an array of SCALE encoded bytes.
 
 ```jsx
 import { BoolArray, ByteArray, IntArray, StringArray } from "as-scale-codec"
@@ -168,7 +168,7 @@ stringArray.toU8a() // => [0x08, 0x14, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x14, 0x77,
 
 ### Decoding
 
-Every array has a **static** function **fromU8a**. It decodes an array of bytes to an array of desired types
+Every array has a **static** function **fromU8a**. It decodes an array of SCALE encoded bytes and creates an array instance of the desired type.
 
 ```jsx
 import { BoolArray, ByteArray, IntArray, StringArray } from "as-scale-codec"
@@ -202,10 +202,13 @@ Hash.bytesToHash([0xff, 0x00, ..., 0x00]); // (32 bytes long)
 // => [0xff, ... , 0x00] (32 bytes long)
 ```
 
-# T**ests**
+# **Tests**
 
-In order to run the tests one perform
+In order to run the unit tests, one must perform:
 
 ```bash
 npm run test
 ```
+
+# **License**
+This repository is licensed under [Apache 2.0 license](https://github.com/LimeChain/as-scale-codec/blob/master/LICENSE)
