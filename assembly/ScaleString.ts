@@ -45,7 +45,7 @@ export class ScaleString extends ByteArray {
         const bytesLength = i32(Bytes.decodeCompactInt(input).value);
         const stringStart = i32(input.length - bytesLength);
 
-        assert(stringStart >= 1, "Incorrectly encoded input");
+        assert(stringStart >= 1, "ScaleString: Incorrectly encoded input");
 
         const bytes = input.slice(stringStart);
         const buff = new Uint8Array(bytesLength);

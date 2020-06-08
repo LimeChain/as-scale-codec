@@ -50,6 +50,14 @@ describe("StringArray", () => {
         expect<string>(scaleStrArray[3]).toStrictEqual("™ ± Ã ¿ £ µ");
         expect<string>(scaleStrArray[4]).toStrictEqual(repeatString(str, 500));
     });
+
+    itThrows("should throw on incorrect encoding", () => {
+        const invalidEncodedArray1: u8[] = [0x10, 0x04];
+        StringArray.fromU8a(invalidEncodedArray1);
+
+        const invalidEncodedArray2: u8[] = [0x10];
+        StringArray.fromU8a(invalidEncodedArray2);
+    });
 });
 
 function append (to: Array<u8>, from: string): Array<u8> {

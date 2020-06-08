@@ -24,6 +24,7 @@ export class UInt16 extends AbstractInt<u16>  {
 
     /** Instantiates new Uint16 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[]): UInt16 {
+        assert(value.length <= BIT_LENGTH.INT_16, 'UInt16: Invalid bytes provided');
         var res = Bytes.toUint<u16>(value, BIT_LENGTH.INT_16);
         return new UInt16(res);
     }
