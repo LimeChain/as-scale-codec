@@ -18,7 +18,7 @@
     "url": "git+https://github.com/LimeChain/assemblyscript-scale-codec.git"
   },
   "keywords": [
-    "assembly-sript",
+    "assembly-script",
     "SCALE",
     "Polkadot",
     "Substrate"
