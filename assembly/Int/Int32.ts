@@ -24,6 +24,7 @@ export class Int32 extends AbstractInt<i32> {
 
     /** Instantiates new Int32 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[]): Int32 {
+        assert(value.length <= BIT_LENGTH.INT_32, 'Int32: Invalid bytes provided');
         var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32);
         return new Int32(res);
     }

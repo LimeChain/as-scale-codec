@@ -72,6 +72,11 @@ describe("ByteArray", () => {
         const byteArray = ByteArray.fromU8a([0x08, 0x01, 0x01]);
         expect<string>(byteArray.toHexString()).toStrictEqual("0x0101");
     });
+
+    itThrows("should throw on incorrect encoding", () => {
+        const byteTest: u8[] = [0x0c]; // Encoded length = 3, actual data length = 0
+        ByteArray.fromU8a(byteTest);
+    });
 });
 
 function appendEmptyBytesTo (arr: u8[], bytesToAppend: i32): u8[] {

@@ -49,7 +49,7 @@ describe("UInt8", () => {
         let v7 = new UInt8(129);
         expect<u8[]>(v7.toU8a()).toStrictEqual([0x81]);
         expect<i32>(v7.encodedLength()).toStrictEqual(1);
-    })
+    });
 
     it("should decode uint8", () => {
         expect<UInt8>(UInt8.fromU8a([0x01])).toStrictEqual(new UInt8(1));
@@ -59,7 +59,19 @@ describe("UInt8", () => {
         expect<UInt8>(UInt8.fromU8a([0xff])).toStrictEqual(new UInt8(255));
         expect<UInt8>(UInt8.fromU8a([0xf1])).toStrictEqual(new UInt8(241));
         expect<UInt8>(UInt8.fromU8a([0x81])).toStrictEqual(new UInt8(129));
-    })
+    });
+
+    itThrows("should throw when decoding u16", () => {
+        let v1 = UInt8.fromU8a([0x01, 0]);
+    });
+
+    itThrows('should throw when decoding u32', () => {
+        let v1 = UInt8.fromU8a([0x01, 0, 0, 0]);
+    });
+
+    itThrows('should throw when decoding u64', () => {
+        let v1 = UInt8.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
+    });
 });
 
 describe("UInt16", () => {
@@ -108,7 +120,7 @@ describe("UInt16", () => {
         let v11 = new UInt16(49153);
         expect<u8[]>(v11.toU8a()).toStrictEqual([0x01, 0xc0]);
         expect<i32>(v11.encodedLength()).toStrictEqual(2);
-    })
+    });
 
     it("should decode uint16", () => {
         expect<UInt16>(UInt16.fromU8a([0x01, 0])).toStrictEqual(new UInt16(1));
@@ -122,7 +134,15 @@ describe("UInt16", () => {
         expect<UInt16>(UInt16.fromU8a([0xff, 0x3f])).toStrictEqual(new UInt16(16383));
         expect<UInt16>(UInt16.fromU8a([0x68, 0xc5])).toStrictEqual(new UInt16(50536));
         expect<UInt16>(UInt16.fromU8a([0x01, 0xc0])).toStrictEqual(new UInt16(49153));
-    })
+    });
+
+    itThrows('should throw when trying to decode uint32', () => {
+       let v1 = UInt16.fromU8a([0x01, 0, 0, 0]);
+    });
+
+    itThrows('should throw when trying to decode uint64', () => {
+        let v1 = UInt16.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
+    });
 });
 
 describe("UInt32", () => {
@@ -150,7 +170,7 @@ describe("UInt32", () => {
         let v6 = new UInt32(3221225473);
         expect<u8[]>(v6.toU8a()).toStrictEqual([0x01, 0x00, 0x00, 0xc0]);
         expect<i32>(v6.encodedLength()).toStrictEqual(4);
-    })
+    });
 
     it("should decode uint32", () => {
         expect<UInt32>(UInt32.fromU8a([0x01, 0, 0, 0])).toStrictEqual(new UInt32(1));
@@ -159,7 +179,11 @@ describe("UInt32", () => {
         expect<UInt32>(UInt32.fromU8a([0xff, 0xff, 0xff, 0xff])).toStrictEqual(new UInt32(4294967295));
         expect<UInt32>(UInt32.fromU8a([0x01, 0xc0, 0xff, 0xff])).toStrictEqual(new UInt32(4294950913));
         expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0xc0])).toStrictEqual(new UInt32(3221225473));
-    })
+    });
+
+    itThrows('should throw when trying to decode uint64', () => {
+        let v1 = UInt32.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
+    });
 });
 
 describe("UInt64", () => {
@@ -171,15 +195,15 @@ describe("UInt64", () => {
 
         let v2 = new UInt64(16383);
         expect<u8[]>(v2.toU8a()).toStrictEqual([0xff, 0x3f, 0, 0, 0, 0, 0, 0]);
-        expect<i32>(v2.encodedLength()).toStrictEqual(8)
+        expect<i32>(v2.encodedLength()).toStrictEqual(8);
 
         let v3 = new UInt64(1073741823);
         expect<u8[]>(v3.toU8a()).toStrictEqual([0xff, 0xff, 0xff, 0x3f, 0, 0, 0, 0]);
-        expect<i32>(v3.encodedLength()).toStrictEqual(8)
+        expect<i32>(v3.encodedLength()).toStrictEqual(8);
 
         let v4 = new UInt64(9223372036854775807);
         expect<u8[]>(v4.toU8a()).toStrictEqual([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f]);
-        expect<i32>(v4.encodedLength()).toStrictEqual(8)
+        expect<i32>(v4.encodedLength()).toStrictEqual(8);
 
         let v5 = new UInt64(18446744073709551615);
         expect<u8[]>(v5.toU8a()).toStrictEqual([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
@@ -193,7 +217,11 @@ describe("UInt64", () => {
         expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0x3f, 0, 0, 0, 0])).toStrictEqual(new UInt64(1073741823));
         expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f])).toStrictEqual(new UInt64(9223372036854775807));
         expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new UInt64(18446744073709551615));
-    })
+    });
+
+    itThrows('should throw when trying to decode uint128', () => {
+        let v1 = UInt64.fromU8a([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+    });
 
 });
 
@@ -296,6 +324,10 @@ describe("UInt128", () => {
 
         const v17 = UInt128.fromU8a([0x43, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
         expect<string>(v17.toString()).toStrictEqual("1329227995784915872903807060280344575");
+    });
+
+    itThrows('should throw when decoding empty array', () => {
+        const v1 = UInt128.fromU8a([]);
     })
 
 });
