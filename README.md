@@ -1,5 +1,11 @@
 <h2 align="center">AssemblyScript SCALE Codec</h2>
 
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![Tests](https://github.com/LimeChain/as-scale-codec/workflows/Tests/badge.svg)
+[![npm version](https://badge.fury.io/js/as-scale-codec.svg)](https://badge.fury.io/js/as-scale-codec)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/LimeChain/as-scale-codec)
+
 **as-scale-codec** is AssemblyScript implementation of Polkadot SCALE Codec. The codec is used as a communication mechanism between Polkadot Hosts and Polkadot Runtimes.
 
 More detailed information about the SCALE codec specification can be found [here](https://substrate.dev/docs/en/knowledgebase/advanced/codec).
