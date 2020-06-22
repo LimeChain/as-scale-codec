@@ -37,11 +37,19 @@ The following table shows the status of the fixed width numbers:
 
 - **Compact Int** - [Documentation](https://substrate.dev/docs/en/knowledgebase/advanced/codec#compactgeneral-integers)
 
-# Usage
 
-```bash
-npm install as-scale-codec
-```
+## **Getting Started**  
+*You can find more information on AssemblyScript and how to get started with it in the AssemblyScript docs -> [https://www.assemblyscript.org/introduction.html](https://www.assemblyscript.org/introduction.html)*
+
+1. In your AssemblyScript project execute:
+
+    ```bash
+    npm install as-scale-codec
+    ```
+2. Once you have the library installed in your AssemblyScript project you can use it in your `assembly` files by importing the files from `as-scale-codec`.
+ 
+Detailed examples of the exported by the library types are listed below:
+  
 
 ## Types
 
