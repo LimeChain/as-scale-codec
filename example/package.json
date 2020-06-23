@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start": "node index.js",
-    "build": "npx asc assembly/index.ts -b build/example.wasm -t build/example.wat --sourceMap --validate --runtime full"
+    "build": "npx asc assembly/index.ts -b build/example.wasm -t build/example.wat --sourceMap --validate --runtime full --optimize"
   },
   "repository": {
     "type": "git",
