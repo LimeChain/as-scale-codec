@@ -8,7 +8,7 @@
     "Lyubomir Kiprov <bakasura980>"
   ],
   "scripts": {
-    "asbuild": "npx asc assembly/index.ts -b build/release/as-scale-codec.wasm -t build/release/as-scale-codec.wat --sourceMap --validate --runtime stub",
+    "asbuild": "npx asc assembly/index.ts -b build/release/as-scale-codec.wasm -t build/release/as-scale-codec.wat --sourceMap --validate --runtime full --optimize",
     "test:js": "npm run asbuild && node tests",
     "test": "asp --verbose",
     "test:ci": "asp --summary"
