@@ -3,7 +3,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![Tests](https://github.com/LimeChain/as-scale-codec/workflows/Tests/badge.svg)
-[![npm version](https://badge.fury.io/js/as-scale-codec.svg)](https://badge.fury.io/js/as-scale-codec)
+[![npm version](https://img.shields.io/npm/v/as-scale-codec?color=light-green&label=npm%20package)](https://img.shields.io/npm/v/as-scale-codec?color=light-green&label=npm%20package)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/LimeChain/as-scale-codec)
 
 **as-scale-codec** is AssemblyScript implementation of Polkadot SCALE Codec. The codec is used as a communication mechanism between Polkadot Hosts and Polkadot Runtimes.
