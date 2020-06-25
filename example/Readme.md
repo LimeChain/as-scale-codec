@@ -14,7 +14,7 @@ The purpose of the example is to demonstrates
     npm run build
     ```
 3. Start the example    
-    For demonstration 'hello_world' string will get encrypted and decrypted
+    For demonstration 'hello_world' string will get encoded and decoded
     ```
     npm run start
     ```
