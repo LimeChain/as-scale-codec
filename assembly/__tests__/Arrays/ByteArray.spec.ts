@@ -31,7 +31,8 @@ describe("ByteArray", () => {
         ];
 
         for (let i = 0; i < TEST_DATA_VAL.length; i++) {
-            const encodedBytes = new ByteArray(TEST_DATA_VAL[i]).toU8a();
+            const byteArray = new ByteArray(TEST_DATA_VAL[i]);
+            const encodedBytes = byteArray.toU8a();
 
             expect<i32>(encodedBytes.length).toStrictEqual(ENCODED_BYTES[i]);
             expect<u8[]>(encodedBytes).toStrictEqual(TEST_DATA_OUT[i]);

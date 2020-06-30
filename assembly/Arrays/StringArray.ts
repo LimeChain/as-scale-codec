@@ -18,6 +18,7 @@ import { ScaleString } from "../ScaleString";
 
 import { DecodedData } from "../interfaces/DecodedData";
 
+// @ts-ignore
 export class StringArray extends AbstractArray<ScaleString, string>{
 
     /**
