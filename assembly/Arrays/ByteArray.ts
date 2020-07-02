@@ -17,6 +17,7 @@ import { AbstractArray } from "./AbstractArray";
 
 import { DecodedData } from "../interfaces/DecodedData";
 
+// @ts-ignore
 export class ByteArray extends AbstractArray<Byte, u8> {
 
     /**

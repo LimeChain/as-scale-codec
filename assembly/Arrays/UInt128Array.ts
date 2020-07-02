@@ -17,6 +17,7 @@ import { DecodedData } from "../interfaces/DecodedData";
 import { UInt128 } from "../UInt/UInt128";
 import { u128 } from "as-bignum";
 
+// @ts-ignore
 export class UInt128Array extends AbstractArray<UInt128, u128> {
 
     /**

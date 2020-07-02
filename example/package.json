@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "start": "node index.js",
-    "build": "npx asc assembly/index.ts -b build/example.wasm -t build/example.wat --sourceMap --validate --runtime full --optimize"
+    "test": "asp --verbose",
+    "build": "npx asc assembly/index.ts -b build/example.wasm -t build/example.wat --sourceMap --runtime full --optimize",
+    "build:debug": "npm run build -- --debug"
   },
   "repository": {
     "type": "git",
@@ -27,8 +29,9 @@
   },
   "homepage": "https://github.com/LimeChain/assemblyscript-scale-codec#readme",
   "dependencies": {
-    "as-scale-codec": "0.0.2",
-    "assemblyscript": "0.9.4",
-    "@assemblyscript/loader": "0.9.4"
+    "@as-pect/cli": "^4.0.0",
+    "@assemblyscript/loader": "0.0.0",
+    "as-scale-codec": "file:../",
+    "assemblyscript": "^0.12.5"
   }
 }

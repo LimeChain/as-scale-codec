@@ -135,7 +135,7 @@ export class Bytes {
      * @param bytes
      */
     static trimEmptyBytes (bytes: u8[]): void {
-        for (let i = bytes.length - 1; i > 0; i --) {
+        for (let i = bytes.length - 1; i > 0; i--) {
             if (bytes[i] === 0) {
                 bytes.pop();
             } else {
@@ -149,7 +149,7 @@ export class Bytes {
      * @param bytes - the array of bytes to which it will add empty bytes
      * @param targetLength - number of empty bytes to add
      */
-    static appendZeroBytes(bytes: u8[], targetLength: i32): void {
+    static appendZeroBytes (bytes: u8[], targetLength: i32): void {
         assert(targetLength >= bytes.length, "invalid padding provided");
         const numberOfZeros = targetLength - bytes.length;
         for (let i = 0; i < numberOfZeros; i++) {
