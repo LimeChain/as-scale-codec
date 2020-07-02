@@ -32,6 +32,6 @@
     "@as-pect/cli": "^4.0.0",
     "@assemblyscript/loader": "0.0.0",
     "as-scale-codec": "file:../",
-    "assemblyscript": "^0.12.5"
+    "assemblyscript": "^0.13.1"
   }
 }
