@@ -63,4 +63,21 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> extends
 
         return scaleArray;
     }
+
+    /* OVerwrite Array functions */
+
+    // @ts-ignore
+    map(callbackfn: (value: NativeType, index: i32, array: Array<NativeType>) => NativeType): Array<NativeType> {
+        return super.map<NativeType>(callbackfn);
+    }
+
+    // @ts-ignore
+    reduce(callbackfn: (previousValue: NativeType, currentValue: NativeType, currentIndex: i32, array: Array<NativeType>) => NativeType, initialValue: NativeType): NativeType {
+        return super.reduce<NativeType>(callbackfn, initialValue);
+    }
+
+    // @ts-ignore
+    reduceRight(callbackfn: (previousValue: NativeType, currentValue: NativeType, currentIndex: i32, array: Array<NativeType>) => NativeType, initialValue: NativeType): NativeType {
+        return super.reduceRight<NativeType>(callbackfn, initialValue);
+    }
 }

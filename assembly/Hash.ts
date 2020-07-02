@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from "./interfaces/Codec";
 import { Bytes } from './utils/Bytes';
 
-export class Hash extends Array<u8> implements Codec {
+export class Hash extends Array<u8> {
 
     constructor (value: u8[]) {
         super(32);
