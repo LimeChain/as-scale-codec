@@ -8,7 +8,7 @@ const imports = {
         }
     }
 };
-const instance = loader.instantiateSync(fs.readFileSync(__dirname + "/build/example.wasm"), imports);
+const instance = loader.instantiateSync(fs.readFileSync(__dirname + "/build/example.wasm"), imports).exports;
 
 
 (async () => {
