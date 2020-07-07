@@ -31,5 +31,5 @@ export interface Codec {
      * @description The length of Uint8Array when the value is encoded
      */
     encodedLength (): i32
-
+    
 }
