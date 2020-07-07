@@ -5,3 +5,4 @@ export * from "./Byte";
 export * from "./Hash";
 export * from "./ScaleString";
 export * from "./Arrays";
+export * from "./utils/Bytes";
