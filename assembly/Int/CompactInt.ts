@@ -66,4 +66,9 @@ export class CompactInt implements Codec {
         const decodedData = Bytes.decodeCompactInt(value);
         return new CompactInt(decodedData.value);
     }
+
+    @inline @operator('==')
+    static eq(a: CompactInt, b: CompactInt): bool {
+        return a.value == b.value;
+    }
 }

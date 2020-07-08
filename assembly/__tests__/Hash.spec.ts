@@ -72,4 +72,18 @@ describe("Hash", () => {
         hash = new Hash([0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff]);
         expect<string>(hash.toString()).toStrictEqual('0x255000000000000000000000000000000255');
     });
+
+    it("equals should work", () => {
+        let hash: Hash = new Hash([0xff]);
+        let hash2: Hash = new Hash([0xff]);
+
+        assert(hash == hash2, "hashes are not equal")
+    })
+
+    it("should not be equal when hashes are different", () => {
+        let hash1: Hash = new Hash([0x01]);
+        let hash2: Hash = new Hash([0xff]);
+
+        assert(hash1 != hash2, "hashes should be different");
+    })
 });
