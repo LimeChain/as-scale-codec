@@ -65,4 +65,16 @@ export class Hash extends Array<u8> {
     static fromU8a (input: u8[]): Hash {
         return new Hash(input);
     }
+
+    @inline @operator('==')
+    static eq(a: Hash, b: Hash): bool {
+        let areEqual = true;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) {
+                areEqual = false;
+                break;
+            }
+        }
+        return areEqual;
+    }
 }
