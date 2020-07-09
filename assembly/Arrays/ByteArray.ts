@@ -50,6 +50,13 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     }
 
     /**
+     * @description The length of ByteArray when the value is encoded
+     */
+    public encodedLength (): i32 {
+        return this.length;
+    }
+
+    /**
     * @description Instantiates ScaleByteArray from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ByteArray {
