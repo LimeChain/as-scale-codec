@@ -16,6 +16,7 @@ import { Byte } from "../Byte";
 import { AbstractArray } from "./AbstractArray";
 
 import { DecodedData } from "../interfaces/DecodedData";
+import { CompactInt } from "../Int";
 
 // @ts-ignore
 export class ByteArray extends AbstractArray<Byte, u8> {
@@ -53,7 +54,7 @@ export class ByteArray extends AbstractArray<Byte, u8> {
      * @description The length of ByteArray when the value is encoded
      */
     public encodedLength (): i32 {
-        return this.length;
+        return (new CompactInt(this.length).encodedLength()) + this.length;
     }
 
     /**
@@ -62,5 +63,20 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     static fromU8a (input: u8[]): ByteArray {
         return AbstractArray.fromU8a<ByteArray>(input);
     }
+
+    @inline @operator('==')
+    static eq(a: ByteArray, b: ByteArray): bool {
+        if (a.length != b.length) {
+            return false;
+        }
+
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
 }
 
