@@ -51,7 +51,7 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     }
 
     /**
-     * @description The length of ByteArray when the value is encoded
+     * @description The length of encoded bytes of the ByteArray
      */
     public encodedLength (): i32 {
         return (new CompactInt(this.length).encodedLength()) + this.length;
