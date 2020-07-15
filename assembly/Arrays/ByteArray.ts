@@ -77,6 +77,11 @@ export class ByteArray extends AbstractArray<Byte, u8> {
         }
         return true;
     }
+
+    @inline @operator('!=')
+    static notEq(a: ByteArray, b: ByteArray): bool {
+        return !ByteArray.eq(a, b);
+    }
     
 }
 

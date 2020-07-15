@@ -42,10 +42,11 @@ export class ScaleString extends ByteArray {
     * @description Instantiates String from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): ScaleString {
-        const bytesLength = i32(Bytes.decodeCompactInt(input).value);
-        const stringStart = i32(input.length - bytesLength);
+        const len = Bytes.decodeCompactInt(input);
+        const bytesLength = i32(len.value);
+        const stringStart = i32(len.decBytes);
 
-        assert(stringStart >= 1, "ScaleString: Incorrectly encoded input");
+        assert(input.length - len.decBytes >= 1, "ScaleString: Incorrectly encoded input");
 
         const bytes = input.slice(stringStart);
         const buff = new Uint8Array(bytesLength);
