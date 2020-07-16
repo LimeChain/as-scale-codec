@@ -1,6 +1,6 @@
 {
   "name": "as-scale-codec",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "AssemblyScript implementation of the SCALE codec used in the Parity Substrate framework",
   "main": "./assembly/index.ts",
   "contributors": [
