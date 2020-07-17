@@ -16,6 +16,7 @@ import { AbstractArray } from "./AbstractArray";
 import { DecodedData } from "../interfaces/DecodedData";
 import { UInt128 } from "../UInt/UInt128";
 import { u128 } from "as-bignum";
+import { ArrayUtils } from "../utils/Arrays";
 
 // @ts-ignore
 export class UInt128Array extends AbstractArray<UInt128, u128> {
@@ -41,21 +42,12 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
 
     @inline @operator('==')
     static eq(a: UInt128Array, b: UInt128Array): bool {
-        if (a.values.length != b.values.length) {
-            return false;
-        }
-
-        for (let i = 0; i < a.values.length; i++) {
-            if (a.values[i] != b.values[i]) {
-                return false;
-            }
-        }
-        return true;
+        return ArrayUtils.areEqual(a, b);
     }
 
     @inline @operator('!=')
     static notEq(a: UInt128Array, b: UInt128Array): bool {
-        return !UInt128Array.eq(a, b);
+        return !ArrayUtils.areEqual(a, b);
     }
 }
 

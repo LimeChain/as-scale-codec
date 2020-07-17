@@ -17,6 +17,7 @@ import { AbstractArray } from "./AbstractArray";
 import { ScaleString } from "../ScaleString";
 
 import { DecodedData } from "../interfaces/DecodedData";
+import { ArrayUtils } from "../utils/Arrays";
 
 // @ts-ignore
 export class StringArray extends AbstractArray<ScaleString, string>{
@@ -44,20 +45,11 @@ export class StringArray extends AbstractArray<ScaleString, string>{
 
     @inline @operator('==')
     static eq(a: StringArray, b: StringArray): bool {
-        if (a.values.length != b.values.length) {
-            return false;
-        }
-
-        for (let i = 0; i < a.values.length; i++) {
-            if (a.values[i] != b.values[i]) {
-                return false;
-            }
-        }
-        return true;
+        return ArrayUtils.areEqual(a, b);
     }
 
     @inline @operator('!=')
     static notEq(a: StringArray, b: StringArray): bool {
-        return !StringArray.eq(a, b);
+        return !ArrayUtils.areEqual(a, b);
     }
 }
