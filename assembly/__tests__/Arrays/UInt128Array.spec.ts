@@ -50,7 +50,7 @@ describe("UInt128Array", () => {
 
         for (let i = 0; i < dataInput.length; i++) {
             const result = UInt128Array.fromU8a(dataInput[i]);
-            expect<Array<u128>>(result).toStrictEqual(expectedOutput[i]);
+            expect<UInt128Array>(result).toStrictEqual(new UInt128Array(expectedOutput[i]));
         }
     });
 

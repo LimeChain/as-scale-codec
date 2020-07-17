@@ -29,7 +29,7 @@ export class StringArray extends AbstractArray<ScaleString, string>{
         const encodedStringLength = i32(stringLength.decBytes + stringLength.value);
 
         return new DecodedData<string>(
-            ScaleString.fromU8a(value.slice(0, encodedStringLength)).value,
+            ScaleString.fromU8a(value.slice(0, encodedStringLength)).valueStr,
             encodedStringLength
         )
     }
@@ -39,5 +39,25 @@ export class StringArray extends AbstractArray<ScaleString, string>{
     */
     static fromU8a (input: u8[]): StringArray {
         return AbstractArray.fromU8a<StringArray>(input);
+    }
+
+
+    @inline @operator('==')
+    static eq(a: StringArray, b: StringArray): bool {
+        if (a.values.length != b.values.length) {
+            return false;
+        }
+
+        for (let i = 0; i < a.values.length; i++) {
+            if (a.values[i] != b.values[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: StringArray, b: StringArray): bool {
+        return !StringArray.eq(a, b);
     }
 }

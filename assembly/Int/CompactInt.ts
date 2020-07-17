@@ -71,4 +71,9 @@ export class CompactInt implements Codec {
     static eq(a: CompactInt, b: CompactInt): bool {
         return a.value == b.value;
     }
+
+    @inline @operator('!=')
+    static notEq(a: CompactInt, b: CompactInt): bool {
+        return a.value != b.value;
+    }
 }

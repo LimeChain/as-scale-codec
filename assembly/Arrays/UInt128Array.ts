@@ -38,5 +38,24 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
     static fromU8a (input: u8[]): UInt128Array {
         return AbstractArray.fromU8a<UInt128Array>(input);
     }
+
+    @inline @operator('==')
+    static eq(a: UInt128Array, b: UInt128Array): bool {
+        if (a.values.length != b.values.length) {
+            return false;
+        }
+
+        for (let i = 0; i < a.values.length; i++) {
+            if (a.values[i] != b.values[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: UInt128Array, b: UInt128Array): bool {
+        return !UInt128Array.eq(a, b);
+    }
 }
 

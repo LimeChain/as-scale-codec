@@ -17,11 +17,13 @@ import { Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 import { DecodedData } from "../interfaces/DecodedData";
 
-export abstract class AbstractArray<ScaleType extends Codec, NativeType> extends Array<NativeType> {
+export abstract class AbstractArray<ScaleType extends Codec, NativeType> {
 
-    constructor (input: NativeType[]) {
-        super(input.length);
-        Bytes.copy<NativeType>(input, this);
+    public values: Array<NativeType>;
+
+    constructor(input: NativeType[]) {
+        this.values = new Array<NativeType>(input.length);
+        Bytes.copy<NativeType>(input, this.values);
     }
 
     /**
@@ -29,10 +31,10 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> extends
     */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
-        bytesBuffer.encodeCompactInt(this.length);
+        bytesBuffer.encodeCompactInt(this.values.length);
 
-        for (let i = 0; i < this.length; i++) {
-            const element = instantiate<ScaleType>(this[i]);
+        for (let i = 0; i < this.values.length; i++) {
+            const element = instantiate<ScaleType>(this.values[i]);
             bytesBuffer.write(element.toU8a());
         }
 
@@ -43,7 +45,6 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> extends
     * @description Each child class has to provide decryption implementation for elements
     */
     public abstract decodeElement (value: u8[]): DecodedData<NativeType>;
-
 
     /**
     * @description  Instantiates type of ScaleArray from u8[] SCALE encoded bytes (Decode)
@@ -56,28 +57,11 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> extends
 
         for (let i: u64 = 0; i < data.value; i++) {
             const element = scaleArray.decodeElement(bytes);
-            scaleArray.push(element.value);
+            scaleArray.values.push(element.value);
 
             bytes = bytes.slice(element.decBytes);
         }
 
         return scaleArray;
-    }
-
-    /* OVerwrite Array functions */
-
-    // @ts-ignore
-    map (callbackfn: (value: NativeType, index: i32, array: Array<NativeType>) => NativeType): Array<NativeType> {
-        return super.map<NativeType>(callbackfn);
-    }
-
-    // @ts-ignore
-    reduce (callbackfn: (previousValue: NativeType, currentValue: NativeType, currentIndex: i32, array: Array<NativeType>) => NativeType, initialValue: NativeType): NativeType {
-        return super.reduce<NativeType>(callbackfn, initialValue);
-    }
-
-    // @ts-ignore
-    reduceRight (callbackfn: (previousValue: NativeType, currentValue: NativeType, currentIndex: i32, array: Array<NativeType>) => NativeType, initialValue: NativeType): NativeType {
-        return super.reduceRight<NativeType>(callbackfn, initialValue);
     }
 }

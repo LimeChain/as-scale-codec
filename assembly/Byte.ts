@@ -44,4 +44,14 @@ export class Byte implements Codec {
         assert(value.length == 1, 'Byte: cannot decode invalid type');
         return new Byte(value[0]);
     }
+
+    @inline @operator('==')
+    static eq(a: Byte, b: Byte): bool {
+        return a.value == b.value;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: Byte, b: Byte): bool {
+        return a.value != b.value;
+    }
 }

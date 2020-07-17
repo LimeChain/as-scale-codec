@@ -64,7 +64,7 @@ describe("ByteArray", () => {
 
         for (let i = 0; i < TEST_DATA_VAL.length; i++) {
             const byteArray = ByteArray.fromU8a(TEST_DATA_VAL[i]);
-            expect<Array<u8>>(byteArray).toStrictEqual(TEST_DATA_OUT[i]);
+            expect<ByteArray>(byteArray).toStrictEqual(new ByteArray(TEST_DATA_OUT[i]));
         }
 
     });

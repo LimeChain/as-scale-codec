@@ -40,7 +40,7 @@ describe("IntArray", () => {
 
         for (let i = 0; i < dataInput.length; i++) {
             const result = IntArray.fromU8a(dataInput[i]);
-            expect<Array<i64>>(result).toStrictEqual(expectedOutput[i]);
+            expect<IntArray>(result).toStrictEqual(new IntArray(expectedOutput[i]));
         }
     });
 
