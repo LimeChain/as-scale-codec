@@ -27,4 +27,14 @@ export class Int8 extends AbstractInt<i8> {
         assert(value.length == 1, 'Int8: cannot decode invalid i8 encoded value');
         return new Int8(value[0]);
     }
+
+    @inline @operator('==')
+    static eq(a: Int8, b: Int8): bool {
+        return a.value == b.value;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: Int8, b: Int8): bool {
+        return a.value != b.value;
+    }
 }

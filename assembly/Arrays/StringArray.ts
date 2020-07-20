@@ -17,6 +17,7 @@ import { AbstractArray } from "./AbstractArray";
 import { ScaleString } from "../ScaleString";
 
 import { DecodedData } from "../interfaces/DecodedData";
+import { ArrayUtils } from "../utils/Arrays";
 
 // @ts-ignore
 export class StringArray extends AbstractArray<ScaleString, string>{
@@ -29,7 +30,7 @@ export class StringArray extends AbstractArray<ScaleString, string>{
         const encodedStringLength = i32(stringLength.decBytes + stringLength.value);
 
         return new DecodedData<string>(
-            ScaleString.fromU8a(value.slice(0, encodedStringLength)).value,
+            ScaleString.fromU8a(value.slice(0, encodedStringLength)).valueStr,
             encodedStringLength
         )
     }
@@ -39,5 +40,16 @@ export class StringArray extends AbstractArray<ScaleString, string>{
     */
     static fromU8a (input: u8[]): StringArray {
         return AbstractArray.fromU8a<StringArray>(input);
+    }
+
+
+    @inline @operator('==')
+    static eq(a: StringArray, b: StringArray): bool {
+        return ArrayUtils.areEqual(a, b);
+    }
+
+    @inline @operator('!=')
+    static notEq(a: StringArray, b: StringArray): bool {
+        return !ArrayUtils.areEqual(a, b);
     }
 }

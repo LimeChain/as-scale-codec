@@ -25,9 +25,9 @@ describe("StringArray", () => {
 
     it("should decode string array", () => {
         const scaleStrArray = StringArray.fromU8a([0x08, 0x14, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x14, 0x77, 0x6f, 0x72, 0x6c, 0x64]);
-        expect<i32>(scaleStrArray.length).toStrictEqual(2);
-        expect<string>(scaleStrArray[0]).toStrictEqual("hello");
-        expect<string>(scaleStrArray[1]).toStrictEqual("world");
+        expect<i32>(scaleStrArray.values.length).toStrictEqual(2);
+        expect<string>(scaleStrArray.values[0]).toStrictEqual("hello");
+        expect<string>(scaleStrArray.values[1]).toStrictEqual("world");
     });
 
     it("should decode long string array", () => {
@@ -43,12 +43,12 @@ describe("StringArray", () => {
         Bytes.copy(scaleStr.toU8a(), encodedStrArray, encodedStrArray.length);
 
         const scaleStrArray = StringArray.fromU8a(encodedStrArray);
-        expect<i32>(scaleStrArray.length).toStrictEqual(5);
-        expect<string>(scaleStrArray[0]).toStrictEqual(repeatString(str, 500));
-        expect<string>(scaleStrArray[1]).toStrictEqual("world");
-        expect<string>(scaleStrArray[2]).toStrictEqual("wonderful_life");
-        expect<string>(scaleStrArray[3]).toStrictEqual("™ ± Ã ¿ £ µ");
-        expect<string>(scaleStrArray[4]).toStrictEqual(repeatString(str, 500));
+        expect<i32>(scaleStrArray.values.length).toStrictEqual(5);
+        expect<string>(scaleStrArray.values[0]).toStrictEqual(repeatString(str, 500));
+        expect<string>(scaleStrArray.values[1]).toStrictEqual("world");
+        expect<string>(scaleStrArray.values[2]).toStrictEqual("wonderful_life");
+        expect<string>(scaleStrArray.values[3]).toStrictEqual("™ ± Ã ¿ £ µ");
+        expect<string>(scaleStrArray.values[4]).toStrictEqual(repeatString(str, 500));
     });
 
     itThrows("should throw on incorrect encoding", () => {

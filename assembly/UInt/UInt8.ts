@@ -27,4 +27,14 @@ export class UInt8 extends AbstractInt<u8> {
         assert(value.length == 1, 'Uint8: cannot decode invalid u8 encoded value');
         return new UInt8(value[0]);
     }
+
+    @inline @operator('==')
+    static eq(a: UInt8, b: UInt8): bool {
+        return a.value == b.value;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: UInt8, b: UInt8): bool {
+        return a.value != b.value;
+    }
 }

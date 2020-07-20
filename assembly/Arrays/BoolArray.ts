@@ -16,6 +16,8 @@ import { Bool } from "./../Bool";
 import { AbstractArray } from "./AbstractArray"
 
 import { DecodedData } from "../interfaces/DecodedData";
+import { Bytes } from "../utils/Bytes";
+import { ArrayUtils } from "../utils/Arrays";
 
 // @ts-ignore
 export class BoolArray extends AbstractArray<Bool, bool> {
@@ -37,5 +39,15 @@ export class BoolArray extends AbstractArray<Bool, bool> {
     */
     static fromU8a (input: u8[]): BoolArray {
         return AbstractArray.fromU8a<BoolArray>(input);
+    }
+
+    @inline @operator('==')
+    static eq(a: BoolArray, b: BoolArray): bool {
+        return ArrayUtils.areEqual(a, b);
+    }
+
+    @inline @operator('!=')
+    static notEq(a: BoolArray, b: BoolArray): bool {
+        return !ArrayUtils.areEqual(a, b);
     }
 }

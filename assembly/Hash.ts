@@ -14,11 +14,13 @@
 
 import { Bytes } from './utils/Bytes';
 
-export class Hash extends Array<u8> {
+export class Hash {
 
-    constructor (value: u8[]) {
-        super(32);
-        Bytes.copy(value, this);
+    public values: Array<u8>;
+
+    constructor(value: u8[]) {
+        this.values = new Array<u8>(32);
+        Bytes.copy(value, this.values);
     }
 
     /**
@@ -26,7 +28,7 @@ export class Hash extends Array<u8> {
     */
     public toU8a (): u8[] {
         const result: u8[] = new Array<u8>(this.encodedLength());
-        Bytes.copy<u8>(this, result);
+        Bytes.copy<u8>(this.values, result);
 
         return result;
     }
@@ -35,7 +37,7 @@ export class Hash extends Array<u8> {
     * @description  Return string representation of Hash
     */
     public toString (): string {
-        return "0x" + this.join('');
+        return "0x" + this.values.join('');
     }
 
     /**
@@ -48,7 +50,7 @@ export class Hash extends Array<u8> {
         }
 
         const position: i32 = 32 - bytes.length;
-        Bytes.copy<u8>(bytes, hash, position);
+        Bytes.copy<u8>(bytes, hash.values, position);
         return hash;
     }
 
@@ -69,12 +71,17 @@ export class Hash extends Array<u8> {
     @inline @operator('==')
     static eq(a: Hash, b: Hash): bool {
         let areEqual = true;
-        for (let i = 0; i < a.length; i++) {
-            if (a[i] != b[i]) {
+        for (let i = 0; i < a.values.length; i++) {
+            if (a.values[i] != b.values[i]) {
                 areEqual = false;
                 break;
             }
         }
         return areEqual;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: Hash, b: Hash): bool {
+        return !Hash.eq(a, b);
     }
 }

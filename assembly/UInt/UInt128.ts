@@ -86,4 +86,14 @@ export class UInt128 implements Codec {
 
         return new UInt128(u128.fromBytesLE(value));
     }
+
+    @inline @operator('==')
+    static eq(a: UInt128, b: UInt128): bool {
+        return a.value == b.value;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: UInt128, b: UInt128): bool {
+        return a.value != b.value;
+    }
 }

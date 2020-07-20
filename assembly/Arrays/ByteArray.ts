@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import { Byte } from "../Byte";
-import { AbstractArray } from "./AbstractArray";
-
-import { DecodedData } from "../interfaces/DecodedData";
 import { CompactInt } from "../Int";
+import { AbstractArray } from "./AbstractArray";
+import { DecodedData } from "../interfaces/DecodedData";
+import { ArrayUtils } from "../utils/Arrays";
 
 // @ts-ignore
 export class ByteArray extends AbstractArray<Byte, u8> {
@@ -26,8 +26,8 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     */
     public toHexString (): string {
         let result = "0x";
-        for (let i = 0; i < this.length; i++) {
-            const str = this[i].toString();
+        for (let i = 0; i < super.values.length; i++) {
+            const str = super.values[i].toString();
             if (str.length == 1) {
                 result += "0";
             }
@@ -41,7 +41,7 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     /**
     * @description BoolArray elements decryption implementation
     */
-    public decodeElement (value: u8[]): DecodedData<u8> {
+    public decodeElement(value: u8[]): DecodedData<u8> {
         const scaleByte = Byte.fromU8a([value[0]]);
 
         return new DecodedData<u8>(
@@ -54,33 +54,24 @@ export class ByteArray extends AbstractArray<Byte, u8> {
      * @description The length of encoded bytes of the ByteArray
      */
     public encodedLength (): i32 {
-        return (new CompactInt(this.length).encodedLength()) + this.length;
+        return (new CompactInt(super.values.length).encodedLength()) + super.values.length;
     }
 
     /**
     * @description Instantiates ScaleByteArray from u8[] SCALE encoded bytes (Decode)
     */
-    static fromU8a (input: u8[]): ByteArray {
+    static fromU8a(input: u8[]): ByteArray {
         return AbstractArray.fromU8a<ByteArray>(input);
     }
 
     @inline @operator('==')
     static eq(a: ByteArray, b: ByteArray): bool {
-        if (a.length != b.length) {
-            return false;
-        }
-
-        for (let i = 0; i < a.length; i++) {
-            if (a[i] != b[i]) {
-                return false;
-            }
-        }
-        return true;
+        return ArrayUtils.areEqual(a, b);
     }
 
     @inline @operator('!=')
     static notEq(a: ByteArray, b: ByteArray): bool {
-        return !ByteArray.eq(a, b);
+        return !ArrayUtils.areEqual(a, b);
     }
     
 }

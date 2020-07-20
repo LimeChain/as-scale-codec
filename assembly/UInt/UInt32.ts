@@ -28,4 +28,14 @@ export class UInt32 extends AbstractInt<i32> {
         var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32);
         return new UInt32(res);
     }
+
+    @inline @operator('==')
+    static eq(a: UInt32, b: UInt32): bool {
+        return a.value == b.value;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: UInt32, b: UInt32): bool {
+        return a.value != b.value;
+    }
 }

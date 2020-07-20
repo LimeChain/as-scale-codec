@@ -9,10 +9,10 @@ describe("Bool Array", () => {
 
     it("should decode bool array", () => {
         const boolTest1: u8[] = [0x00];
-        expect<Array<bool>>(BoolArray.fromU8a(boolTest1)).toStrictEqual([]);
+        expect<BoolArray>(BoolArray.fromU8a(boolTest1)).toStrictEqual(new BoolArray([]));
 
         const boolTest2: u8[] = [0x0c, 0x01, 0x00, 0x01];
-        expect<Array<bool>>(BoolArray.fromU8a(boolTest2)).toStrictEqual([true, false, true]);
+        expect<BoolArray>(BoolArray.fromU8a(boolTest2)).toStrictEqual(new BoolArray([true, false, true]));
     });
 
     itThrows("should throw because of invalid bytes", () => {

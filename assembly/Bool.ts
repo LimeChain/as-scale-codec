@@ -53,4 +53,14 @@ export class Bool implements Codec {
 
         return new Bool(value[0] == 1);
     }
+
+    @inline @operator('==')
+    static eq(a: Bool, b: Bool): bool {
+        return a.value == b.value;
+    }
+
+    @inline @operator('!=')
+    static notEq(a: Bool, b: Bool): bool {
+        return a.value != b.value;
+    }
 }

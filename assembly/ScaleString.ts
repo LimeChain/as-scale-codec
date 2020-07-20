@@ -17,17 +17,17 @@ import { ByteArray } from "./Arrays/ByteArray";
 
 export class ScaleString extends ByteArray {
 
-    public readonly value: string;
+    public readonly valueStr: string;
 
     constructor (input: string) {
         super([]);
-        this.value = input;
+        this.valueStr = input;
 
         const inputBuffer: ArrayBuffer = String.UTF8.encode(input);
         const u8Input = Uint8Array.wrap(inputBuffer);
 
         for (let i = 0; i < u8Input.length; i++) {
-            this[i] = u8Input[i];
+            this.values[i] = u8Input[i];
         }
     }
 
@@ -35,7 +35,7 @@ export class ScaleString extends ByteArray {
      * @description Returns the string representation
      */
     toString (): string {
-        return this.value;
+        return this.valueStr;
     }
 
     /**
