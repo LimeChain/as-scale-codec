@@ -96,4 +96,10 @@ export class UInt128 implements Codec {
     static notEq(a: UInt128, b: UInt128): bool {
         return a.value != b.value;
     }
+
+    // Commonly used values of UInt128
+    @inline static get Zero(): UInt128 { return new UInt128(u128.Zero); }
+    @inline static get One(): UInt128 { return new UInt128(u128.One); }
+    @inline static get Min(): UInt128 { return new UInt128(new u128()); }
+    @inline static get Max(): UInt128 { return new UInt128(new u128(-1, -1)); }
 }
