@@ -48,53 +48,53 @@ export class ByteReader{
      * Int and UInt decoding methods
      */
     readInt8(): Int8 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_8, "ByteReader: Not enough ");
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_8, "ByteReader: Not enough Bytes to read for Int8");
         const val = Int8.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_8));
         this.curPos += BIT_LENGTH.INT_8;
         return val;
     }
     readInt16(): Int16 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_16);
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_16, "ByteReader: Not enough Bytes to read for Int16");
         const val = Int16.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_16));
         this.curPos += BIT_LENGTH.INT_16;
         return val;
     }
     readInt32(): Int32 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_32);
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_32, "ByteReader: Not enough Bytes to read for Int32");
         const val = Int32.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_32));
         this.curPos += BIT_LENGTH.INT_32;
         return val;
     }
     readInt64(): Int64 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_64);
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_64, "ByteReader: Not enough Bytes to read for Int64");
         const val = Int64.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_64));
         this.curPos += BIT_LENGTH.INT_64;
         return val;
     }
 
     readUInt8(): UInt8 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_8 - <i32>this.curPos, "Not enough bytes to read");
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_8 - <i32>this.curPos, "ByteReader: Not enough bytes to read for UInt8");
         const val = UInt8.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_8));
         this.curPos += BIT_LENGTH.INT_8;
         return val;
     }
 
     readUInt16(): UInt16 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_16 - <i32>this.curPos, "Not enough bytes to read");
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_16 - <i32>this.curPos, "ByteReader: Not enough bytes to read for UInt16");
         const val = UInt16.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_16));
         this.curPos += BIT_LENGTH.INT_16;
         return val;
     }
 
     readUInt32(): UInt32 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_32 - <i32>this.curPos, "Not enough bytes to read");
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_32 - <i32>this.curPos, "ByteReader: Not enough bytes to read for UInt32");
         const val = UInt32.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_32));
         this.curPos += BIT_LENGTH.INT_32;
         return val;
     }
 
     readUInt64(): UInt64 {
-        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_64 - <i32>this.curPos, "Not enough bytes to read");
+        assert(<i32>this.bytes.length >= BIT_LENGTH.INT_64 - <i32>this.curPos, "ByteReader: Not enough bytes to read for UInt8");
         const val = UInt64.fromU8a(this.bytes.slice(this.curPos, this.curPos + BIT_LENGTH.INT_64));
         this.curPos += BIT_LENGTH.INT_64;
         return val;
@@ -109,6 +109,9 @@ export class ByteReader{
         return val;
     }
 
+    /**
+     * Reads scale string bytes
+     */
     readScaleString(): ScaleString {
         const val = ScaleString.fromU8a(this.bytes.slice(this.curPos));
         this.curPos += val.encodedLength();

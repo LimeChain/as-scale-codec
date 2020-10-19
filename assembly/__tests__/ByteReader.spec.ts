@@ -3,6 +3,8 @@ import { Hash, Bool } from '../index';
 import { UInt32, UInt16, UInt64, UInt8 } from '../UInt';
 import { Int8, Int16, Int32, Int64 } from '../Int';
 import { ScaleString } from '../ScaleString';
+import { Byte } from '../Byte';
+import { ByteArray } from '../Arrays';
 
 describe("ByteReader", () => {
     it("decodes single type", () => {
@@ -49,6 +51,12 @@ describe("ByteReader", () => {
         expect<Int32>(buffer.readInt32()).toStrictEqual(new Int32(-570425345));
         expect<Int16>(buffer.readInt16()).toStrictEqual(new Int16(-2));
         expect<Int8>(buffer.readInt8()).toStrictEqual(new Int8(-15));  
+    })
+
+    it("decodes byteArray correctly", () => {
+        const bytes: u8[] = [40, 12, 123, 1, 21, 12, 33, 12, 21, 12, 1];
+        const buffer = new ByteReader(bytes, 0);
+        expect<ByteArray>(buffer.readByteArray()).toStrictEqual(new ByteArray(bytes.slice(1)));
     })
 
     it("decodes scaleString correctly", () => {
