@@ -48,8 +48,9 @@ export class Bool implements Codec {
     }
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
-    static fromU8a (value: u8[]): Bool {
-        assert(value.length == 1 && (value[0] == 1 || value[0] == 0), 'Bool: Cannot decode invalid input');
+    static fromU8a (value: u8[], curPos: i32 = 0): Bool {
+        value = curPos ? value.slice(curPos) : value;
+        assert(value.length > 0 && (value[0] == 1 || value[0] == 0), 'Bool: Cannot decode invalid input');
 
         return new Bool(value[0] == 1);
     }

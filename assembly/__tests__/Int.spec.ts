@@ -59,19 +59,16 @@ describe("Int8", () => {
         expect<Int8>(Int8.fromU8a([0x81])).toStrictEqual(new Int8(-127));
     });
 
-    itThrows("should throw when decoding i16", () => {
-        let v1 = Int8.fromU8a([0x01, 0]);
-        let v2 = Int8.fromU8a([0x01, 0xc0]);
+    it("should decode only first byte", () => {
+        expect<Int8>(Int8.fromU8a([0xff, 0])).toStrictEqual(new Int8(-1));
+        expect<Int8>(Int8.fromU8a([0, 0, 1, 0xf1, 12], 3)).toStrictEqual(new Int8(-15));
     });
 
-    itThrows('should throw when decoding i32', () => {
-        let v1 = Int8.fromU8a([0x01, 0, 0, 0]);
-        let v2 = Int8.fromU8a([0x01, 0x00, 0x00, 0xc0]);
+    itThrows('should throw when empty array is provided', () => {
+        let v1 = Int8.fromU8a([]);
     });
-
-    itThrows('should throw when decoding i64', () => {
-        let v1 = Int8.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
-        let v2 = Int8.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0x80])
+    itThrows('should throw when array with invalid length is provided', () => {
+        let v2 = Int8.fromU8a([0x01, 0x00, 0xff], 3);
     });
 });
 
@@ -137,13 +134,18 @@ describe("Int16", () => {
         expect<Int16>(Int16.fromU8a([0x01, 0xc0])).toStrictEqual(new Int16(-16383));
     });
 
-    itThrows('should throw when trying to decode int32', () => {
-        let v1 = Int16.fromU8a([0x01, 0x00, 0x00, 0xc0]);
+    it('should decode only two bytes', () => {
+        expect<Int16>(Int16.fromU8a([0x01, 0x81, 0xff, 0x01], 1)).toStrictEqual(new Int16(-127));
+        expect<Int16>(Int16.fromU8a([0, 0, 0, 0, 0xff, 0x00, 0, 0, 0, 0], 4)).toStrictEqual(new Int16(255));
     });
 
-    itThrows('should throw when trying to decode int64', () => {
-        let v1 = Int16.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0x80]);
-    });
+     itThrows('should throw when array with insufficient length is provided with arbitrary start position', () => {
+         let v1 = Int16.fromU8a([0, 0, 0, 0, 0, 0, 0x81, 0x00], 7);
+     });
+ 
+     itThrows('should throw when array with insufficient length is provided', () => {
+         let v1 = Int16.fromU8a([0xff]);
+     });
 });
 
 describe("Int32", () => {
@@ -182,8 +184,16 @@ describe("Int32", () => {
         expect<Int32>(Int32.fromU8a([0x01, 0x00, 0x00, 0xc0])).toStrictEqual(new Int32(-1073741823));
     });
 
-    itThrows('should throw when trying to decode int64', () => {
-        let v1 = Int32.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0x80]);
+    it('should decode only four bytes', () => {
+        expect<Int32>(Int32.fromU8a([0x01, 0x01, 0x00, 0x00, 0xc0], 1)).toStrictEqual(new Int32(-1073741823));
+        expect<Int32>(Int32.fromU8a([0x01, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00], 3)).toStrictEqual(new Int32(255));
+     });
+
+    itThrows('should throw when array with insufficient length is provided with arbitrary start position', () => {
+        let v1 = Int32.fromU8a([0, 0, 0, 0, 0, 0, 0xff, 0, 0], 6);
+    });
+    itThrows('should throw when array with insufficient length is provided', () => {
+        let v1 = Int32.fromU8a([0x01, 0x00, 0xff]);
     });
 });
 
@@ -234,8 +244,16 @@ describe("Int64", () => {
         expect<Int64>(Int64.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0x80])).toStrictEqual(new Int64(-9223372036854775807));
     });
 
-    itThrows('should throw when trying to decode uint128', () => {
-        let v1 = Int64.fromU8a([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+    it('should decode only eight bytes', () => {
+        expect<Int64>(Int64.fromU8a([0x01, 0x01, 0xff, 0x3f, 0, 0, 0, 0, 0, 0], 2)).toStrictEqual(new Int64(16383));
+        expect<Int64>(Int64.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0, 0, 0, 0], 3)).toStrictEqual(new Int64(1));
+     });
+
+    itThrows('should throw when array with insufficient length is provided with arbitrary start position', () => {
+        let v1 = Int64.fromU8a([0x01, 0, 0, 0, 0, 0, 0x01, 0, 0, 0, 0, 0, 0], 6);
+    });
+    itThrows('should throw when array with insufficient length is provided', () => {
+        let v1 = Int64.fromU8a([0x01, 0, 0, 0, 0, 0, 0]);
     });
 
 });

@@ -23,8 +23,9 @@ export class Int16 extends AbstractInt<i16>  {
     }
 
     /** Instantiates new Int16 from u8[] SCALE encoded bytes */
-    static fromU8a (value: u8[]): Int16 {
-        assert(value.length <= BIT_LENGTH.INT_16, 'Int16: Invalid bytes provided');
+    static fromU8a (value: u8[], curPos:i32 = 0): Int16 {
+        value = curPos ? value.slice(curPos) : value;
+        assert(value.length > 0, 'Int16: Invalid bytes provided');
         var res = Bytes.toUint<u16>(value, BIT_LENGTH.INT_16);
         return new Int16(res);
     }

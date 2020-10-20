@@ -5,6 +5,8 @@ import { Int8, Int16, Int32, Int64 } from '../Int';
 import { ScaleString } from '../ScaleString';
 import { Byte } from '../Byte';
 import { ByteArray } from '../Arrays';
+import { BIT_LENGTH } from '../utils/Bytes';
+import { AbstractInt } from '../AbstractInt';
 
 describe("ByteReader", () => {
     it("decodes single type", () => {
@@ -16,6 +18,7 @@ describe("ByteReader", () => {
         expect<Bool>(buffer.readBool()).toStrictEqual(new Bool(true));
         expect<UInt32>(buffer.readUInt32()).toStrictEqual(new UInt32(69));
     })
+
     it("decodes many types", () => {
         const u32Bytes: u8[] = [12, 0, 0, 0];
         const hashBytes: u8[] = [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1];

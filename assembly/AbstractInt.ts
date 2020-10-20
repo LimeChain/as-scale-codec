@@ -39,7 +39,6 @@ export abstract class AbstractInt<T extends number> implements Codec {
     toString (): string {
         return this.value.toString();
     }
-
     /**
      * @description The length of Uint8Array when the value is encoded
      */
