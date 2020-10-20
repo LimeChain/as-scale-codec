@@ -69,9 +69,6 @@ describe("UInt8", () => {
     itThrows('should throw when empty array is provided', () => {
         let v1 = UInt8.fromU8a([]);
     });
-    itThrows('should throw when array with invalid length is provided', () => {
-        let v2 = UInt8.fromU8a([0x01, 0x00, 0xff], 3);
-    });
 
 });
 
@@ -141,12 +138,8 @@ describe("UInt16", () => {
        expect<UInt16>(UInt16.fromU8a([0x01, 0x10, 0x00, 0x01], 1)).toStrictEqual(new UInt16(16));
     });
 
-    itThrows('should throw when array with insufficient length is provided with arbitrary start position', () => {
-        let v1 = UInt16.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0], 7);
-    });
-
-    itThrows('should throw when array with insufficient length is provided', () => {
-        let v1 = UInt16.fromU8a([0]);
+    itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt16.fromU8a([]);
     });
 });
 
@@ -190,11 +183,8 @@ describe("UInt32", () => {
         expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00], 3)).toStrictEqual(new UInt32(1));
      });
 
-    itThrows('should throw when array with insufficient length is provided with arbitrary start position', () => {
-        let v1 = UInt32.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0, 0], 6);
-    });
-    itThrows('should throw when array with insufficient length is provided', () => {
-        let v1 = UInt32.fromU8a([0x01, 0, 0]);
+     itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt32.fromU8a([]);
     });
 
 
@@ -238,11 +228,8 @@ describe("UInt64", () => {
         expect<UInt64>(UInt64.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0, 0, 0, 0], 3)).toStrictEqual(new UInt64(1));
      });
 
-    itThrows('should throw when array with insufficient length is provided with arbitrary start position', () => {
-        let v1 = UInt64.fromU8a([0x01, 0, 0, 0, 0, 0, 0x01, 0, 0, 0, 0, 0, 0], 6);
-    });
-    itThrows('should throw when array with insufficient length is provided', () => {
-        let v1 = UInt64.fromU8a([0x01, 0, 0, 0, 0, 0, 0]);
+     itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt64.fromU8a([]);
     });
 
 });

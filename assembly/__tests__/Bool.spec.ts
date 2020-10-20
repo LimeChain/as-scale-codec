@@ -34,8 +34,9 @@ describe("Bool", () => {
         expect<Bool>(Bool.fromU8a([0x00])).toStrictEqual(new Bool(false));
     });
 
-    itThrows('when provided invalid bool byte array', () => {
-        Bool.fromU8a([0x00, 0x01, 0xff]);
+    it('should read only first byte at current position', () => {
+        expect<Bool>(Bool.fromU8a([0x00, 0x01, 0xff], 1)).toStrictEqual(new Bool(true));
+        expect<Bool>(Bool.fromU8a([0x00, 0x0f, 0xff, 0x00], 3)).toStrictEqual(new Bool(false));
     });
 
     itThrows('when provided invalid bool value', () => {

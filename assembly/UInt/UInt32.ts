@@ -25,7 +25,7 @@ export class UInt32 extends AbstractInt<i32> {
     /** Instantiates new UInt32 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[], curPos: i32 = 0): UInt32 {
         value = curPos ? value.slice(curPos) : value;
-        assert(value.length >= BIT_LENGTH.INT_32, 'UInt32: Invalid bytes provided');
+        assert(value.length > 0, 'UInt32: Invalid bytes provided');
         var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32);
         return new UInt32(res);
     }

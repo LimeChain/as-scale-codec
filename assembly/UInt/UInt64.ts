@@ -25,7 +25,7 @@ export class UInt64 extends AbstractInt<u64> {
     /** Instantiates new UInt64 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[], curPos: i32 = 0): UInt64 {
         value = curPos ? value.slice(curPos) : value;
-        assert(value.length >= BIT_LENGTH.INT_64, "UInt64: invalid bytes provided");
+        assert(value.length > 0, "UInt64: invalid bytes provided");
         var res = Bytes.toUint<u64>(value, BIT_LENGTH.INT_64);
         return new UInt64(res);
     }
