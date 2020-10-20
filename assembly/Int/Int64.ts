@@ -23,9 +23,9 @@ export class Int64 extends AbstractInt<i64> {
     }
 
     /** Instantiates new Int64 from u8[] SCALE encoded bytes */
-    static fromU8a (value: u8[], curPos: i32 = 0): Int64 {
-        value = curPos ? value.slice(curPos) : value;
-        assert(value.length > 0, "Int64: invalid bytes provided");
+    static fromU8a (value: u8[], curIndex: i32 = 0): Int64 {
+        value = curIndex ? value.slice(curIndex) : value;
+        assert(value.length > 0, "Int64: Empty bytes array provided");
         var res = Bytes.toUint<u64>(value, BIT_LENGTH.INT_64);
         return new Int64(res);
     }
