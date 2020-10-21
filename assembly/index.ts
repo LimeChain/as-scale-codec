@@ -6,3 +6,4 @@ export * from "./Hash";
 export * from "./ScaleString";
 export * from "./Arrays";
 export * from "./utils/Bytes";
+export * from "./BytesReader";
