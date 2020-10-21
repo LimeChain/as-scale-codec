@@ -23,10 +23,9 @@ export class Int8 extends AbstractInt<i8> {
     }
 
     /** Instantiates new Int8 from u8[] SCALE encoded bytes */
-    static fromU8a (value: u8[], curIndex: i32 = 0): Int8 {
-        value = curIndex ? value.slice(curIndex) : value;
+    static fromU8a (value: u8[], index: i32 = 0): Int8 {
         assert(value.length > 0, 'Int8: empty bytes array provided');
-        return new Int8(value[0]);
+        return new Int8(value[index]);
     }
 
     @inline @operator('==')

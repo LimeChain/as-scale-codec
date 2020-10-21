@@ -60,8 +60,8 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     /**
     * @description Instantiates ScaleByteArray from u8[] SCALE encoded bytes (Decode)
     */
-    static fromU8a(input: u8[], curIndex: i32 = 0): ByteArray {
-        return AbstractArray.fromU8a<ByteArray>(curIndex ? input.slice(curIndex) : input);
+    static fromU8a(input: u8[], index: i32 = 0): ByteArray {
+        return AbstractArray.fromU8a<ByteArray>(input.slice(index));
     }
 
     @inline @operator('==')

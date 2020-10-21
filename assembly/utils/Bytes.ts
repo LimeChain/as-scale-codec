@@ -32,9 +32,9 @@ export class Bytes {
         }
     }
 
-    static toUint<T extends number> (b: u8[], bitLength: i32): T {
+    static toUint<T extends number> (b: u8[], bitLength: i32, index: i32 = 0): T {
         const buf = new Array<u8>(bitLength);
-        Bytes.copy<u8>(b, buf);
+        Bytes.copy<u8>(b, buf, 0, index);
 
         let result: T = <T>buf[0];
         for (let i: i32 = 1; i < bitLength; i++) {
@@ -55,42 +55,42 @@ export class Bytes {
     /**
     * @description Copy u8[] src elements in u8[] dst at provided position.
     */
-    static copy<T> (src: T[], dst: Array<T>, start: i32 = 0): void {
+    static copy<T> (src: T[], dst: Array<T>, dstStart: i32 = 0, srcStart: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
             if (src.length <= i) {
                 break;
             }
-            dst[start + i] = src[i];
+            dst[dstStart + i] = src[srcStart + i];
         }
     }
 
     /**
     * @description Copy u8[] src elements in Uint8Array dst at provided position.
     */
-    static copyToTyped (src: u8[], dst: Uint8Array, start: i32 = 0): void {
+    static copyToTyped (src: u8[], dst: Uint8Array, dstStart: i32 = 0, srcStart: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
             if (src.length <= i) {
                 break;
             }
-            dst[start + i] = src[i];
+            dst[dstStart + i] = src[srcStart + i];
         }
     }
 
 
     // Decode compact int from u8[] input
-    static decodeCompactInt (input: u8[]): DecodedData<u64> {
-        assert(input.length != 0, "Invalid input: Byte array should not be empty");
+    static decodeCompactInt (input: u8[], index: i32 = 0): DecodedData<u64> {
+        assert(input.length - index != 0, "Invalid input: Byte array should not be empty");
 
-        const mode = input[0] & 3;
+        const mode = input[index] & 3;
         if (i32(mode) <= BIT_LENGTH.INT_16) {
-            return Bytes.decodeSmallInt(input, mode);
+            return Bytes.decodeSmallInt(input, mode, index);
         }
 
-        const topSixBits = input[0] >> 2;
+        const topSixBits = input[index] >> 2;
         const byteLen = u8(topSixBits) + 4;
 
         const buf = new Array<u8>(byteLen);
-        Bytes.copy<u8>(input, buf);
+        Bytes.copy<u8>(input, buf, 0, index);
 
         if (i32(byteLen) == BIT_LENGTH.INT_32) {
             return new DecodedData<u64>(u64(Bytes.toUint<u32>(buf, BIT_LENGTH.INT_32)), BIT_LENGTH.INT_32);
@@ -105,16 +105,16 @@ export class Bytes {
         throw new Error('CompactInt: Invalid encoding of compact int provided');
     }
 
-    static decodeSmallInt (input: u8[], mode: u8): DecodedData<u64> {
+    static decodeSmallInt (input: u8[], mode: u8, index: i32 = 0): DecodedData<u64> {
         assert(mode == 0 || mode == 1 || mode == 2, 'Small Int: mode is invalid');
         if (mode == 0) {
-            return new DecodedData<u64>(u64(Bytes.decodeByte(input[0])), BIT_LENGTH.INT_8);
+            return new DecodedData<u64>(u64(Bytes.decodeByte(input[index])), BIT_LENGTH.INT_8);
         } else if (mode == 1) {
-            assert(i32(input.length) >= BIT_LENGTH.INT_16, "Invalid input: expected 2 bytes array");
-            return new DecodedData<u64>(u64(Bytes.decode2Bytes([input[0], input[1]])), BIT_LENGTH.INT_16);
+            assert(i32(input.length - index) >= BIT_LENGTH.INT_16, "Invalid input: expected 2 bytes array");
+            return new DecodedData<u64>(u64(Bytes.decode2Bytes([input[index], input[index+1]])), BIT_LENGTH.INT_16);
         } else {
-            assert(i32(input.length) >= BIT_LENGTH.INT_32, "Invalid input: expected 4 bytes array");
-            return new DecodedData<u64>(u64(Bytes.decode4Bytes([input[0], input[1], input[2], input[3]])), BIT_LENGTH.INT_32);
+            assert(i32(input.length - index) >= BIT_LENGTH.INT_32, "Invalid input: expected 4 bytes array");
+            return new DecodedData<u64>(u64(Bytes.decode4Bytes([input[index], input[index+1], input[index+2], input[index+3]])), BIT_LENGTH.INT_32);
         }
     }
 

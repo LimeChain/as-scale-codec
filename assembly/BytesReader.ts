@@ -30,90 +30,141 @@ export class BytesReader{
     /**
      * Current index to start decoding from
      */
-    public curIndex: i32 = 0;
+    public index: i32 = 0;
 
     constructor(bytes: u8[]){
-        assert(bytes.length > 0, "BytesReader: Empty bytes array is provided");
         this.bytes = bytes;
+        // retain the pointer to the bytes, so that it doesn't get GCed
+        __retain(changetype<usize>(bytes));
     }
 
     /**
-     * Int and UInt decoding methods
+     * Read a single byte
+     */
+    readByte(): u8{
+        return this.bytes.shift();
+    }
+    /**
+     * Read custom sized array
+     * @param size byte array size
+     */
+    readBytes(size: i32): u8[]{
+        const bytes: u8[] = this.bytes.slice(this.index, this.index + size);
+        this.index += size;
+        return bytes;
+    }
+
+    /**
+     * Read bytes into Int8
      */
     readInt8(): Int8 {
-        const value = Int8.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = Int8.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
+    /**
+     * Read bytes into Int16
+     */
     readInt16(): Int16 {
-        const value = Int16.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = Int16.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
+    /**
+     * Read bytes into Int32
+     */
     readInt32(): Int32 {
-        const value = Int32.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = Int32.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
+    /**
+     * Read bytes into Int64
+     */
     readInt64(): Int64 {
-        const value = Int64.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = Int64.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
-
+    /**
+     * Read bytes into UInt8
+     */
     readUInt8(): UInt8 {
-        const value = UInt8.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();        
+        const value = UInt8.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();        
         return value;
     }
-
+    /**
+     * Read bytes into UInt16
+     */
     readUInt16(): UInt16 {
-        const value = UInt16.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = UInt16.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
-
+    /**
+     * Read bytes into UInt32
+     */
     readUInt32(): UInt32 {
-        const value = UInt32.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = UInt32.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
-
+    /**
+     * Read bytes into UInt64
+     */
     readUInt64(): UInt64 {
-        const value = UInt64.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = UInt64.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
-
+    /**
+     * Read bytes into CompactInt
+     */
     readCompactInt(): CompactInt{
-        const value = CompactInt.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = CompactInt.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
 
     /**
-     * Other types
+     * Read byte into Bool
      */
     readBool(): Bool {
-        const value = Bool.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = Bool.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
-
+    /**
+     * Read bytes into Hash
+     */
     readHash(): Hash {
-        const value = Hash.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = Hash.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
+    /**
+     * Read bytes into ByteArray
+     */
     readByteArray(): ByteArray {
-        const value = ByteArray.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = ByteArray.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
     }
-
+    /**
+     * Read bytes into ScaleString
+     */
     readScaleString(): ScaleString {
-        const value = ScaleString.fromU8a(this.bytes, this.curIndex);
-        this.curIndex += value.encodedLength();
+        const value = ScaleString.fromU8a(this.bytes, this.index);
+        this.index += value.encodedLength();
         return value;
+    }
+    /**
+     * Returns leftover bytes after reading bytes array
+     */
+    getLeftoverBytes(): u8[]{
+        const leftovers: u8[] = this.bytes.slice(this.index);
+        this.index = this.bytes.length;
+        return leftovers;
     }
 }

@@ -64,8 +64,8 @@ export class Hash {
     /**
     * @description Instantiates Hash from u8[] SCALE encoded bytes
     */
-    static fromU8a (input: u8[], curIndex: i32 = 0): Hash {
-        return new Hash(curIndex ? input.slice(curIndex) : input);
+    static fromU8a (input: u8[], index: i32 = 0): Hash {
+        return new Hash(input.slice(index));
     }
 
     @inline @operator('==')

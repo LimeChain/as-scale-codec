@@ -28,7 +28,7 @@ describe("BytesReader", () => {
         expect<Bool>(buffer.readBool()).toStrictEqual(new Bool(true));
         expect<ScaleString>(buffer.readScaleString()).toStrictEqual(new ScaleString("nice"));
     })
-    it("decodes from custom curIndex value", () => {
+    it("decodes from custom index value", () => {
         const bytes: u8[] = [69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12];
         const buffer = new BytesReader(bytes);
         expect<UInt32>(buffer.readUInt32()).toStrictEqual(new UInt32(69));

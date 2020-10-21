@@ -23,10 +23,9 @@ export class Int32 extends AbstractInt<i32> {
     }
 
     /** Instantiates new Int32 from u8[] SCALE encoded bytes */
-    static fromU8a (value: u8[], curIndex: i32 = 0): Int32 {
-        value = curIndex ? value.slice(curIndex) : value;
+    static fromU8a (value: u8[], index: i32 = 0): Int32 {
         assert(value.length > 0, 'Int32: Emty bytes array provided');
-        var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32);
+        var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32, index);
         return new Int32(res);
     }
 
