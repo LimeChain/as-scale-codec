@@ -57,7 +57,7 @@ export class Bytes {
     */
     static copy<T> (src: T[], dst: Array<T>, dstStart: i32 = 0, srcStart: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
-            if (src.length <= i) {
+            if (src.length - srcStart <= i) {
                 break;
             }
             dst[dstStart + i] = src[srcStart + i];
@@ -69,7 +69,7 @@ export class Bytes {
     */
     static copyToTyped (src: u8[], dst: Uint8Array, dstStart: i32 = 0, srcStart: i32 = 0): void {
         for (let i = 0; i < dst.length; i++) {
-            if (src.length <= i) {
+            if (src.length - srcStart <= i) {
                 break;
             }
             dst[dstStart + i] = src[srcStart + i];

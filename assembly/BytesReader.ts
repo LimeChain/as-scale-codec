@@ -34,15 +34,15 @@ export class BytesReader{
 
     constructor(bytes: u8[]){
         this.bytes = bytes;
-        // retain the pointer to the bytes, so that it doesn't get GCed
-        __retain(changetype<usize>(bytes));
     }
 
     /**
      * Read a single byte
      */
     readByte(): u8{
-        return this.bytes.shift();
+        const byte = this.bytes[this.index];
+        this.index += 1;
+        return byte;
     }
     /**
      * Read custom sized array
@@ -164,7 +164,6 @@ export class BytesReader{
      */
     getLeftoverBytes(): u8[]{
         const leftovers: u8[] = this.bytes.slice(this.index);
-        this.index = this.bytes.length;
         return leftovers;
     }
 }
