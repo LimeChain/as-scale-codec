@@ -20,7 +20,7 @@ import { ByteArray } from "./Arrays";
 import { ScaleString } from "./ScaleString";
 
 /**
- * @description ByteReader class that helps reading bytes into Scale-Codec types
+ * @description BytesReader class that helps reading bytes into SCALE Codec types
  */
 export class BytesReader{
     /**
@@ -30,11 +30,10 @@ export class BytesReader{
     /**
      * Current index to start decoding from
      */
-    public index: i32;
+    public index: i32 = 0;
 
     constructor(bytes: u8[]){
         this.bytes = bytes;
-        this.index = 0;
     }
 
     /**
