@@ -37,7 +37,7 @@ export class Bool implements Codec {
      * @description Returns the string representation of the value
      */
     toString (): string {
-        return `${this.value}`;
+        return this.value.toString();
     }
 
     /**
