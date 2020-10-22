@@ -18,6 +18,8 @@ import { Int8, Int16, Int32, Int64, CompactInt } from './Int';
 import { Hash } from './Hash';
 import { ByteArray } from "./Arrays";
 import { ScaleString } from "./ScaleString";
+import { Codec } from "./interfaces/Codec";
+
 
 /**
  * @description BytesReader class that helps reading bytes into SCALE Codec types
@@ -164,5 +166,20 @@ export class BytesReader{
      */
     getLeftoverBytes(): u8[]{
         return this.bytes.slice(this.index);
+    }
+
+    readInto<K extends Codec>(type: string): Codec{
+        switch(type){
+            case("Int8"):{
+                return this.readInt8();
+            }
+            case("Int16"):{
+                return this.readInt16();
+            }
+            case("")
+            default:{
+                throw new Error("Unsupported type");
+            }
+        }
     }
 }

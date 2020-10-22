@@ -7,3 +7,4 @@ export * from "./ScaleString";
 export * from "./Arrays";
 export * from "./utils/Bytes";
 export * from "./BytesReader";
+export * from "./Map";
