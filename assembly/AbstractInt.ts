@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Codec } from "./interfaces/Codec";
-import { Bytes, BIT_LENGTH } from "./utils/Bytes";
+import { Bytes } from "./utils/Bytes";
 
 /** Representation for a Int value in the system. */
 export abstract class AbstractInt<T extends number> implements Codec {

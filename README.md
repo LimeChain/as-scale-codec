@@ -55,7 +55,7 @@ Detailed examples of the exported by the library types are listed below:
 
 ### Encoding
 
-Every type has а **toU8a** function . It encodes type value into an array of bytes
+Every type has а **toU8a** function. It encodes type value into an array of bytes
 
 ```jsx
 import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
