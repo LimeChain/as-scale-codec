@@ -62,9 +62,12 @@ export class Hash {
     }
 
     /**
-    * @description Instantiates Hash from u8[] SCALE encoded bytes
-    */
+     * @description Instantiates Hash from u8[] SCALE encoded bytes
+     * @param input SCALE encoded bytes
+     * @param index an index of input to start decoding from
+     */
     static fromU8a (input: u8[], index: i32 = 0): Hash {
+        assert(input.length - index >= 0, "Hash: Empty bytes array provided");
         return new Hash(input.slice(index));
     }
 

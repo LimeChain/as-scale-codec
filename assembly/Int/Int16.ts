@@ -24,7 +24,7 @@ export class Int16 extends AbstractInt<i16>  {
 
     /** Instantiates new Int16 from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[], index:i32 = 0): Int16 {
-        assert(value.length > 0, 'Int16: Empty bytes array provided');
+        assert(value.length - index > 0, 'Int16: Empty bytes array provided');
         var res = Bytes.toUint<u16>(value, BIT_LENGTH.INT_16, index);
         return new Int16(res);
     }

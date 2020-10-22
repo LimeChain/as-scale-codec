@@ -20,20 +20,21 @@ import { ByteArray } from "./Arrays";
 import { ScaleString } from "./ScaleString";
 
 /**
- * ByteReader class that helps reading bytes into Scale-Codec types
+ * @description ByteReader class that helps reading bytes into Scale-Codec types
  */
 export class BytesReader{
     /**
      * u8 bytes
      */
-    public bytes: u8[];
+    public readonly bytes: u8[];
     /**
      * Current index to start decoding from
      */
-    public index: i32 = 0;
+    public index: i32;
 
     constructor(bytes: u8[]){
         this.bytes = bytes;
+        this.index = 0;
     }
 
     /**
@@ -45,7 +46,7 @@ export class BytesReader{
         return byte;
     }
     /**
-     * Read custom sized array
+     * Read custom sized array if raw bytes
      * @param size byte array size
      */
     readBytes(size: i32): u8[]{
@@ -160,10 +161,9 @@ export class BytesReader{
         return value;
     }
     /**
-     * Returns leftover bytes after reading bytes array
+     * Returns the unread bytes from the reader
      */
     getLeftoverBytes(): u8[]{
-        const leftovers: u8[] = this.bytes.slice(this.index);
-        return leftovers;
+        return this.bytes.slice(this.index);
     }
 }
