@@ -65,7 +65,7 @@ export class CompactInt implements Codec {
      * @param index an index of input to start decoding from
      */
     static fromU8a (value: u8[], index: i32 = 0): CompactInt {
-        assert(value.length > 0, "CompactInt: Empty bytes array provided");
+        assert(value.length - index > 0, "CompactInt: Empty bytes array provided");
         const decodedData = Bytes.decodeCompactInt(value, index);
         return new CompactInt(decodedData.value);
     }
