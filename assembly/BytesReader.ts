@@ -35,23 +35,13 @@ export class BytesReader{
     constructor(bytes: u8[]){
         this.bytes = bytes;
     }
-    /**
-     * Set new index
-     * @param index 
-     */
-    private setIndex(index: i32): void{
-        if(index >= this.bytes.length){
-            trace("BytesReader: No bytes left to read!");
-        }
-        this.index = index;
-    }
 
     /**
      * Read a single byte
      */
     readByte(): u8{
         const byte = this.bytes[this.index];
-        this.setIndex(this.index + 1);
+        this.index += 1;
         return byte;
     }
     /**
@@ -60,7 +50,7 @@ export class BytesReader{
      */
     readBytes(size: i32): u8[]{
         const bytes: u8[] = this.bytes.slice(this.index, this.index + size);
-        this.setIndex(this.index + size);
+        this.index += size;
         return bytes;
     }
 
@@ -69,7 +59,7 @@ export class BytesReader{
      */
     readInt8(): Int8 {
         const value = Int8.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -77,7 +67,7 @@ export class BytesReader{
      */
     readInt16(): Int16 {
         const value = Int16.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -85,7 +75,7 @@ export class BytesReader{
      */
     readInt32(): Int32 {
         const value = Int32.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -93,7 +83,7 @@ export class BytesReader{
      */
     readInt64(): Int64 {
         const value = Int64.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -101,7 +91,7 @@ export class BytesReader{
      */
     readUInt8(): UInt8 {
         const value = UInt8.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());        
+        this.index += value.encodedLength();        
         return value;
     }
     /**
@@ -109,7 +99,7 @@ export class BytesReader{
      */
     readUInt16(): UInt16 {
         const value = UInt16.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -117,7 +107,7 @@ export class BytesReader{
      */
     readUInt32(): UInt32 {
         const value = UInt32.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -125,7 +115,7 @@ export class BytesReader{
      */
     readUInt64(): UInt64 {
         const value = UInt64.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -133,7 +123,7 @@ export class BytesReader{
      */
     readCompactInt(): CompactInt{
         const value = CompactInt.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
 
@@ -142,7 +132,7 @@ export class BytesReader{
      */
     readBool(): Bool {
         const value = Bool.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -150,7 +140,7 @@ export class BytesReader{
      */
     readHash(): Hash {
         const value = Hash.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -158,7 +148,7 @@ export class BytesReader{
      */
     readByteArray(): ByteArray {
         const value = ByteArray.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**
@@ -166,7 +156,7 @@ export class BytesReader{
      */
     readScaleString(): ScaleString {
         const value = ScaleString.fromU8a(this.bytes, this.index);
-        this.setIndex(this.index + value.encodedLength());
+        this.index += value.encodedLength();
         return value;
     }
     /**

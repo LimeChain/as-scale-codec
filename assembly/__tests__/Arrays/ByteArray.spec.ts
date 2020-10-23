@@ -78,6 +78,10 @@ describe("ByteArray", () => {
         const byteTest: u8[] = [0x0c]; // Encoded length = 3, actual data length = 0
         ByteArray.fromU8a(byteTest);
     });
+    
+    itThrows('should throw when index is out of range', () => {
+        ByteArray.fromU8a([8, 0, 1, 12, 0, 1, 3], 8);
+    });
 });
 
 function appendEmptyBytesTo (arr: u8[], bytesToAppend: i32): u8[] {

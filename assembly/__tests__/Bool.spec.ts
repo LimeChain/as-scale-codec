@@ -42,5 +42,8 @@ describe("Bool", () => {
     itThrows('when provided invalid bool value', () => {
         Bool.fromU8a([0x05]);
     })
+    itThrows('should throw when index is out of range', () => {
+        Bool.fromU8a([0, 1, 0, 1, 0], 5);
+    });
 
 });

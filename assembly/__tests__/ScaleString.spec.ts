@@ -50,6 +50,10 @@ describe("String", () => {
     itThrows("should throw on incorrect encoding", () => {
         ScaleString.fromU8a([0x04]); // Encoded length = 1, actual data length = 0
     });
+
+    itThrows('should throw when index is out of range', () => {
+        ScaleString.fromU8a([8, 0, 1, 12, 0, 1, 3], 8);
+    });
 });
 
 function append (to: Array<u8>, from: string): Array<u8> {
