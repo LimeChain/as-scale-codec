@@ -168,18 +168,18 @@ export class BytesReader{
         return this.bytes.slice(this.index);
     }
 
-    readInto<K extends Codec>(type: string): Codec{
-        switch(type){
-            case("Int8"):{
-                return this.readInt8();
-            }
-            case("Int16"):{
-                return this.readInt16();
-            }
-            case("")
-            default:{
-                throw new Error("Unsupported type");
-            }
-        }
-    }
+    // readInto<K extends Codec>(type: string): Codec{
+    //     switch(type){
+    //         case("Int8"):{
+    //             return this.readInt8();
+    //         }
+    //         case("Int16"):{
+    //             return this.readInt16();
+    //         }
+    //         case("")
+    //         default:{
+    //             throw new Error("Unsupported type");
+    //         }
+    //     }
+    // }
 }

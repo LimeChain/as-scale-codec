@@ -77,18 +77,21 @@ export class ScaleMap<K extends Codec, V extends Codec> implements Codec{
         return result;
     }
 
-    // fromU8a<K extends Codec, V extends Codec>(input: u8[]): Codec{
-    //     const scaleMap = new ScaleMap<K, V>();
-    //     const bytesReader = new BytesReader(input);
-    //     const size = bytesReader.readCompactInt();
-    //     input = bytesReader.getLeftoverBytes();
-    //     for(let i: i32 = 0; i<size.value; i++){
-    //         const key = K.fromU8a(input);
-    //         input = input.slice(key.encodedLength()); K.toString();
-    //         const value = V.fromU8a(input);
-    //         input = input.slice(value.encodedLength());
-    //         scaleMap.set(key, value);
-    //     }
-    //     return scaleMap;
-    // }
+    static fromU8a<K extends Codec, V extends Codec>(input: u8[]): ScaleMap<K, V>{
+        const scaleMap = new ScaleMap<K, V>();
+        const bytesReader = new BytesReader(input);
+        const size = bytesReader.readCompactInt();
+        input = bytesReader.getLeftoverBytes();
+        const KeyType = instantiate<K>();
+        const ValueType = instantiate<V>();
+
+        for(let i: i32 = 0; i<size.value; i++){
+            const key = KeyType.fromU8a(input);
+            input = input.slice(key.encodedLength());
+            const value = ValueType.fromU8a(input);
+            input = input.slice(value.encodedLength());
+            scaleMap.set(key, value);
+        }
+        return scaleMap;
+    }
 }

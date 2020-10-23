@@ -46,6 +46,9 @@ export class Bool implements Codec {
     public encodedLength (): i32 {
         return 1;
     }
+    // public decode(bytes: u8[]): bool{
+        
+    // }
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[], index: i32 = 0): Bool {
