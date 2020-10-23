@@ -22,7 +22,11 @@ export class Int32 extends AbstractInt<i32> {
         super(value, BIT_LENGTH.INT_32)
     }
 
-    /** Instantiates new Int32 from u8[] SCALE encoded bytes */
+    /** 
+     * @description Instantiates new Int32 from u8[] SCALE encoded bytes  
+     * NOTE: if the length of the provided value is less than the byte length of the Int32, 
+     * it is filled with 0 bytes
+    */
     static fromU8a (value: u8[], index: i32 = 0): Int32 {
         assert(value.length - index > 0, 'Int32: Empty bytes array provided');
         var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32, index);

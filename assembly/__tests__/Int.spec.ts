@@ -67,6 +67,9 @@ describe("Int8", () => {
     itThrows('should throw when empty array is provided', () => {
         let v1 = Int8.fromU8a([]);
     });
+    itThrows('should throw when index is out of range', () => {
+        let v1 = Int8.fromU8a([1, 0, 1], 3);
+    });
 });
 
 describe("Int16", () => {
@@ -138,6 +141,9 @@ describe("Int16", () => {
 
     itThrows('should throw when empty array is provided', () => {
         let v1 = Int16.fromU8a([]);
+    });    
+    itThrows('should throw when index is out of range', () => {
+        let v1 = Int16.fromU8a([1, 0, 1, 12, 123, 1], 6);
     });
 });
 
@@ -184,6 +190,9 @@ describe("Int32", () => {
 
      itThrows('should throw when empty array is provided', () => {
         let v1 = Int32.fromU8a([]);
+    });
+    itThrows('should throw when index is out of range', () => {
+        let v1 = Int32.fromU8a([0, 0, 1, 1, 0, 1, 12, 123, 12], 9);
     });
 });
 
@@ -239,8 +248,12 @@ describe("Int64", () => {
         expect<Int64>(Int64.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0, 0, 0, 0], 3)).toStrictEqual(new Int64(1));
      });
 
-     itThrows('should throw when empty array is provided', () => {
+    itThrows('should throw when empty array is provided', () => {
         let v1 = Int64.fromU8a([]);
+    });
+    
+    itThrows('should throw when index is out of range', () => {
+        let v1 = Int64.fromU8a([1, 0, 1, 3], 4);
     });
 
 });
