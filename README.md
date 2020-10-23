@@ -55,7 +55,7 @@ Detailed examples of the exported by the library types are listed below:
 
 ### Encoding
 
-Every type has а **toU8a** function . It encodes type value into an array of bytes
+Every type has а **toU8a** function. It encodes type value into an array of bytes
 
 ```jsx
 import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
@@ -200,6 +200,49 @@ IntArray.fromU8a([0x10, 0x02, 0x00, 0x01, 0x00, 0x08, 0x0c, 0x10])
 // String Array
 StringArray.fromU8a([0x08, 0x14, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x14, 0x77, 0x6f, 0x72, 0x6c, 0x64])
 // => new StringArray(["hello", "world"])
+```
+
+# BytesReader
+
+If you have an array of arbitrary SCALE encoded bytes that you need to decode, `BytesReader` class is a preferred way to do it:
+
+```jsx
+import { BytesReader } from 'as-scale-codec';
+// Arbitrary SCALE encoded bytes
+const bytes: u8[] = [
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    69, 0, 0, 0,
+    110, 125, 239, 2,
+    56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99,
+    128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1,
+    0
+];
+// Instantiate BytesReader instance with SCALE encoded bytes
+const bytesReader = new BytesReader(bytes);
+
+// Read Int64
+bytesReader.readInt64();
+// => new Int(-1)
+
+// Read UInt32
+bytesReader.readUInt32();
+// => new UInt32(69)
+
+// Read CompactInt
+bytesReader.readCompactInt();
+// => new CompactInt(12312411)
+
+// Read ScaleString
+bytesReader.readScaleString();
+// => new ScaleString("as-scale-codec")
+
+// Read Hash
+bytesReader.readHash();
+// => new Hash([128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1])
+
+// Read Bool
+bytesReader.readBool();
+// => new Bool(false)
 ```
 
 # Miscellaneous

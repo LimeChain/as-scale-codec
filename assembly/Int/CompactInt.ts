@@ -61,9 +61,12 @@ export class CompactInt implements Codec {
     /**
      * @description Instantiates Compact Int from u8[] SCALE encoded bytes
      * Compact Int decodes int8, int16, int32, int64 size correctly  
+     * @param input SCALE encoded bytes
+     * @param index an index of input to start decoding from
      */
-    static fromU8a (value: u8[]): CompactInt {
-        const decodedData = Bytes.decodeCompactInt(value);
+    static fromU8a (value: u8[], index: i32 = 0): CompactInt {
+        assert(value.length - index > 0, "CompactInt: Empty bytes array provided");
+        const decodedData = Bytes.decodeCompactInt(value, index);
         return new CompactInt(decodedData.value);
     }
 

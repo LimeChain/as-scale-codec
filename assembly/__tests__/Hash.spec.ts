@@ -86,4 +86,8 @@ describe("Hash", () => {
 
         assert(hash1 != hash2, "hashes should be different");
     })
+
+    itThrows('should throw when index is out of range', () => {
+        Hash.fromU8a([8, 0, 1, 12, 0, 1, 12], 8);
+    });
 });

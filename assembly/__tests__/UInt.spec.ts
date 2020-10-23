@@ -61,17 +61,18 @@ describe("UInt8", () => {
         expect<UInt8>(UInt8.fromU8a([0x81])).toStrictEqual(new UInt8(129));
     });
 
-    itThrows("should throw when decoding u16", () => {
-        let v1 = UInt8.fromU8a([0x01, 0]);
+    it("should decode only first byte", () => {
+        expect<UInt8>(UInt8.fromU8a([0x05, 0])).toStrictEqual(new UInt8(5));
+        expect<UInt8>(UInt8.fromU8a([0x01, 0, 1, 2, 12])).toStrictEqual(new UInt8(1));
     });
 
-    itThrows('should throw when decoding u32', () => {
-        let v1 = UInt8.fromU8a([0x01, 0, 0, 0]);
+    itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt8.fromU8a([]);
+    });
+    itThrows('should throw when index is out of range', () => {
+        let v1 = UInt8.fromU8a([1], 2);
     });
 
-    itThrows('should throw when decoding u64', () => {
-        let v1 = UInt8.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
-    });
 });
 
 describe("UInt16", () => {
@@ -136,12 +137,15 @@ describe("UInt16", () => {
         expect<UInt16>(UInt16.fromU8a([0x01, 0xc0])).toStrictEqual(new UInt16(49153));
     });
 
-    itThrows('should throw when trying to decode uint32', () => {
-       let v1 = UInt16.fromU8a([0x01, 0, 0, 0]);
+    it('should decode only two bytes', () => {
+       expect<UInt16>(UInt16.fromU8a([0x01, 0x10, 0x00, 0x01], 1)).toStrictEqual(new UInt16(16));
     });
 
-    itThrows('should throw when trying to decode uint64', () => {
-        let v1 = UInt16.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
+    itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt16.fromU8a([]);
+    });
+    itThrows('should throw when index is out of range', () => {
+        let v1 = UInt16.fromU8a([1, 0, 1, 223], 4);
     });
 });
 
@@ -180,10 +184,19 @@ describe("UInt32", () => {
         expect<UInt32>(UInt32.fromU8a([0x01, 0xc0, 0xff, 0xff])).toStrictEqual(new UInt32(4294950913));
         expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0xc0])).toStrictEqual(new UInt32(3221225473));
     });
+    it('should decode only four bytes', () => {
+        expect<UInt32>(UInt32.fromU8a([0x01, 0x01, 0x00, 0x00, 0xc0], 1)).toStrictEqual(new UInt32(3221225473));
+        expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00], 3)).toStrictEqual(new UInt32(1));
+     });
 
-    itThrows('should throw when trying to decode uint64', () => {
-        let v1 = UInt32.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0]);
+     itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt32.fromU8a([]);
     });
+    itThrows('should throw when index is out of range', () => {
+        let v1 = UInt32.fromU8a([1, 0, 1, 3, 123, 123, 12, 0], 9);
+    });
+
+
 });
 
 describe("UInt64", () => {
@@ -219,8 +232,17 @@ describe("UInt64", () => {
         expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new UInt64(18446744073709551615));
     });
 
-    itThrows('should throw when trying to decode uint128', () => {
-        let v1 = UInt64.fromU8a([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+    it('should decode only eight bytes', () => {
+        expect<UInt64>(UInt64.fromU8a([0x01, 0x01, 0xff, 0x3f, 0, 0, 0, 0, 0, 0], 2)).toStrictEqual(new UInt64(16383));
+        expect<UInt64>(UInt64.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0, 0, 0, 0], 3)).toStrictEqual(new UInt64(1));
+     });
+
+    itThrows('should throw when empty array is provided', () => {
+        let v1 = UInt64.fromU8a([]);
+    });
+
+    itThrows('should throw when index is out of range', () => {
+        let v1 = UInt64.fromU8a([1, 0, 1, 3], 13);
     });
 
 });

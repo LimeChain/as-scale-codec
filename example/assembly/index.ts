@@ -15,6 +15,7 @@
 import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
 import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
 import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
+import { BytesReader } from 'as-scale-codec';
 import { u128 } from "as-bignum"
 
 export function demonstrate(): void {
@@ -87,4 +88,22 @@ export function demonstrate(): void {
     trace("UInt32 [0x01, 0x00, 0x00, 0x00] -> " + UInt32.fromU8a([0x01, 0x00, 0x00, 0x00]).toString());
     trace("UInt64 [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00] -> " + UInt64.fromU8a([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]).value.toString())
     trace("UInt128 [0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + UInt128.fromU8a([0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]).toString());
+
+    trace("Decoding using BytesReader");
+    const bytes: u8[] = [
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        69, 0, 0, 0,
+        110, 125, 239, 2,
+        56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99,
+        128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1,
+        0
+    ];
+    
+    const bytesReader = new BytesReader(bytes);
+    trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInt64().value.toString());
+    trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readUInt32().value.toString());
+    trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readCompactInt().value.toString());
+    trace("ScaleString [56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99] -> " + bytesReader.readScaleString().valueStr);
+    trace("Hash [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1] -> " + bytesReader.readHash().toString());
+    trace("Bool [0] -> " + bytesReader.readBool().toString());
 }
