@@ -18,7 +18,7 @@ import { AbstractInt } from "../AbstractInt";
 /** Representation for a UInt64 value in the system. */
 export class UInt64 extends AbstractInt<u64> {
 
-    constructor (value: u64) {
+    constructor (value: u64 = 0) {
         super(value, BIT_LENGTH.INT_64)
     }
 

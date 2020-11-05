@@ -17,9 +17,9 @@ import { Codec } from "./interfaces/Codec";
 /** Representation for a boolean value in the system. */
 export class Bool implements Codec {
 
-    public readonly value: bool;
+    public value: bool;
 
-    constructor (value: bool) {
+    constructor (value: bool = false) {
         this.value = value;
     }
 
@@ -31,6 +31,16 @@ export class Bool implements Codec {
         let bytesEncoded = new Array<u8>(1);
         bytesEncoded[0] = this.value ? 0x01 : 0x00;
         return bytesEncoded;
+    }
+
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model.
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length > 0 && (bytes[index] == 1 || bytes[index] == 0), 'Bool: Cannot decode invalid input');
+        this.value = bytes[index] == 1;
     }
 
     /**

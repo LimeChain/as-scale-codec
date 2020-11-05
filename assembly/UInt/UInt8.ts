@@ -18,9 +18,14 @@ import { AbstractInt } from "../AbstractInt";
 /** Representation for a UInt8 value in the system. */
 export class UInt8 extends AbstractInt<u8> {
 
-    constructor (value: u8) {
+    constructor (value: u8 = 0) {
         super(value, BIT_LENGTH.INT_8)
     }
+
+    // public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+    //     assert(bytes.length > 0 && (bytes[index] == 1 || bytes[index] == 0), 'Bool: Cannot decode invalid input');
+    //     this.value = bytes[index];
+    // }
 
     /**
      * @description Instantiates new UInt8 from u8[] SCALE encoded bytes  

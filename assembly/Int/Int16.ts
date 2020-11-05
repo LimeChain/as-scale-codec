@@ -18,7 +18,7 @@ import { AbstractInt } from "../AbstractInt";
 /** Representation for a Int16 value in the system. */
 export class Int16 extends AbstractInt<i16>  {
 
-    constructor (value: i16) {
+    constructor (value: i16 = 0) {
         super(value, BIT_LENGTH.INT_16)
     }
 

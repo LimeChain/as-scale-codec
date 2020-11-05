@@ -17,7 +17,7 @@ import { BIT_LENGTH } from "./utils/Bytes";
 
 export class Byte implements Codec {
 
-    public readonly value: u8;
+    public value: u8;
     protected bitLength: i32;
 
     constructor (value: u8) {
@@ -30,6 +30,15 @@ export class Byte implements Codec {
     */
     public toU8a (): u8[] {
         return [this.value];
+    }
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length == 1, 'Bool: Cannot decode invalid input');
+        this.value = bytes[index];
     }
 
     /**

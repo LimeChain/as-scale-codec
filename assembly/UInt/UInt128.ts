@@ -35,6 +35,10 @@ export class UInt128 implements Codec {
         }
     }
 
+    populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        //
+    }
+
     /** Encodes the value as u8[] as per the SCALE codec specification */
     toU8a (): u8[] {
         const bytes = new Array<u8>();

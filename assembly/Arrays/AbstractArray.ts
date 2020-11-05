@@ -17,11 +17,11 @@ import { Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 import { DecodedData } from "../interfaces/DecodedData";
 
-export abstract class AbstractArray<ScaleType extends Codec, NativeType> {
+export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements Codec{
 
     public values: Array<NativeType>;
 
-    constructor(input: NativeType[]) {
+    constructor(input: NativeType[] = []) {
         this.values = new Array<NativeType>(input.length);
         Bytes.copy<NativeType>(input, this.values);
     }
@@ -39,6 +39,25 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> {
         }
 
         return bytesBuffer.bytes;
+    }
+
+    public encodedLength(): i32{
+        return this.values.length;
+    }
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void {
+        const data = Bytes.decodeCompactInt(bytes, index);
+        let content = bytes.slice(data.decBytes);
+
+        for(let i: u64 = 0; i < data.value; i++){
+            const element = this.decodeElement(content);
+            this.values.push(element.value);
+            content = content.slice(element.decBytes);
+        }
     }
 
     /**

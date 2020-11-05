@@ -20,10 +20,10 @@ import { BytesBuffer } from "../utils/BytesBuffer";
 /** Representation for a Int8 value in the system. */
 export class CompactInt implements Codec {
 
-    public readonly value: i64;
+    public value: i64;
     protected bitLength: i32;
 
-    constructor (value: i64) {
+    constructor (value: i64 = 0) {
         this.value = value;
 
         if (value < 1 << 6) this.bitLength = BIT_LENGTH.INT_8;
@@ -43,7 +43,22 @@ export class CompactInt implements Codec {
 
         return bytesBuffer.bytes;
     }
-
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length - index > 0, "CompactInt: Empty bytes array provided");
+        const decodedData = Bytes.decodeCompactInt(bytes, index);
+        this.value = decodedData.value;
+        if (decodedData.value < 1 << 6) this.bitLength = BIT_LENGTH.INT_8;
+        else if (decodedData.value < 1 << 14) this.bitLength = BIT_LENGTH.INT_16;
+        else if (decodedData.value < 1 << 30) this.bitLength = BIT_LENGTH.INT_32;
+        else {
+            this.bitLength = BIT_LENGTH.INT_64;
+        }
+    }
     /**
     * @description Returns the string representation of the value
     */

@@ -19,7 +19,7 @@ import { Bytes } from "./utils/Bytes";
 export abstract class AbstractInt<T extends number> implements Codec {
 
     protected bitLength: i32;
-    public readonly value: T;
+    public value: T;
 
     constructor (value: T, bitLength: i32) {
         this.value = value;
@@ -31,6 +31,16 @@ export abstract class AbstractInt<T extends number> implements Codec {
         let bytesEncoded = new Array<u8>(this.bitLength);
         Bytes.putUint<T>(bytesEncoded, this.value, this.bitLength);
         return bytesEncoded;
+    }
+
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void {
+        assert(bytes.length >= this.bitLength - index, "AbstractInt: Invalid bytes provided");
+        this.value = Bytes.toUint<T>(bytes, this.bitLength, index);
     }
 
     /**

@@ -18,7 +18,7 @@ import { AbstractInt } from "../AbstractInt";
 /** Representation for a Int32 value in the system. */
 export class Int32 extends AbstractInt<i32> {
 
-    constructor (value: i32) {
+    constructor (value: i32 = 0) {
         super(value, BIT_LENGTH.INT_32)
     }
 

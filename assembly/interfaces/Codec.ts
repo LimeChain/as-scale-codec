@@ -25,11 +25,12 @@ export interface Codec {
     /**
      * @description Encodes the value as a Uint8Array as per the SCALE specification
      */
-    toU8a (): u8[]
+    toU8a(): u8[];
 
     /**
      * @description The length of Uint8Array when the value is encoded
      */
-    encodedLength (): i32
-    
+    encodedLength(): i32;
+
+    populateFromBytes(bytes: u8[], index: i32): void;
 }

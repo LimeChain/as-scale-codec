@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Codec } from './interfaces/Codec';
 import { Bytes } from './utils/Bytes';
 
-export class Hash {
+export class Hash implements Codec {
 
     public values: Array<u8>;
 
-    constructor(value: u8[]) {
+    constructor(value: u8[] = []) {
         this.values = new Array<u8>(32);
         Bytes.copy(value, this.values);
     }
@@ -31,6 +32,17 @@ export class Hash {
         Bytes.copy<u8>(this.values, result);
 
         return result;
+    }
+    
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model.
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length - index >= 0, "Hash: Empty bytes array provided");
+        this.values = new Array<u8>(32);
+        Bytes.copy(bytes, this.values, 0, index);
     }
 
     /**
