@@ -47,6 +47,23 @@ export class BytesReader{
     }
 
     /**
+    * Read a single byte
+    */
+    getSingleByte(): u8{
+        const byte = this.bytes[this.index];
+        this.index += 1;
+        return byte;
+    }
+    /**
+     * Read custom sized array of raw bytes
+     * @param size byte array size
+     */
+    readBytes(size: i32): u8[]{
+        const bytes: u8[] = this.bytes.slice(this.index, this.index + size);
+        this.index += size;
+        return bytes;
+    }
+    /**
      * @description Static variant of readInto() method
      * @param bytes 
      * @param index 
