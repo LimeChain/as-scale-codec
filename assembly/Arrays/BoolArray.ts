@@ -19,7 +19,7 @@ import { DecodedData } from "../interfaces/DecodedData";
 import { ArrayUtils } from "../utils/Arrays";
 
 // @ts-ignore
-export class  BoolArray extends AbstractArray<Bool, bool> {
+export class BoolArray extends AbstractArray<Bool, bool> {
 
     /**
     * @description BoolArray elements decryption implementation

@@ -44,7 +44,7 @@ describe("String", () => {
 
         const scaleString1 = ScaleString.fromU8a([0x08, 0x64, 0x61, 0x62, 0x62]);
         expect<Array<u8>>(scaleString1.values).toStrictEqual([0x64, 0x61]);
-        expect<string>(scaleString1.toString()).toStrictEqual("da")
+        expect<string>(scaleString1.toString()).toStrictEqual("da");
     });
 
     itThrows("should throw on incorrect encoding", () => {

@@ -79,10 +79,16 @@ describe("BytesReader", () => {
     })
     it("static method works", () => {
         const byteArray: u8[] = [40, 12, 123, 1, 21, 12, 33, 12, 21, 12, 1];
-        expect<ByteArray>(BytesReader.readBytesInto<ByteArray>(byteArray)).toStrictEqual(new ByteArray(byteArray.slice(1)));
+        expect<ByteArray>(BytesReader.decodeInto<ByteArray>(byteArray)).toStrictEqual(new ByteArray(byteArray.slice(1)));
         const uintU8a: u8[] = [1, 0, 0, 0, 0, 0, 0, 0];
-        expect<UInt64>(BytesReader.readBytesInto<UInt64>(uintU8a)).toStrictEqual(new UInt64(1));
+        expect<UInt64>(BytesReader.decodeInto<UInt64>(uintU8a)).toStrictEqual(new UInt64(1));
         const stringU8a: u8[] = [20, 99, 111, 100, 101, 99];
-        expect<ScaleString>(BytesReader.readBytesInto<ScaleString>(stringU8a)).toStrictEqual(new ScaleString("codec"));  
+        expect<ScaleString>(BytesReader.decodeInto<ScaleString>(stringU8a)).toStrictEqual(new ScaleString("codec"));  
+        const compactU8a: u8[] = [110, 125, 239, 2];
+        expect<CompactInt>(BytesReader.decodeInto<CompactInt>(compactU8a)).toStrictEqual(new CompactInt(12312411));
+        const u32U8a: u8[] = [69, 0, 0, 0];
+        expect<UInt32>(BytesReader.decodeInto<UInt32>(u32U8a)).toStrictEqual(new UInt32(69));
+        const hashU8a: u8[] = [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1];
+        expect<Hash>(BytesReader.decodeInto<Hash>(hashU8a)).toStrictEqual(new Hash(hashU8a));
     })
 })

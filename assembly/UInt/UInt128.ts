@@ -19,10 +19,10 @@ import {Codec} from "../interfaces/Codec";
 /** Representation for a UInt128 value in the system. */
 export class UInt128 implements Codec {
 
-    public readonly value: u128;
+    public value: u128;
     protected bitLength: i32;
 
-    constructor (value: u128) {
+    constructor (value: u128 = u128.Zero) {
         this.value = value;
 
         if (value < u128.fromU32(1 << 6)) this.bitLength = BIT_LENGTH.INT_8;
@@ -34,9 +34,24 @@ export class UInt128 implements Codec {
             this.bitLength = 1 + valueInBytes.length;
         }
     }
-
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
     populateFromBytes(bytes: u8[], index: i32 = 0): void{
-        //
+        assert(bytes.length - index != 0, 'Invalid input: Byte array should not be empty');
+        const mode = bytes[index] & 0x03;
+        if (i32(mode) <= 2) {
+            this.value = new u128(u64(Bytes.decodeSmallInt(bytes, mode).value), 0);
+            return ;
+        }
+        const topSixBits = bytes[index] >> 2;
+        const byteLength = topSixBits + 4;
+
+        const value = bytes.slice(index + 1, byteLength + 1);
+        Bytes.appendZeroBytes(value, BIT_LENGTH.INT_128);
+        this.value = u128.fromBytesLE(value);
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification */

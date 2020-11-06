@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Codec} from '.';
+import { Codec } from '.';
 
 /**
  * @description BytesReader class that helps reading bytes into SCALE Codec types
@@ -35,7 +35,7 @@ export class BytesReader{
      * @description Reads bytes into a given Type
      */
     readInto<T extends Codec>(): T{
-        const instance: T = BytesReader.readBytesInto<T>(this.bytes, this.index);
+        const instance: T = BytesReader.decodeInto<T>(this.bytes, this.index);
         this.index += instance.encodedLength();
         return instance;
     }
@@ -51,7 +51,7 @@ export class BytesReader{
      * @param bytes 
      * @param index 
      */
-    static readBytesInto<T extends Codec>(bytes: u8[], index: i32 = 0): T{
+    static decodeInto<T extends Codec>(bytes: u8[], index: i32 = 0): T{
         const instance = instantiate<T>();
         instance.populateFromBytes(bytes, index);
         return instance;

@@ -37,7 +37,7 @@ export class Byte implements Codec {
      * @param index index to start decoding the bytes from
      */
     public populateFromBytes(bytes: u8[], index: i32 = 0): void{
-        assert(bytes.length == 1, 'Bool: Cannot decode invalid input');
+        assert(bytes.length - index > 0, 'Bool: Cannot decode invalid input');
         this.value = bytes[index];
     }
 
