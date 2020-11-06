@@ -49,7 +49,7 @@ export class BytesReader{
     /**
     * Read a single byte
     */
-    getSingleByte(): u8{
+    readByte(): u8{
         const byte = this.bytes[this.index];
         this.index += 1;
         return byte;
