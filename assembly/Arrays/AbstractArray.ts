@@ -20,7 +20,6 @@ import { DecodedData } from "../interfaces/DecodedData";
 export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements Codec{
 
     public values: Array<NativeType>;
-
     constructor(input: NativeType[] = []) {
         this.values = new Array<NativeType>(input.length);
         Bytes.copy<NativeType>(input, this.values);
@@ -41,25 +40,21 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> impleme
         return bytesBuffer.bytes;
     }
 
-    public encodedLength(): i32{
-        return this.values.length;
-    }
+    abstract encodedLength(): i32;
+    // public encodedLength(): i32{
+    //     let len: i32 = new CompactInt(this.values.length).encodedLength();
+    //     for(let i: i32 = 0; i < this.values.length; i++){
+    //         const value = instantiate<ScaleType>(this.values[i]);
+    //         len += value.encodedLength();
+    //     }
+    //     return len;
+    // }
     /**
      * @description Non-static constructor method used to populate defined properties of the model
      * @param bytes SCALE encoded bytes
      * @param index index to start decoding the bytes from
      */
-    public populateFromBytes(bytes: u8[], index: i32 = 0): void {
-        const data = Bytes.decodeCompactInt(bytes, index);
-        let content = bytes.slice(data.decBytes);
-
-        for(let i: u64 = 0; i < data.value; i++){
-            const element = this.decodeElement(content);
-            this.values.push(element.value);
-            content = content.slice(element.decBytes);
-        }
-    }
-
+    abstract populateFromBytes(bytes: u8[], index: i32): void;
     /**
     * @description Each child class has to provide decryption implementation for elements
     */

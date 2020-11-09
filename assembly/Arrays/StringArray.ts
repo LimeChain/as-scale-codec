@@ -18,6 +18,7 @@ import { ScaleString } from "../ScaleString";
 
 import { DecodedData } from "../interfaces/DecodedData";
 import { ArrayUtils } from "../utils/Arrays";
+import { BytesReader, CompactInt } from "..";
 
 // @ts-ignore
 export class StringArray extends AbstractArray<ScaleString, string>{
@@ -33,6 +34,25 @@ export class StringArray extends AbstractArray<ScaleString, string>{
             ScaleString.fromU8a(value.slice(0, encodedStringLength)).valueStr,
             encodedStringLength
         )
+    }
+
+    encodedLength(): i32{
+        let len: i32 = new CompactInt(super.values.length).encodedLength();
+        for (let i: i32 = 0; i < this.values.length; i++){
+            const value = new ScaleString(this.values[i]);
+            len += value.encodedLength();
+        }
+        return len;
+    }
+
+    populateFromBytes(bytes: u8[], index: i32 = 0): void {
+        const bytesReader = new BytesReader(bytes.slice(index));
+        const data = bytesReader.readInto<CompactInt>();
+
+        for(let i: i32 = 0; i < data.value; i++){
+            const element: ScaleString = bytesReader.readInto<ScaleString>();
+            this.values.push(element.valueStr);
+        }
     }
 
     /**

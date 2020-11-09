@@ -54,6 +54,31 @@ describe("UInt128Array", () => {
         }
     });
 
+    it("should decode uint128 array with populate method", () => {
+        const dataInput: Array<Array<u8>> = [
+            [0x04, 0x04], // Expected output: [1]
+            [0x10, 0x04, 0x0c, 0x0c, 0x10], // Expected output: [1, 3, 3, 4]
+            [0x10, 0x02, 0x00, 0x01, 0x00, 0x08, 0x0c, 0x10], // Expected output: [16384, 2, 3, 4]
+            [0x28, 0xee, 0xfe, 0x2d, 0x17, 0xea, 0x36, 0x35, 0x3e, 0x4a, 0x28, 0x35, 0x67, 0x4e, 0x5b, 0x89, 0x76, 0xda, 0xb9, 0xff, 0x7c, 0xaa, 0xfb, 0x76, 0x7e, 0x62, 0x0e, 0xcf, 0x93, 0xda, 0x5a, 0x2b, 0x96, 0x3a, 0x53, 0xf1, 0xd2, 0x66, 0xb1, 0xe4, 0xe1],
+            [0x08, 0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
+            [0x04, 0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+        ];
+        const expectedOutput: Array<Array<u128>> = [
+            [u128.One],
+            [u128.One, u128.fromU64(3), u128.fromU64(3), u128.fromU64(4)],
+            [u128.fromU64(16384), u128.fromU64(2), u128.fromU64(3), u128.fromU64(4)],
+            [u128.fromU64(97222587), u128.fromU64(260918714), u128.fromU64(432884242), u128.fromU64(497178323), u128.fromU64(524283510), u128.fromU64(530431722), u128.fromU64(619955096), u128.fromU64(629855926), u128.fromU64(884757710), u128.fromU64(947465305)],
+            [u128.fromU64(18446744073709551615), u128.fromU64(18446744073709551615)],
+            [u128.Max - u128.fromU64(u64.MAX_VALUE)]
+        ];
+
+        for(let i = 0; i < dataInput.length; i++){
+            const instance = new UInt128Array();
+            instance.populateFromBytes(dataInput[i]);
+            expect<UInt128Array>(instance).toStrictEqual(new UInt128Array(expectedOutput[i]));
+        }
+    })
+
     itThrows("should throw on incorrect encoding", () => {
         const invalidEncodedArray1: u8[] = [0x4, 0x02, 0x00, 0x01, 0x00, 0x08, 0x0c, 0x10];
         UInt128Array.fromU8a(invalidEncodedArray1);

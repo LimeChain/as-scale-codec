@@ -55,13 +55,20 @@ describe("UInt8", () => {
         expect<UInt8>(UInt8.fromU8a([0x01])).toStrictEqual(new UInt8(1));
         expect<UInt8>(UInt8.fromU8a([0xf])).toStrictEqual(new UInt8(15));
         expect<UInt8>(UInt8.fromU8a([0x10])).toStrictEqual(new UInt8(16));
+        expect<UInt8>(UInt8.fromU8a([0xf1])).toStrictEqual(new UInt8(241));
+        expect<UInt8>(UInt8.fromU8a([0x81])).toStrictEqual(new UInt8(129));
+    });
+
+    it("should decode uint8 with populate method", () => {
         const uInt8 = new UInt8();
         uInt8.populateFromBytes([0x7f]);
         expect<UInt8>(uInt8).toStrictEqual(new UInt8(127));
         uInt8.populateFromBytes([0xff]);
         expect<UInt8>(uInt8).toStrictEqual(new UInt8(255));
-        expect<UInt8>(UInt8.fromU8a([0xf1])).toStrictEqual(new UInt8(241));
-        expect<UInt8>(UInt8.fromU8a([0x81])).toStrictEqual(new UInt8(129));
+        uInt8.populateFromBytes([1]);
+        expect<UInt8>(uInt8).toStrictEqual(new UInt8(1));
+        uInt8.populateFromBytes([69]);
+        expect<UInt8>(uInt8).toStrictEqual(new UInt8(69));
     });
 
     it("should decode only first byte", () => {
@@ -130,6 +137,14 @@ describe("UInt16", () => {
         expect<UInt16>(UInt16.fromU8a([0x01, 0])).toStrictEqual(new UInt16(1));
         expect<UInt16>(UInt16.fromU8a([0xf, 0])).toStrictEqual(new UInt16(15));
         expect<UInt16>(UInt16.fromU8a([0x10, 0])).toStrictEqual(new UInt16(16));
+        expect<UInt16>(UInt16.fromU8a([0x81, 0xff])).toStrictEqual(new UInt16(65409));
+        expect<UInt16>(UInt16.fromU8a([0x98, 0x3a])).toStrictEqual(new UInt16(15000));
+        expect<UInt16>(UInt16.fromU8a([0xff, 0x3f])).toStrictEqual(new UInt16(16383));
+        expect<UInt16>(UInt16.fromU8a([0x68, 0xc5])).toStrictEqual(new UInt16(50536));
+        expect<UInt16>(UInt16.fromU8a([0x01, 0xc0])).toStrictEqual(new UInt16(49153));
+    });
+
+    it("should decode uInt16 with populate method", () => {
         const uInt16 = new UInt16();
         uInt16.populateFromBytes([0x7f, 0]);
         expect<UInt16>(uInt16).toStrictEqual(new UInt16(127));
@@ -137,11 +152,10 @@ describe("UInt16", () => {
         expect<UInt16>(uInt16).toStrictEqual(new UInt16(65535));
         uInt16.populateFromBytes([0xf1, 0xff]);
         expect<UInt16>(uInt16).toStrictEqual(new UInt16(65521));
-        expect<UInt16>(UInt16.fromU8a([0x81, 0xff])).toStrictEqual(new UInt16(65409));
-        expect<UInt16>(UInt16.fromU8a([0x98, 0x3a])).toStrictEqual(new UInt16(15000));
-        expect<UInt16>(UInt16.fromU8a([0xff, 0x3f])).toStrictEqual(new UInt16(16383));
-        expect<UInt16>(UInt16.fromU8a([0x68, 0xc5])).toStrictEqual(new UInt16(50536));
-        expect<UInt16>(UInt16.fromU8a([0x01, 0xc0])).toStrictEqual(new UInt16(49153));
+        uInt16.populateFromBytes([1]);
+        expect<UInt16>(uInt16).toStrictEqual(new UInt16(1));
+        uInt16.populateFromBytes([123]);
+        expect<UInt16>(uInt16).toStrictEqual(new UInt16(123));
     });
 
     it('should decode only two bytes', () => {
@@ -185,6 +199,12 @@ describe("UInt32", () => {
 
     it("should decode uint32", () => {
         expect<UInt32>(UInt32.fromU8a([0x01, 0, 0, 0])).toStrictEqual(new UInt32(1));
+        expect<UInt32>(UInt32.fromU8a([0xff, 0xff, 0xff, 0x3f])).toStrictEqual(new UInt32(1073741823));
+        expect<UInt32>(UInt32.fromU8a([0x01, 0xc0, 0xff, 0xff])).toStrictEqual(new UInt32(4294950913));
+        expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0xc0])).toStrictEqual(new UInt32(3221225473));
+    });
+
+    it("should decode uInt32 with populate method", () => {
         const uInt32 = new UInt32();
         uInt32.populateFromBytes([0xff, 0x3f, 0, 0]);
         expect<UInt32>(uInt32).toStrictEqual(new UInt32(16383));
@@ -192,9 +212,12 @@ describe("UInt32", () => {
         expect<UInt32>(uInt32).toStrictEqual(new UInt32(1073741823));
         uInt32.populateFromBytes([0xff, 0xff, 0xff, 0xff]);
         expect<UInt32>(uInt32).toStrictEqual(new UInt32(4294967295));
-        expect<UInt32>(UInt32.fromU8a([0x01, 0xc0, 0xff, 0xff])).toStrictEqual(new UInt32(4294950913));
-        expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0xc0])).toStrictEqual(new UInt32(3221225473));
-    });
+        uInt32.populateFromBytes([1, 0, 0, 0]);
+        expect<UInt32>(uInt32).toStrictEqual(new UInt32(1));
+        uInt32.populateFromBytes([123, 0, 0, 0]);
+        expect<UInt32>(uInt32).toStrictEqual(new UInt32(123));
+    })
+
     it('should decode only four bytes', () => {
         expect<UInt32>(UInt32.fromU8a([0x01, 0x01, 0x00, 0x00, 0xc0], 1)).toStrictEqual(new UInt32(3221225473));
         expect<UInt32>(UInt32.fromU8a([0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00], 3)).toStrictEqual(new UInt32(1));
@@ -238,13 +261,22 @@ describe("UInt64", () => {
     it("should decode uint64", () => {
         expect<UInt64>(UInt64.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0])).toStrictEqual(new UInt64(1));
         expect<UInt64>(UInt64.fromU8a([0xff, 0x3f, 0, 0, 0, 0, 0, 0])).toStrictEqual(new UInt64(16383));
+        expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0x3f, 0, 0, 0, 0])).toStrictEqual(new UInt64(1073741823));
+        expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f])).toStrictEqual(new UInt64(9223372036854775807));
+        expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new UInt64(18446744073709551615));
+    });
+
+    it("should decode uint64 with populate method", () => {
         const uInt64 = new UInt64();
         uInt64.populateFromBytes([0xff, 0xff, 0xff, 0x3f, 0, 0, 0, 0]);
         expect<UInt64>(uInt64).toStrictEqual(new UInt64(1073741823));
         uInt64.populateFromBytes([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f]);
         expect<UInt64>(uInt64).toStrictEqual(new UInt64(9223372036854775807));
-        expect<UInt64>(UInt64.fromU8a([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new UInt64(18446744073709551615));
-    });
+        uInt64.populateFromBytes([1, 0, 0, 0, 0, 0, 0, 0]);
+        expect<UInt64>(uInt64).toStrictEqual(new UInt64(1));
+        uInt64.populateFromBytes([123, 0, 0, 0, 0, 0, 0, 0]);
+        expect<UInt64>(uInt64).toStrictEqual(new UInt64(123));
+    })
 
     it('should decode only eight bytes', () => {
         expect<UInt64>(UInt64.fromU8a([0x01, 0x01, 0xff, 0x3f, 0, 0, 0, 0, 0, 0], 2)).toStrictEqual(new UInt64(16383));
@@ -314,54 +346,66 @@ describe("UInt128", () => {
 
         const v2 = UInt128.fromU8a([0xfc]);
         expect<string>(v2.toString()).toStrictEqual("63");
+
+        const v3 = UInt128.fromU8a([0xfd, 0xff]);
+        expect<string>(v3.toString()).toStrictEqual("16383");
+
+        const v4 = UInt128.fromU8a([0x02, 0x00, 0x01, 0x00]);
+        expect<string>(v4.toString()).toStrictEqual("16384");
+
+        const v5 = UInt128.fromU8a([0xfe, 0xff, 0xff, 0xff]);
+        expect<string>(v5.toString()).toStrictEqual("1073741823");
+
+        const v6 = UInt128.fromU8a([0x03, 0x00, 0x00, 0x00, 0x40]);
+        expect<string>(v6.toString()).toStrictEqual("1073741824");
+
+        const v7 = UInt128.fromU8a([0x03, 0xb0, 0x0d, 0x00, 0x40]);
+        expect<string>(v7.toString()).toStrictEqual("1073745328");
+
+        const v8 = UInt128.fromU8a([0x03, 0xff, 0xff, 0xff, 0xff]);
+        expect<string>(v8.toString()).toStrictEqual("4294967295");
+
+        const v9 = UInt128.fromU8a([ 0x13, 0x8e, 0x17, 0x2c, 0x21, 0x6a, 0xe7, 0xe7, 0x2a]);
+        expect<string>(v9.toString()).toStrictEqual("3091694112222222222");
+
+        // Reads only the upper 6 bits and the following byte
+        const v13 = UInt128.fromU8a([ 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x12]);
+        expect<string>(v13.toString()).toStrictEqual("2180");
         
+        const v10 = UInt128.fromU8a([0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+        expect<string>(v10.toString()).toStrictEqual("340282366920938463444927863358058659840");
+
+        const v11 = UInt128.fromU8a([0x2b, 0x00, 0x01, 0xfa, 0xcb, 0xaa, 0x15, 0x10, 0x05, 0x04, 0x11]);
+        expect<string>(v11.toString()).toStrictEqual("80354382000471934632192");
+
+        const v12 = UInt128.fromU8a([0x43, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+        expect<string>(v12.toString()).toStrictEqual("1329227995784915872903807060280344575");
+    });
+
+    it("should decode uint128 with populate method", () => {
+        const v1 = new UInt128();
+        v1.populateFromBytes([0x07, 0x00, 0x00, 0x00, 0x00, 0x80]);
+        expect<string>(v1.toString()).toStrictEqual("549755813888");
+
+        const v2 = new UInt128();
+        v2.populateFromBytes([ 0x11, 0x22]);
+        expect<string>(v2.toString()).toStrictEqual("2180");
+
         const v3 = new UInt128();
         v3.populateFromBytes([0x01, 0x01]);
         expect<string>(v3.toString()).toStrictEqual("64");
 
-        const v4 = UInt128.fromU8a([0xfd, 0xff]);
-        expect<string>(v4.toString()).toStrictEqual("16383");
+        const v4 = new UInt128();
+        v4.populateFromBytes([0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+        expect<string>(v4.toString()).toStrictEqual("18446744073709551615");
+        
+        const v5 = new UInt128();
+        v5.populateFromBytes([0x2b, 0x00, 0x01, 0xfa, 0xcb, 0xaa, 0x15, 0x10, 0x05, 0x04, 0x11]);
+        expect<string>(v5.toString()).toStrictEqual("80354382000471934632192");
 
-        const v5 = UInt128.fromU8a([0x02, 0x00, 0x01, 0x00]);
-        expect<string>(v5.toString()).toStrictEqual("16384");
-
-        const v6 = UInt128.fromU8a([0xfe, 0xff, 0xff, 0xff]);
-        expect<string>(v6.toString()).toStrictEqual("1073741823");
-
-        const v7 = UInt128.fromU8a([0x03, 0x00, 0x00, 0x00, 0x40]);
-        expect<string>(v7.toString()).toStrictEqual("1073741824");
-
-        const v8 = UInt128.fromU8a([0x03, 0xb0, 0x0d, 0x00, 0x40]);
-        expect<string>(v8.toString()).toStrictEqual("1073745328");
-
-        const v9 = UInt128.fromU8a([0x03, 0xff, 0xff, 0xff, 0xff]);
-        expect<string>(v9.toString()).toStrictEqual("4294967295");
-        const v10 = new UInt128();
-        v10.populateFromBytes([0x07, 0x00, 0x00, 0x00, 0x00, 0x80]);
-        expect<string>(v10.toString()).toStrictEqual("549755813888");
-
-        // Reads only the upper 6 bits and the following byte
-        const v11 = UInt128.fromU8a([ 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x12]);
-        expect<string>(v11.toString()).toStrictEqual("2180");
-        const v12 = new UInt128();
-        v12.populateFromBytes([ 0x11, 0x22]);
-        expect<string>(v12.toString()).toStrictEqual("2180");
-
-        const v13 = UInt128.fromU8a([ 0x13, 0x8e, 0x17, 0x2c, 0x21, 0x6a, 0xe7, 0xe7, 0x2a]);
-        expect<string>(v13.toString()).toStrictEqual("3091694112222222222");
-
-        const v14 = new UInt128();
-        v14.populateFromBytes([0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
-        expect<string>(v14.toString()).toStrictEqual("18446744073709551615");
-
-        const v15 = UInt128.fromU8a([0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
-        expect<string>(v15.toString()).toStrictEqual("340282366920938463444927863358058659840");
-
-        const v16 = UInt128.fromU8a([0x2b, 0x00, 0x01, 0xfa, 0xcb, 0xaa, 0x15, 0x10, 0x05, 0x04, 0x11]);
-        expect<string>(v16.toString()).toStrictEqual("80354382000471934632192");
-
-        const v17 = UInt128.fromU8a([0x43, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
-        expect<string>(v17.toString()).toStrictEqual("1329227995784915872903807060280344575");
+        const v6 = new UInt128();
+        v6.populateFromBytes([0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+        expect<string>(v6.toString()).toStrictEqual("18446744073709551615");
     });
 
     itThrows('should throw when decoding empty array', () => {

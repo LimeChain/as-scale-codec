@@ -17,6 +17,7 @@ import { DecodedData } from "../interfaces/DecodedData";
 import { UInt128 } from "../UInt/UInt128";
 import { u128 } from "as-bignum";
 import { ArrayUtils } from "../utils/Arrays";
+import { BytesReader, CompactInt } from "..";
 
 // @ts-ignore
 export class UInt128Array extends AbstractArray<UInt128, u128> {
@@ -33,6 +34,24 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
         )
     }
 
+    encodedLength(): i32{
+        let len: i32 = new CompactInt(super.values.length).encodedLength();
+        for (let i: i32 = 0; i < this.values.length; i++){
+            const value = new UInt128(this.values[i]);
+            len += value.encodedLength();
+        }
+        return len;
+    }
+
+    populateFromBytes(bytes: u8[], index: i32 = 0): void {
+        const bytesReader = new BytesReader(bytes.slice(index));
+        const data = bytesReader.readInto<CompactInt>();
+
+        for(let i: i32 = 0; i < data.value; i++){
+            const element: UInt128 = bytesReader.readInto<UInt128>();
+            this.values.push(element.value);
+        }
+    }
     /**
     * @description Instantiates ScaleIntArray from u8[] SCALE encoded bytes (Decode)
     */

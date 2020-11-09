@@ -17,6 +17,7 @@ import { CompactInt } from "../Int";
 import { AbstractArray } from "./AbstractArray";
 import { DecodedData } from "../interfaces/DecodedData";
 import { ArrayUtils } from "../utils/Arrays";
+import { BytesReader } from "..";
 
 // @ts-ignore
 export class ByteArray extends AbstractArray<Byte, u8> {
@@ -56,7 +57,15 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     public encodedLength (): i32 {
         return (new CompactInt(super.values.length).encodedLength()) + super.values.length;
     }
+    populateFromBytes(bytes: u8[], index: i32 = 0): void {
+        const bytesReader = new BytesReader(bytes.slice(index));
+        const data = bytesReader.readInto<CompactInt>();
 
+        for(let i: i32 = 0; i < data.value; i++){
+            const element: Byte = bytesReader.readInto<Byte>();
+            this.values.push(element.value);
+        }
+    }
     /**
     * @description Instantiates ScaleByteArray from u8[] SCALE encoded bytes (Decode)
     */

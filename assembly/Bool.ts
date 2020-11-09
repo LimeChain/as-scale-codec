@@ -17,10 +17,14 @@ import { Codec } from "./interfaces/Codec";
 /** Representation for a boolean value in the system. */
 export class Bool implements Codec {
 
-    public value: bool;
+    private _value: bool;
 
+    get value(): bool{
+        return this._value;
+    }
+    
     constructor (value: bool = false) {
-        this.value = value;
+        this._value = value;
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification
@@ -40,7 +44,7 @@ export class Bool implements Codec {
      */
     public populateFromBytes(bytes: u8[], index: i32 = 0): void{
         assert(bytes.length > 0 && (bytes[index] == 1 || bytes[index] == 0), 'Bool: Cannot decode invalid input');
-        this.value = bytes[index] == 1;
+        this._value = bytes[index] == 1;
     }
 
     /**

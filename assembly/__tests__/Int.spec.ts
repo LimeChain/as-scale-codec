@@ -16,7 +16,6 @@ import { Int8 } from "../Int/Int8";
 import { Int16 } from "../Int/Int16";
 import { Int32 } from "../Int/Int32";
 import { Int64 } from "../Int/Int64";
-import { UInt32 } from "../UInt";
 
 describe("Int8", () => {
 
@@ -54,14 +53,17 @@ describe("Int8", () => {
         expect<Int8>(Int8.fromU8a([0x01])).toStrictEqual(new Int8(1));
         expect<Int8>(Int8.fromU8a([0xf])).toStrictEqual(new Int8(15));
         expect<Int8>(Int8.fromU8a([0x10])).toStrictEqual(new Int8(16));
+        expect<Int8>(Int8.fromU8a([0xf1])).toStrictEqual(new Int8(-15))
+    });
+    it("should decode using populate method", () => {
         const int8 = new Int8();
-        int8.populateFromBytes([0x7f])
+        int8.populateFromBytes([0x7f]);
         expect<Int8>(int8).toStrictEqual(new Int8(127));
-        int8.populateFromBytes([0xff])
+        int8.populateFromBytes([0xff]);
         expect<Int8>(int8).toStrictEqual(new Int8(-1));
-        int8.populateFromBytes([0xf1])
+        int8.populateFromBytes([0xf1]);
         expect<Int8>(int8).toStrictEqual(new Int8(-15));
-        int8.populateFromBytes([0x81])
+        int8.populateFromBytes([0x81]);
         expect<Int8>(int8).toStrictEqual(new Int8(-127));
     });
 
@@ -134,14 +136,17 @@ describe("Int16", () => {
         expect<Int16>(Int16.fromU8a([0xff, 0xff])).toStrictEqual(new Int16(-1));
         expect<Int16>(Int16.fromU8a([0xf1, 0xff])).toStrictEqual(new Int16(-15));
         expect<Int16>(Int16.fromU8a([0x81, 0xff])).toStrictEqual(new Int16(-127));
+    });
+
+    it("should decode int16 with populate method", () => {
         const int16 = new Int16();
-        int16.populateFromBytes([0x98, 0x3a])
+        int16.populateFromBytes([0x98, 0x3a]);
         expect<Int16>(int16).toStrictEqual(new Int16(15000));
-        int16.populateFromBytes([0xff, 0x3f])
+        int16.populateFromBytes([0xff, 0x3f]);
         expect<Int16>(int16).toStrictEqual(new Int16(16383));
-        int16.populateFromBytes([0x68, 0xc5])
+        int16.populateFromBytes([0x68, 0xc5]);
         expect<Int16>(int16).toStrictEqual(new Int16(-15000));
-        int16.populateFromBytes([0x01, 0xc0])
+        int16.populateFromBytes([0x01, 0xc0]);
         expect<Int16>(int16).toStrictEqual(new Int16(-16383));
     });
 
@@ -188,16 +193,21 @@ describe("Int32", () => {
     it("should decode int32", () => {
         expect<Int32>(Int32.fromU8a([0x01])).toStrictEqual(new Int32(1));
         expect<Int32>(Int32.fromU8a([0xff, 0x3f])).toStrictEqual(new Int32(16383));
-        const int32 = new Int32();
-        int32.populateFromBytes([0xff, 0xff, 0xff, 0x3f])
-        expect<Int32>(int32).toStrictEqual(new Int32(1073741823));
-        int32.populateFromBytes([0xff, 0xff, 0xff, 0xff])
-        expect<Int32>(int32).toStrictEqual(new Int32(-1));
-        int32.populateFromBytes([0x01, 0xc0, 0xff, 0xff])
-        expect<Int32>(int32).toStrictEqual(new Int32(-16383));
-        int32.populateFromBytes([0x01, 0x00, 0x00, 0xc0])
-        expect<Int32>(int32).toStrictEqual(new Int32(-1073741823));
+        expect<Int32>(Int32.fromU8a([0xff, 0xff, 0xff, 0x3f])).toStrictEqual(new Int32(1073741823));
+        expect<Int32>(Int32.fromU8a([0x01, 0xc0, 0xff, 0xff])).toStrictEqual(new Int32(-16383));
     });
+
+    it("should decode int32 with populate method", () => {
+        const int32 = new Int32();
+        int32.populateFromBytes([0xff, 0xff, 0xff, 0x3f]);
+        expect<Int32>(int32).toStrictEqual(new Int32(1073741823));
+        int32.populateFromBytes([0xff, 0xff, 0xff, 0xff]);
+        expect<Int32>(int32).toStrictEqual(new Int32(-1));
+        int32.populateFromBytes([0x01, 0xc0, 0xff, 0xff]);
+        expect<Int32>(int32).toStrictEqual(new Int32(-16383));
+        int32.populateFromBytes([0x01, 0x00, 0x00, 0xc0]);
+        expect<Int32>(int32).toStrictEqual(new Int32(-1073741823));
+    })
 
     it('should decode only four bytes', () => {
         expect<Int32>(Int32.fromU8a([0x01, 0x01, 0x00, 0x00, 0xc0], 1)).toStrictEqual(new Int32(-1073741823));
@@ -252,6 +262,11 @@ describe("Int64", () => {
         expect<Int64>(Int64.fromU8a([0x01])).toStrictEqual(new Int64(1));
         expect<Int64>(Int64.fromU8a([0xff, 0x3f])).toStrictEqual(new Int64(16383));
         expect<Int64>(Int64.fromU8a([0xff, 0xff, 0xff, 0x3f, 0, 0, 0, 0])).toStrictEqual(new Int64(1073741823));
+        expect<Int64>(Int64.fromU8a([0x01, 0x00, 0x00, 0xc0, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new Int64(-1073741823));
+        expect<Int64>(Int64.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0x80])).toStrictEqual(new Int64(-9223372036854775807));
+    });
+
+    it("should decode int64 with populate method", () => {
         const int64 = new Int64();
         int64.populateFromBytes([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f])
         expect<Int64>(int64).toStrictEqual(new Int64(9223372036854775807));
@@ -259,9 +274,7 @@ describe("Int64", () => {
         expect<Int64>(int64).toStrictEqual(new Int64(-1));
         int64.populateFromBytes([0x01, 0xc0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
         expect<Int64>(int64).toStrictEqual(new Int64(-16383));
-        expect<Int64>(Int64.fromU8a([0x01, 0x00, 0x00, 0xc0, 0xff, 0xff, 0xff, 0xff])).toStrictEqual(new Int64(-1073741823));
-        expect<Int64>(Int64.fromU8a([0x01, 0, 0, 0, 0, 0, 0, 0x80])).toStrictEqual(new Int64(-9223372036854775807));
-    });
+    })
 
     it('should decode only eight bytes', () => {
         expect<Int64>(Int64.fromU8a([0x01, 0x01, 0xff, 0x3f, 0, 0, 0, 0, 0, 0], 2)).toStrictEqual(new Int64(16383));

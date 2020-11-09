@@ -19,39 +19,15 @@ import {Codec} from "../interfaces/Codec";
 /** Representation for a UInt128 value in the system. */
 export class UInt128 implements Codec {
 
-    public value: u128;
+    private _value: u128;
     protected bitLength: i32;
 
-    constructor (value: u128 = u128.Zero) {
-        this.value = value;
-
-        if (value < u128.fromU32(1 << 6)) this.bitLength = BIT_LENGTH.INT_8;
-        else if (value < u128.fromU32(1 << 14)) this.bitLength = BIT_LENGTH.INT_16;
-        else if (value < u128.fromU32(1 << 30)) this.bitLength = BIT_LENGTH.INT_32;
-        else {
-            const valueInBytes = this.value.toBytes();
-            Bytes.trimEmptyBytes(valueInBytes);
-            this.bitLength = 1 + valueInBytes.length;
-        }
+    get value(): u128{
+        return this._value;
     }
-    /**
-     * @description Non-static constructor method used to populate defined properties of the model
-     * @param bytes SCALE encoded bytes
-     * @param index index to start decoding the bytes from
-     */
-    populateFromBytes(bytes: u8[], index: i32 = 0): void{
-        assert(bytes.length - index != 0, 'Invalid input: Byte array should not be empty');
-        const mode = bytes[index] & 0x03;
-        if (i32(mode) <= 2) {
-            this.value = new u128(u64(Bytes.decodeSmallInt(bytes, mode).value), 0);
-            return ;
-        }
-        const topSixBits = bytes[index] >> 2;
-        const byteLength = topSixBits + 4;
-
-        const value = bytes.slice(index + 1, byteLength + 1);
-        Bytes.appendZeroBytes(value, BIT_LENGTH.INT_128);
-        this.value = u128.fromBytesLE(value);
+    constructor (value: u128 = u128.Zero) {
+        this._value = value;
+        this.bitLength = UInt128._computeBitLength(value);
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification */
@@ -81,7 +57,17 @@ export class UInt128 implements Codec {
     toString(): string {
         return this.value.toString();
     }
-
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length - index > 0, 'Invalid input: Byte array should not be empty');
+        const value = UInt128._computeValue(bytes, index);
+        this._value = value;
+        this.bitLength = UInt128._computeBitLength(value);
+    }
     /**
      * @description The length of Int when the value is encoded
      */
@@ -89,21 +75,43 @@ export class UInt128 implements Codec {
         return this.bitLength;
     }
 
-    /** Instantiates new UInt128 from u8[] SCALE encoded bytes */
-    static fromU8a(input: u8[]): UInt128 {
-        assert(input.length != 0, 'Invalid input: Byte array should not be empty');
-        const mode = input[0] & 0x03;
+    /**
+     * Internal static private function to compute value of the UInt128
+     * @param bytes 
+     * @param index 
+     */
+    static _computeValue(bytes: u8[], index: i32 = 0): u128{
+        const mode = bytes[index] & 0x03;
         if (i32(mode) <= 2) {
-            return new UInt128(new u128(u64(Bytes.decodeSmallInt(input, mode).value), 0));
+            return new u128(u64(Bytes.decodeSmallInt(bytes, mode, index).value), 0);
         }
-
-        const topSixBits = input[0] >> 2;
+        const topSixBits = bytes[index] >> 2;
         const byteLength = topSixBits + 4;
 
-        const value = input.slice(1, byteLength + 1);
+        const value = bytes.slice(index + 1, byteLength + 1);
         Bytes.appendZeroBytes(value, BIT_LENGTH.INT_128);
+        return u128.fromBytesLE(value)
+    }
 
-        return new UInt128(u128.fromBytesLE(value));
+    /**
+     * Internal private function to compute bit length of the value
+     * @param value 
+     */
+    static _computeBitLength(value: u128): i32 {
+        if (value < u128.fromU32(1 << 6)) return BIT_LENGTH.INT_8;
+        else if (value < u128.fromU32(1 << 14)) return BIT_LENGTH.INT_16;
+        else if (value < u128.fromU32(1 << 30)) return BIT_LENGTH.INT_32;
+        else {
+            const valueInBytes = value.toBytes();
+            Bytes.trimEmptyBytes(valueInBytes);
+            return 1 + valueInBytes.length;
+        }
+    }
+
+    /** Instantiates new UInt128 from u8[] SCALE encoded bytes */
+    static fromU8a(input: u8[], index: i32 = 0): UInt128 {
+        assert(input.length - index != 0, 'Invalid input: Byte array should not be empty');
+        return new UInt128(UInt128._computeValue(input, index));
     }
 
     @inline @operator('==')

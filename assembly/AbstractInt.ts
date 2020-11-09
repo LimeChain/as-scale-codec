@@ -19,10 +19,14 @@ import { Bytes } from "./utils/Bytes";
 export abstract class AbstractInt<T extends number> implements Codec {
 
     protected bitLength: i32;
-    public value: T;
+    private _value: T;
+    
+    get value(): T{
+        return this._value;
+    }
 
     constructor (value: T, bitLength: i32) {
-        this.value = value;
+        this._value = value;
         this.bitLength = bitLength;
     }
 
@@ -39,8 +43,8 @@ export abstract class AbstractInt<T extends number> implements Codec {
      * @param index index to start decoding the bytes from
      */
     public populateFromBytes(bytes: u8[], index: i32 = 0): void {
-        assert(bytes.length >= this.bitLength - index, "AbstractInt: Invalid bytes provided");
-        this.value = Bytes.toUint<T>(bytes, this.bitLength, index);
+        assert(bytes.length - index > 0, "AbstractInt: Invalid bytes provided");
+        this._value = Bytes.toUint<T>(bytes, this.bitLength, index);
     }
 
     /**

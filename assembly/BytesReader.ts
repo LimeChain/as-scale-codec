@@ -45,15 +45,6 @@ export class BytesReader{
     getLeftoverBytes(): u8[]{
         return this.bytes.slice(this.index);
     }
-
-    /**
-    * Read a single byte
-    */
-    readByte(): u8{
-        const byte = this.bytes[this.index];
-        this.index += 1;
-        return byte;
-    }
     /**
      * Read custom sized array of raw bytes
      * @param size byte array size

@@ -17,11 +17,15 @@ import { BIT_LENGTH } from "./utils/Bytes";
 
 export class Byte implements Codec {
 
-    public value: u8;
+    private _value: u8;
     protected bitLength: i32;
 
-    constructor (value: u8) {
-        this.value = value;
+    get value(): u8{
+        return this._value;
+    }
+
+    constructor (value: u8 = 0) {
+        this._value = value;
         this.bitLength = BIT_LENGTH.INT_8;
     }
 
@@ -38,7 +42,7 @@ export class Byte implements Codec {
      */
     public populateFromBytes(bytes: u8[], index: i32 = 0): void{
         assert(bytes.length - index > 0, 'Bool: Cannot decode invalid input');
-        this.value = bytes[index];
+        this._value = bytes[index];
     }
 
     /**
@@ -49,9 +53,9 @@ export class Byte implements Codec {
     }
 
     /** Instantiates new Byte from u8[] SCALE encoded bytes */
-    static fromU8a (value: u8[]): Byte {
-        assert(value.length == 1, 'Byte: cannot decode invalid type');
-        return new Byte(value[0]);
+    static fromU8a (value: u8[], index: i32 = 0): Byte {
+        assert(value.length - index > 0, 'Byte: cannot decode invalid type');
+        return new Byte(value[index]);
     }
 
     @inline @operator('==')

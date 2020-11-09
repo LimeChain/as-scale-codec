@@ -39,6 +39,14 @@ describe("Bool", () => {
         expect<Bool>(Bool.fromU8a([0x00, 0x0f, 0xff, 0x00], 3)).toStrictEqual(new Bool(false));
     });
 
+    it('should decode using populate from bytes', () => {
+        const instance = new Bool();
+        instance.populateFromBytes([0]);
+        expect<Bool>(instance).toStrictEqual(new Bool(false));
+        instance.populateFromBytes([1]);
+        expect<Bool>(instance).toStrictEqual(new Bool(true));
+    })
+
     itThrows('when provided invalid bool value', () => {
         Bool.fromU8a([0x05]);
     })
