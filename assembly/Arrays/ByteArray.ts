@@ -38,7 +38,6 @@ export class ByteArray extends AbstractArray<Byte, u8> {
 
         return result;
     }
-
     /**
     * @description BoolArray elements decryption implementation
     */
@@ -49,6 +48,13 @@ export class ByteArray extends AbstractArray<Byte, u8> {
             scaleByte.value,
             scaleByte.encodedLength()
         )
+    }
+
+    /**
+     * @description Returns encoded byte length of the type
+     */
+    public encodedLength(): i32{
+        return (new CompactInt(this.values.length).encodedLength()) + super.values.length;
     }
     
     /**

@@ -18,6 +18,7 @@ import { UInt128 } from "../UInt/UInt128";
 import { u128 } from "as-bignum";
 import { ArrayUtils } from "../utils/Arrays";
 import { BytesReader, CompactInt } from "..";
+import { BIT_LENGTH } from "../utils/Bytes";
 
 // @ts-ignore
 export class UInt128Array extends AbstractArray<UInt128, u128> {
@@ -47,11 +48,19 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
             this.values.push(element.value);
         }
     }
+
     /**
     * @description Instantiates ScaleIntArray from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[]): UInt128Array {
         return AbstractArray.fromU8a<UInt128Array>(input);
+    }
+
+    /**
+     * @description Returns encoded byte length of the type
+     */
+    public encodedLength(): i32{
+        return (new CompactInt(this.values.length).encodedLength()) + super.values.length * BIT_LENGTH.INT_128;
     }
 
     @inline @operator('==')

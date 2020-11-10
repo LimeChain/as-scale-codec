@@ -35,6 +35,17 @@ export class IntArray extends AbstractArray<CompactInt, i64> {
     }
 
     /**
+     * @description Returns encoded byte length of the type
+     */
+    public encodedLength(): i32{
+        let len: i32 = new CompactInt(this.values.length).encodedLength();
+        for (let i: i32 = 0; i < this.values.length; i++){
+            const value = new CompactInt(this.values[i]);
+            len += value.encodedLength();
+        }
+        return len;
+    }
+    /**
      * @description Non-static constructor method used to populate defined properties of the model
      * @param bytes SCALE encoded bytes
      * @param index index to start decoding the bytes from

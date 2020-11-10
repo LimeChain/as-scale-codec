@@ -33,6 +33,13 @@ export class BoolArray extends AbstractArray<Bool, bool> {
             scaleBool.encodedLength()
         )
     }
+    
+    /**
+     * @description Returns encoded byte length of the type
+     */
+    public encodedLength(): i32{
+        return (new CompactInt(this.values.length).encodedLength()) + super.values.length;
+    }
 
     /**
      * @description Non-static constructor method used to populate defined properties of the model

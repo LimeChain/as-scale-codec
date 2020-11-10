@@ -44,14 +44,7 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> impleme
     /**
      * @description Returns encoded byte length of the type
      */
-    public encodedLength(): i32{
-        let len: i32 = new CompactInt(this.values.length).encodedLength();
-        for (let i: i32 = 0; i < this.values.length; i++){
-            const value = instantiate<ScaleType>(this.values[i]);
-            len += value.encodedLength();
-        }
-        return len;
-    }
+    abstract encodedLength(): i32;
     
     /**
      * @description Non-static constructor method used to populate defined properties of the model
