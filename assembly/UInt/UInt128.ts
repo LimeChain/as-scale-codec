@@ -64,9 +64,9 @@ export class UInt128 implements Codec {
      */
     populateFromBytes(bytes: u8[], index: i32 = 0): void{
         assert(bytes.length - index > 0, 'Invalid input: Byte array should not be empty');
-        const value = UInt128._computeValue(bytes, index);
+        const value = UInt128._computeValue(bytes.slice(index));
         this._value = value;
-        this.bitLength = UInt128._computeBitLength(value);
+        this.bitLength = UInt128._computeBitLength(this._value);
     }
     /**
      * @description The length of Int when the value is encoded
@@ -80,15 +80,15 @@ export class UInt128 implements Codec {
      * @param bytes 
      * @param index 
      */
-    static _computeValue(bytes: u8[], index: i32 = 0): u128{
-        const mode = bytes[index] & 0x03;
+    static _computeValue(bytes: u8[]): u128{
+        const mode = bytes[0] & 0x03;
         if (i32(mode) <= 2) {
-            return new u128(u64(Bytes.decodeSmallInt(bytes, mode, index).value), 0);
+            return new u128(u64(Bytes.decodeSmallInt(bytes, mode, 0).value), 0);
         }
-        const topSixBits = bytes[index] >> 2;
+        const topSixBits = bytes[0] >> 2;
         const byteLength = topSixBits + 4;
 
-        const value = bytes.slice(index + 1, byteLength + 1);
+        const value = bytes.slice(1, byteLength + 1);
         Bytes.appendZeroBytes(value, BIT_LENGTH.INT_128);
         return u128.fromBytesLE(value)
     }
@@ -111,7 +111,7 @@ export class UInt128 implements Codec {
     /** Instantiates new UInt128 from u8[] SCALE encoded bytes */
     static fromU8a(input: u8[], index: i32 = 0): UInt128 {
         assert(input.length - index != 0, 'Invalid input: Byte array should not be empty');
-        return new UInt128(UInt128._computeValue(input, index));
+        return new UInt128(UInt128._computeValue(input.slice(index)));
     }
 
     @inline @operator('==')

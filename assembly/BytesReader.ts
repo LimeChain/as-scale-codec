@@ -60,7 +60,7 @@ export class BytesReader{
      * @param index 
      */
     static decodeInto<T extends Codec>(bytes: u8[], index: i32 = 0): T{
-        const instance = instantiate<T>();
+        const instance: T = instantiate<T>();
         instance.populateFromBytes(bytes, index);
         return instance;
     }

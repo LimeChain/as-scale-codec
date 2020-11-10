@@ -34,15 +34,11 @@ export class IntArray extends AbstractArray<CompactInt, i64> {
         )
     }
 
-    encodedLength(): i32 {
-        let len: i32 = new CompactInt(super.values.length).encodedLength();
-        for (let i: i32 = 0; i < this.values.length; i++){
-            const value = new CompactInt(this.values[i]);
-            len += value.encodedLength();
-        }
-        return len;
-    }
-
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
     populateFromBytes(bytes: u8[], index: i32 = 0): void {
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();

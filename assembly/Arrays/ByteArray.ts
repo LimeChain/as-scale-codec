@@ -50,13 +50,12 @@ export class ByteArray extends AbstractArray<Byte, u8> {
             scaleByte.encodedLength()
         )
     }
-
+    
     /**
-     * @description The length of encoded bytes of the ByteArray
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
      */
-    public encodedLength (): i32 {
-        return (new CompactInt(super.values.length).encodedLength()) + super.values.length;
-    }
     populateFromBytes(bytes: u8[], index: i32 = 0): void {
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();

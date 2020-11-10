@@ -17,11 +17,11 @@ describe("Bool Array", () => {
 
     it("should decode bool array with populate method", () => {
         const boolArray1 = new BoolArray();
-        boolArray1.populateFromBytes([0x00, 0x01]);
+        boolArray1.populateFromBytes([0x08, 0x00, 0x01]);
         expect<BoolArray>(boolArray1).toStrictEqual(new BoolArray([false, true]));
         const boolArray = new BoolArray();
-        boolArray.populateFromBytes([0x00, 0x01, 0x01, 0x01, 0x00]);
-        expect<BoolArray>(boolArray).toStrictEqual(new BoolArray([false, true, true, true, false]));
+        boolArray.populateFromBytes([0x0c, 0x00, 0x01, 0x01]);
+        expect<BoolArray>(boolArray).toStrictEqual(new BoolArray([false, true, true]));
     })
     itThrows("should throw because of invalid bytes", () => {
         const boolTest: u8[] = [0x0c, 0x00, 0x01, 0xff];
