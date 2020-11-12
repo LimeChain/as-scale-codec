@@ -221,28 +221,51 @@ const bytes: u8[] = [
 const bytesReader = new BytesReader(bytes);
 
 // Read Int64
-bytesReader.readInt64();
+bytesReader.readInto<Int64>();
 // => new Int(-1)
 
 // Read UInt32
-bytesReader.readUInt32();
+bytesReader.readInto<UInt32>();
 // => new UInt32(69)
 
 // Read CompactInt
-bytesReader.readCompactInt();
+bytesReader.readInto<CompactInt>();
 // => new CompactInt(12312411)
 
 // Read ScaleString
-bytesReader.readScaleString();
+bytesReader.readInto<ScaleString>();
 // => new ScaleString("as-scale-codec")
 
 // Read Hash
-bytesReader.readHash();
+bytesReader.readInto<Hash>();
 // => new Hash([128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1])
 
 // Read Bool
-bytesReader.readBool();
+bytesReader.readInto<Bool>();
 // => new Bool(false)
+
+// If you have single SCALE encoded type, you can use static decodeInto<T>() function of BytesReader
+
+const uInt64Bytes: u8[] = [1, 0, 0, 0, 0, 0, 0];
+// Read UInt64
+BytesReader.decodeInto<UInt64>(uInt64Bytes);
+// => new UInt64(1)
+
+const hashBytes: u8[] = [0xff, 0x00, 0xab];
+// Read Hash
+BytesReader.decodeInto<Hash>(hashBytes);
+// new Hash([0xff, 0x00, 0xab])
+
+const cmpBytes: u8[] = [169, 2];
+// Read CompactInt
+BytesReader.decodeInto<CompactInt>(cmpBytes);
+// new CompactInt(170)
+
+const int8Bytes: u8[] = [0xff];
+// Read Int8
+BytesReader.decodeInto<Int8>(int8Bytes);
+// new Int8(-1)
+
 ```
 
 # Miscellaneous
