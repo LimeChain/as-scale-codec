@@ -69,7 +69,6 @@ export class ScaleString extends ByteArray {
         assert(bytes.length - index - len.decBytes >= 1, "ScaleString: Incorrectly encoded input");
         const buff = new Uint8Array(bytesLength);
         Bytes.copyToTyped(bytes, buff, 0, index+stringStart);
-        // constructor
         return String.UTF8.decode(buff.buffer);
     }
     /**
