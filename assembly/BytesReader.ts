@@ -12,12 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bool } from "./Bool";
-import { UInt8, UInt16, UInt32, UInt64 } from "./UInt";
-import { Int8, Int16, Int32, Int64, CompactInt } from './Int';
-import { Hash } from './Hash';
-import { ByteArray } from "./Arrays";
-import { ScaleString } from "./ScaleString";
+import { Codec } from '.';
 
 /**
  * @description BytesReader class that helps reading bytes into SCALE Codec types
@@ -37,12 +32,18 @@ export class BytesReader{
     }
 
     /**
-     * Read a single byte
+     * @description Reads bytes into a given Type
      */
-    readByte(): u8{
-        const byte = this.bytes[this.index];
-        this.index += 1;
-        return byte;
+    readInto<T extends Codec>(): T{
+        const instance: T = BytesReader.decodeInto<T>(this.bytes, this.index);
+        this.index += instance.encodedLength();
+        return instance;
+    }
+    /**
+     * Returns the unread bytes from the reader
+     */
+    getLeftoverBytes(): u8[]{
+        return this.bytes.slice(this.index);
     }
     /**
      * Read custom sized array of raw bytes
@@ -53,116 +54,14 @@ export class BytesReader{
         this.index += size;
         return bytes;
     }
-
     /**
-     * Read bytes into Int8
+     * @description Static variant of readInto() method
+     * @param bytes 
+     * @param index 
      */
-    readInt8(): Int8 {
-        const value = Int8.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into Int16
-     */
-    readInt16(): Int16 {
-        const value = Int16.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into Int32
-     */
-    readInt32(): Int32 {
-        const value = Int32.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into Int64
-     */
-    readInt64(): Int64 {
-        const value = Int64.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into UInt8
-     */
-    readUInt8(): UInt8 {
-        const value = UInt8.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();        
-        return value;
-    }
-    /**
-     * Read bytes into UInt16
-     */
-    readUInt16(): UInt16 {
-        const value = UInt16.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into UInt32
-     */
-    readUInt32(): UInt32 {
-        const value = UInt32.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into UInt64
-     */
-    readUInt64(): UInt64 {
-        const value = UInt64.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into CompactInt
-     */
-    readCompactInt(): CompactInt{
-        const value = CompactInt.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-
-    /**
-     * Read byte into Bool
-     */
-    readBool(): Bool {
-        const value = Bool.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into Hash
-     */
-    readHash(): Hash {
-        const value = Hash.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into ByteArray
-     */
-    readByteArray(): ByteArray {
-        const value = ByteArray.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Read bytes into ScaleString
-     */
-    readScaleString(): ScaleString {
-        const value = ScaleString.fromU8a(this.bytes, this.index);
-        this.index += value.encodedLength();
-        return value;
-    }
-    /**
-     * Returns the unread bytes from the reader
-     */
-    getLeftoverBytes(): u8[]{
-        return this.bytes.slice(this.index);
+    static decodeInto<T extends Codec>(bytes: u8[], index: i32 = 0): T{
+        const instance: T = instantiate<T>();
+        instance.populateFromBytes(bytes, index);
+        return instance;
     }
 }

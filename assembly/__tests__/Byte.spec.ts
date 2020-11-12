@@ -25,7 +25,12 @@ describe("Byte", () => {
         expect<Byte>(Byte.fromU8a([0x1f])).toStrictEqual(new Byte(0x1f));
     });
 
-    itThrows('when provided invalid byte array', () => {
-        Byte.fromU8a([0xac, 0x01]);
+    it("should decode with populate method", () => {
+        const instance = new Byte();
+        instance.populateFromBytes([1]);
+        expect<Byte>(instance).toStrictEqual(new Byte(1));
+    })
+    itThrows('when provided empty byte array', () => {
+        Byte.fromU8a([]);
     });
 });

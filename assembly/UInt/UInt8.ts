@@ -18,7 +18,7 @@ import { AbstractInt } from "../AbstractInt";
 /** Representation for a UInt8 value in the system. */
 export class UInt8 extends AbstractInt<u8> {
 
-    constructor (value: u8) {
+    constructor (value: u8 = 0) {
         super(value, BIT_LENGTH.INT_8)
     }
 

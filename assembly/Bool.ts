@@ -17,10 +17,14 @@ import { Codec } from "./interfaces/Codec";
 /** Representation for a boolean value in the system. */
 export class Bool implements Codec {
 
-    public readonly value: bool;
+    private _value: bool;
 
-    constructor (value: bool) {
-        this.value = value;
+    get value(): bool{
+        return this._value;
+    }
+    
+    constructor (value: bool = false) {
+        this._value = value;
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification
@@ -31,6 +35,16 @@ export class Bool implements Codec {
         let bytesEncoded = new Array<u8>(1);
         bytesEncoded[0] = this.value ? 0x01 : 0x00;
         return bytesEncoded;
+    }
+
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model.
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length > 0 && (bytes[index] == 1 || bytes[index] == 0), 'Bool: Cannot decode invalid input');
+        this._value = bytes[index] == 1;
     }
 
     /**
@@ -49,7 +63,7 @@ export class Bool implements Codec {
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[], index: i32 = 0): Bool {
-        assert(value.length > 0 && (value[index] == 1 || value[index] == 0), 'Bool: Cannot decode invalid input');
+        assert(value.length - index > 0 && (value[index] == 1 || value[index] == 0), 'Bool: Cannot decode invalid input');
 
         return new Bool(value[index] == 1);
     }

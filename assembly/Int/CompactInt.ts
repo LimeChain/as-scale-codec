@@ -20,18 +20,16 @@ import { BytesBuffer } from "../utils/BytesBuffer";
 /** Representation for a Int8 value in the system. */
 export class CompactInt implements Codec {
 
-    public readonly value: i64;
+    private _value: i64;
     protected bitLength: i32;
 
-    constructor (value: i64) {
-        this.value = value;
+    get value(): i64{
+        return this._value;
+    }
 
-        if (value < 1 << 6) this.bitLength = BIT_LENGTH.INT_8;
-        else if (value < 1 << 14) this.bitLength = BIT_LENGTH.INT_16;
-        else if (value < 1 << 30) this.bitLength = BIT_LENGTH.INT_32;
-        else {
-            this.bitLength = BIT_LENGTH.INT_64;
-        }
+    constructor (value: i64 = 0) {
+        this._value = value;
+        this.bitLength = CompactInt._computeBitLength(value);
     }
 
     /**
@@ -43,7 +41,17 @@ export class CompactInt implements Codec {
 
         return bytesBuffer.bytes;
     }
-
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    public populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        assert(bytes.length - index > 0, "CompactInt: Empty bytes array provided");
+        const decodedData = Bytes.decodeCompactInt(bytes, index);
+        this._value = decodedData.value;
+        this.bitLength = CompactInt._computeBitLength(decodedData.value);
+    }
     /**
     * @description Returns the string representation of the value
     */
@@ -51,6 +59,18 @@ export class CompactInt implements Codec {
         return this.value.toString();
     }
 
+    /**
+     * Internal private function to compute bit length of the value
+     * @param value 
+     */
+    static _computeBitLength(value: u64): i32 {
+        if (value < 1 << 6) return BIT_LENGTH.INT_8;
+        else if (value < 1 << 14) return BIT_LENGTH.INT_16;
+        else if (value < 1 << 30) return BIT_LENGTH.INT_32;
+        else {
+            return BIT_LENGTH.INT_64;
+        }
+    }
     /**
      * @description The length of Int when the value is encoded
      */

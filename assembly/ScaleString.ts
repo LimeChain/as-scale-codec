@@ -17,13 +17,32 @@ import { ByteArray } from "./Arrays/ByteArray";
 
 export class ScaleString extends ByteArray {
 
-    public readonly valueStr: string;
+    private _valueStr: string;
 
-    constructor (input: string) {
+    get valueStr(): string{
+        return this._valueStr;
+    }
+
+    constructor (input: string = "") {
         super([]);
-        this.valueStr = input;
+        this._valueStr = input;
 
         const inputBuffer: ArrayBuffer = String.UTF8.encode(input);
+        const u8Input = Uint8Array.wrap(inputBuffer);
+
+        for (let i = 0; i < u8Input.length; i++) {
+            this.values[i] = u8Input[i];
+        }
+    }
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        // constructor
+        this._valueStr = ScaleString._computeValueStr(bytes, index);
+        const inputBuffer: ArrayBuffer = String.UTF8.encode(this.valueStr);
         const u8Input = Uint8Array.wrap(inputBuffer);
 
         for (let i = 0; i < u8Input.length; i++) {
@@ -39,19 +58,23 @@ export class ScaleString extends ByteArray {
     }
 
     /**
+     * Internal private function to compute the string value from the bytes
+     * @param bytes 
+     * @param index 
+     */
+    static _computeValueStr(bytes: u8[], index: i32 = 0): string {
+        const len = Bytes.decodeCompactInt(bytes, index);
+        const bytesLength = i32(len.value);
+        const stringStart = i32(len.decBytes);
+        assert(bytes.length - index - len.decBytes >= 1, "ScaleString: Incorrectly encoded input");
+        const buff = new Uint8Array(bytesLength);
+        Bytes.copyToTyped(bytes, buff, 0, index+stringStart);
+        return String.UTF8.decode(buff.buffer);
+    }
+    /**
     * @description Instantiates String from u8[] SCALE encoded bytes (Decode)
     */
     static fromU8a (input: u8[], index: i32 = 0): ScaleString {
-        const len = Bytes.decodeCompactInt(input, index);
-        const bytesLength = i32(len.value);
-        const stringStart = i32(len.decBytes);
-
-        assert(input.length - index - len.decBytes >= 1, "ScaleString: Incorrectly encoded input");
-
-        const buff = new Uint8Array(bytesLength);
-        Bytes.copyToTyped(input, buff, 0, index + stringStart);
-
-        return new ScaleString(String.UTF8.decode(buff.buffer));
+        return new ScaleString(ScaleString._computeValueStr(input, index));
     }
 }
-

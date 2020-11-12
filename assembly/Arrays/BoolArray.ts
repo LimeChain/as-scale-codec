@@ -16,8 +16,8 @@ import { Bool } from "./../Bool";
 import { AbstractArray } from "./AbstractArray"
 
 import { DecodedData } from "../interfaces/DecodedData";
-import { Bytes } from "../utils/Bytes";
 import { ArrayUtils } from "../utils/Arrays";
+import { BytesReader, CompactInt } from "..";
 
 // @ts-ignore
 export class BoolArray extends AbstractArray<Bool, bool> {
@@ -33,7 +33,28 @@ export class BoolArray extends AbstractArray<Bool, bool> {
             scaleBool.encodedLength()
         )
     }
+    
+    /**
+     * @description Returns encoded byte length of the type
+     */
+    public encodedLength(): i32{
+        return (new CompactInt(this.values.length).encodedLength()) + super.values.length;
+    }
 
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    populateFromBytes(bytes: u8[], index: i32 = 0): void{
+        const bytesReader = new BytesReader(bytes.slice(index));
+        const data = bytesReader.readInto<CompactInt>();
+
+        for(let i: i32 = 0; i < data.value - index; i++){
+            const element = bytesReader.readInto<Bool>();
+            this.values.push(element.value);
+        }
+    }
     /**
     * @description Instantiates ScaleBoolArray from u8[] SCALE encoded bytes (Decode)
     */
