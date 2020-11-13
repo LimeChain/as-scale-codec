@@ -89,6 +89,31 @@ export function demonstrate(): void {
     trace("UInt64 [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00] -> " + UInt64.fromU8a([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]).value.toString())
     trace("UInt128 [0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + UInt128.fromU8a([0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]).toString());
 
+    trace("Decoding using popualateFromBytes Codec method");
+    const hash = new Hash();
+    hash.populateFromBytes([12, 123, 123, 12, 12, 12, 3, 31, 12, 12, 123, 3, 5, 1, 2, 34, 6, 8, 9, 12, 12, 32, 21, 53, 0, 0, 0, 0, 0, 0, 0, 0]);
+    trace("Hash [12, 123, 123, 12, 12, 12, 3, 31, 12, 12, 123, 3, 5, 1, 2, 34, 6, 8, 9, 12, 12, 32, 21, 53, 0, 0, 0, 0, 0, 0, 0, 0] -> " + hash.toString());
+    const int64 = new Int64();
+    int64.populateFromBytes([255, 255, 255, 1]);
+    trace("Int64 [21, 21, 2, 1] -> " + int64.value.toString());
+    const cmpInt = new CompactInt();
+    cmpInt.populateFromBytes([145, 2]);
+    trace("CompactInt [145, 2] -> " + cmpInt.value.toString());
+    const uInt64 = new UInt64();
+    uInt64.populateFromBytes([1, 1, 1, 1]);
+    trace("UInt64 [1, 1, 1, 1] -> " + uInt64.value.toString());
+    const scaleString1 = new ScaleString();
+    scaleString1.populateFromBytes([20, 99, 99, 100, 112, 103]);
+    trace("ScaleString [97, 99, 99, 100, 112, 103] -> " + scaleString1.valueStr);
+    const byte = new Byte();
+    byte.populateFromBytes([8]);
+    trace("Byte [8] -> " + byte.toU8a().toString());
+    const int32 = new Int32();
+    int32.populateFromBytes([255, 0, 0, 0]); 
+    trace("Int32 [255, 0, 0, 0] -> " + int32.value.toString());
+
+
+
     trace("Decoding using BytesReader");
     const bytes: u8[] = [
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
