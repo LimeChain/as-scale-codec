@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
+import { Bool, Byte, ScaleString, Hash, CompactInt, UInt128Array } from "as-scale-codec"
 import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
 import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
 import { BytesReader } from 'as-scale-codec';
@@ -89,6 +89,31 @@ export function demonstrate(): void {
     trace("UInt64 [0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00] -> " + UInt64.fromU8a([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]).value.toString())
     trace("UInt128 [0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + UInt128.fromU8a([0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]).toString());
 
+    trace("Decoding using popualateFromBytes Codec method");
+    const hash = new Hash();
+    hash.populateFromBytes([12, 123, 123, 12, 12, 12, 3, 31, 12, 12, 123, 3, 5, 1, 2, 34, 6, 8, 9, 12, 12, 32, 21, 53, 0, 0, 0, 0, 0, 0, 0, 0]);
+    trace("Hash [12, 123, 123, 12, 12, 12, 3, 31, 12, 12, 123, 3, 5, 1, 2, 34, 6, 8, 9, 12, 12, 32, 21, 53, 0, 0, 0, 0, 0, 0, 0, 0] -> " + hash.toString());
+    const int64 = new Int64();
+    int64.populateFromBytes([255, 255, 255, 1]);
+    trace("Int64 [21, 21, 2, 1] -> " + int64.value.toString());
+    const cmpInt = new CompactInt();
+    cmpInt.populateFromBytes([145, 2]);
+    trace("CompactInt [145, 2] -> " + cmpInt.value.toString());
+    const uInt64 = new UInt64();
+    uInt64.populateFromBytes([1, 1, 1, 1]);
+    trace("UInt64 [1, 1, 1, 1] -> " + uInt64.value.toString());
+    const scaleString1 = new ScaleString();
+    scaleString1.populateFromBytes([20, 99, 99, 100, 112, 103]);
+    trace("ScaleString [97, 99, 99, 100, 112, 103] -> " + scaleString1.valueStr);
+    const byte = new Byte();
+    byte.populateFromBytes([8]);
+    trace("Byte [8] -> " + byte.toU8a().toString());
+    const int32 = new Int32();
+    int32.populateFromBytes([255, 0, 0, 0]); 
+    trace("Int32 [255, 0, 0, 0] -> " + int32.value.toString());
+
+
+
     trace("Decoding using BytesReader");
     const bytes: u8[] = [
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -100,10 +125,14 @@ export function demonstrate(): void {
     ];
     
     const bytesReader = new BytesReader(bytes);
-    trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInt64().value.toString());
-    trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readUInt32().value.toString());
-    trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readCompactInt().value.toString());
-    trace("ScaleString [56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99] -> " + bytesReader.readScaleString().valueStr);
-    trace("Hash [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1] -> " + bytesReader.readHash().toString());
-    trace("Bool [0] -> " + bytesReader.readBool().toString());
+    trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInto<Int64>().value.toString());
+    trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readInto<UInt32>().value.toString());
+    trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readInto<CompactInt>().value.toString());
+    trace("ScaleString [56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99] -> " + bytesReader.readInto<ScaleString>().valueStr);
+    trace("Hash [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1] -> " + bytesReader.readInto<Hash>().toString());
+    trace("Bool [0] -> " + bytesReader.readInto<Bool>().toString());
+    trace("CompactInt [169, 2] -> " + BytesReader.decodeInto<CompactInt>([169, 2]).toString());
+    trace("Int8 [0xff] -> " + BytesReader.decodeInto<Int8>([0xff]).toString());
+    trace("UInt8 [123] -> " + BytesReader.decodeInto<UInt8>([123]).toString());
+    trace("UInt128Array [0x10, 0x04, 0x0c, 0x0c, 0x10] -> " + BytesReader.decodeInto<UInt128Array>([0x10, 0x04, 0x0c, 0x0c, 0x10]).values.toString());
 }
