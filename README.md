@@ -280,7 +280,7 @@ Hash.bytesToHash([0xff, 0x00, ..., 0x00]); // (32 bytes long)
 // => [0xff, ... , 0x00] (32 bytes long)
 ```
 
-### Overloaded arithmetic operations for integer types (currently, only + and -)
+### Overloaded arithmetic operators for integer types (currently, only + and -)
 
 ```jsx
 const sum = new UInt64(100) + new UInt64(13231)
