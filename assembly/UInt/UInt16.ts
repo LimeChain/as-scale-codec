@@ -42,4 +42,20 @@ export class UInt16 extends AbstractInt<u16>  {
     static notEq(a: UInt16, b: UInt16): bool {
         return a.value != b.value;
     }
+
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: UInt16, b: UInt16): UInt16{
+        return new UInt16(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: UInt16, b: UInt16): UInt16{
+        assert(a.value >= b.value, "UInt16: Difference is out of range");
+        return new UInt16(a.value - b.value);
+    }
 }

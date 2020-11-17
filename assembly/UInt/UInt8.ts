@@ -41,4 +41,19 @@ export class UInt8 extends AbstractInt<u8> {
     static notEq(a: UInt8, b: UInt8): bool {
         return a.value != b.value;
     }
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: UInt8, b: UInt8): UInt8{
+        return new UInt8(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: UInt8, b: UInt8): UInt8{
+        assert(a.value >= b.value, "UInt8: Difference is out of range");
+        return new UInt8(a.value - b.value);
+    }
 }

@@ -42,4 +42,18 @@ export class Int16 extends AbstractInt<i16>  {
     static notEq(a: Int16, b: Int16): bool {
         return a.value != b.value;
     }
+        /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: Int16, b: Int16): Int16{
+        return new Int16(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: Int16, b: Int16): Int16{
+        return new Int16(a.value - b.value);
+    }
 }

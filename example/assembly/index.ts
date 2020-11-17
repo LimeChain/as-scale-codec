@@ -135,4 +135,10 @@ export function demonstrate(): void {
     trace("Int8 [0xff] -> " + BytesReader.decodeInto<Int8>([0xff]).toString());
     trace("UInt8 [123] -> " + BytesReader.decodeInto<UInt8>([123]).toString());
     trace("UInt128Array [0x10, 0x04, 0x0c, 0x0c, 0x10] -> " + BytesReader.decodeInto<UInt128Array>([0x10, 0x04, 0x0c, 0x0c, 0x10]).values.toString());
+
+    trace("addition and substraction");
+    const sum = new UInt64(100) + new UInt64(13231);
+    trace("new UInt64(100) + new UInt64(13231) => " + sum.value.toString());
+    const diff = new Int16(100) - new Int16(132)
+    trace("new Int16(100) - new Int16(132) => " + diff.value.toString());
 }

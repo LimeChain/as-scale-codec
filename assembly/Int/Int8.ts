@@ -41,4 +41,19 @@ export class Int8 extends AbstractInt<i8> {
     static notEq(a: Int8, b: Int8): bool {
         return a.value != b.value;
     }
+
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: Int8, b: Int8): Int8{
+        return new Int8(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: Int8, b: Int8): Int8{
+        return new Int8(a.value - b.value);
+    }
 }

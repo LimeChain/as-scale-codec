@@ -42,4 +42,18 @@ export class Int64 extends AbstractInt<i64> {
     static notEq(a: Int64, b: Int64): bool {
         return a.value != b.value;
     }
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: Int64, b: Int64): Int64{
+        return new Int64(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: Int64, b: Int64): Int64{
+        return new Int64(a.value - b.value);
+    }
 }

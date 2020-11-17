@@ -42,4 +42,18 @@ export class Int32 extends AbstractInt<i32> {
     static notEq(a: Int32, b: Int32): bool {
         return a.value != b.value;
     }
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: Int32, b: Int32): Int32{
+        return new Int32(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: Int32, b: Int32): Int32{
+        return new Int32(a.value - b.value);
+    }    
 }

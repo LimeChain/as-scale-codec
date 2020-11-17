@@ -42,4 +42,20 @@ export class UInt32 extends AbstractInt<i32> {
     static notEq(a: UInt32, b: UInt32): bool {
         return a.value != b.value;
     }
+
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: UInt32, b: UInt32): UInt32{
+        return new UInt32(a.value + b.value);
+    }
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: UInt32, b: UInt32): UInt32{
+        assert(a.value >= b.value, "UInt32: Difference is out of range");
+        return new UInt32(a.value - b.value);
+    }
 }

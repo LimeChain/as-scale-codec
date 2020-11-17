@@ -280,6 +280,17 @@ Hash.bytesToHash([0xff, 0x00, ..., 0x00]); // (32 bytes long)
 // => [0xff, ... , 0x00] (32 bytes long)
 ```
 
+### Overloaded arithmetic operations for integer types (currently, only + and -)
+
+```jsx
+const sum = new UInt64(100) + new UInt64(13231)
+// new UInt64(13331)
+const diff = new Int16(100) - new Int16(132)
+// new Int16(-32)
+const res = new UInt32(100) + new UInt32(13231) - new UInt32(331)
+// new UInt64(13000)
+```
+
 # **Tests**
 
 In order to run the unit tests, one must perform:

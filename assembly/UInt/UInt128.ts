@@ -124,6 +124,22 @@ export class UInt128 implements Codec {
         return a.value != b.value;
     }
 
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+    static add(a: UInt128, b: UInt128): UInt128{
+        return new UInt128(u128.add(a.value, b.value));
+    }
+
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: UInt128, b: UInt128): UInt128{
+        return new UInt128(u128.sub(a.value, b.value));
+    }
+
     // Commonly used values of UInt128
     @inline static get Zero(): UInt128 { return new UInt128(u128.Zero); }
     @inline static get One(): UInt128 { return new UInt128(u128.One); }

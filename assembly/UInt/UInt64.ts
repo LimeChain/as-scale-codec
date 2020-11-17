@@ -42,4 +42,21 @@ export class UInt64 extends AbstractInt<u64> {
     static notEq(a: UInt64, b: UInt64): bool {
         return a.value != b.value;
     }
+
+    /**
+     * @description Overloaded + operator
+     */
+    @inline @operator('+')
+     static add(a: UInt64, b: UInt64): UInt64{
+        return new UInt64(a.value + b.value);
+    }
+
+    /**
+     * @description Overloaded - operator
+     */
+    @inline @operator('-')
+     static sub(a: UInt64, b: UInt64): UInt64{
+        assert(a.value >= b.value, "UInt64: Difference is out of range");
+        return new UInt64(a.value - b.value);
+    }    
 }
