@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import { u128 } from "as-bignum";
-import {BIT_LENGTH, Bytes} from "../utils/Bytes";
-import {Codec} from "../interfaces/Codec";
+import { Codec } from "../interfaces/Codec";
+import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
+import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 
 /** Representation for a UInt128 value in the system. */
-export class UInt128 implements Codec {
+export class UInt128 implements Codec, UnwrappableCodec<u128> {
 
     private _value: u128;
     protected bitLength: i32;
@@ -30,6 +31,13 @@ export class UInt128 implements Codec {
         this.bitLength = UInt128._computeBitLength(value);
     }
 
+    /**
+     * @description Return inner value
+     */
+    unwrap(): u128{
+        return this._value;
+    }
+    
     /** Encodes the value as u8[] as per the SCALE codec specification */
     toU8a (): u8[] {
         const bytes = new Array<u8>();
