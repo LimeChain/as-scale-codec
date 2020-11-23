@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes } from "../utils/Bytes";
 import { Codec } from "../interfaces/Codec";
-import { BIT_LENGTH } from "../utils/Bytes";
+import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
+import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 
 /** Representation for a Int8 value in the system. */
-export class CompactInt implements Codec {
+export class CompactInt implements Codec, UnwrappableCodec<i64> {
 
     private _value: i64;
     protected bitLength: i32;
@@ -30,6 +30,13 @@ export class CompactInt implements Codec {
     constructor (value: i64 = 0) {
         this._value = value;
         this.bitLength = CompactInt._computeBitLength(value);
+    }
+
+    /**
+     * @description Return inner native value
+     */
+    unwrap(): i64{
+        return this._value;
     }
 
     /**
