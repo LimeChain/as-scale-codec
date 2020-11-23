@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
-import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
-import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
-import { BytesReader } from 'as-scale-codec';
-import { u128 } from "as-bignum"
+import { u128 } from "as-bignum";
+import { Bool, Byte, BytesReader, CompactInt, Hash, Int16, Int32, Int64, Int8, ScaleMap, ScaleString, UInt128, UInt16, UInt32, UInt64, UInt8 } from "as-scale-codec";
 
 export function demonstrate(): void {
     
@@ -33,6 +30,11 @@ export function demonstrate(): void {
     // String
     const scaleString = new ScaleString("a");
     trace("String(a) -> " + scaleString.toU8a().toString())
+
+    // ScaleMap
+    const scaleMap = new ScaleMap<Int32, Bool>();
+    scaleMap.set(new Int32(1), new Bool(false));
+    trace("ScaleMap(new Map([[1, false]])" + scaleMap.toU8a().toString()); // => [4, 1, 0, 0, 0, 0];
 
     // Hash
     const scaleHash = new Hash([0xff, 0x00, 0xab]);
@@ -100,10 +102,24 @@ export function demonstrate(): void {
     ];
     
     const bytesReader = new BytesReader(bytes);
+<<<<<<< Updated upstream
     trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInt64().value.toString());
     trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readUInt32().value.toString());
     trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readCompactInt().value.toString());
     trace("ScaleString [56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99] -> " + bytesReader.readScaleString().valueStr);
     trace("Hash [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1] -> " + bytesReader.readHash().toString());
     trace("Bool [0] -> " + bytesReader.readBool().toString());
+=======
+    trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInto<Int64>().value.toString());
+    trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readInto<UInt32>().value.toString());
+    trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readInto<CompactInt>().value.toString());
+    trace("ScaleString [56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99] -> " + bytesReader.readInto<ScaleString>().valueStr);
+    trace("Hash [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1] -> " + bytesReader.readInto<Hash>().toString());
+    trace("Bool [0] -> " + bytesReader.readInto<Bool>().toString());
+    trace("CompactInt [169, 2] -> " + BytesReader.decodeInto<CompactInt>([169, 2]).toString());
+    trace("Int8 [0xff] -> " + BytesReader.decodeInto<Int8>([0xff]).toString());
+    trace("UInt8 [123] -> " + BytesReader.decodeInto<UInt8>([123]).toString());
+    trace("UInt128Array [0x10, 0x04, 0x0c, 0x0c, 0x10] -> " + BytesReader.decodeInto<UInt128Array>([0x10, 0x04, 0x0c, 0x0c, 0x10]).values.toString());
+    trace("ScaleMap(new Map([[1, false]] -> " + BytesReader.decodeInto<ScaleMap<Int32, Bool>>([4, 1, 0, 0, 0, 0]).toU8a().toString());
+>>>>>>> Stashed changes
 }

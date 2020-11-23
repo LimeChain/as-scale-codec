@@ -13,14 +13,22 @@
 // limitations under the License.
 
 import { Codec } from "./interfaces/Codec";
+import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 
 /** Representation for a boolean value in the system. */
-export class Bool implements Codec {
+export class Bool implements Codec, UnwrappableCodec<bool> {
 
     public readonly value: bool;
 
     constructor (value: bool) {
         this.value = value;
+    }
+
+    /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): bool{
+        return this._value;
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification

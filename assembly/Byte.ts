@@ -13,9 +13,10 @@
 // limitations under the License.
 
 import { Codec } from "./interfaces/Codec";
+import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 import { BIT_LENGTH } from "./utils/Bytes";
 
-export class Byte implements Codec {
+export class Byte implements Codec, UnwrappableCodec<u8>{
 
     public readonly value: u8;
     protected bitLength: i32;
@@ -25,6 +26,13 @@ export class Byte implements Codec {
         this.bitLength = BIT_LENGTH.INT_8;
     }
 
+    /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): u8{
+        return this._value;
+    }
+    
     /**
     * @description Encodes Byte as u8[] as per the SCALE codec specification
     */

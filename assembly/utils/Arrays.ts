@@ -21,5 +21,4 @@ export namespace ArrayUtils {
         }
         return true;
     }
-
 }

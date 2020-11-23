@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import { Codec } from "./interfaces/Codec";
+import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 import { Bytes } from "./utils/Bytes";
 
 /** Representation for a Int value in the system. */
-export abstract class AbstractInt<T extends number> implements Codec {
+export abstract class AbstractInt<T extends number> implements Codec, UnwrappableCodec<T> {
 
     protected bitLength: i32;
     public readonly value: T;
@@ -24,6 +25,13 @@ export abstract class AbstractInt<T extends number> implements Codec {
     constructor (value: T, bitLength: i32) {
         this.value = value;
         this.bitLength = bitLength;
+    }
+
+    /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): T{
+        return this._value;
     }
 
     /** Encodes the value as u8[] as per the SCALE codec specification */

@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Codec } from './interfaces/Codec';
+import { UnwrappableCodec } from './interfaces/UnwrappableCodec';
 import { Bytes } from './utils/Bytes';
 
-export class Hash {
+export class Hash implements Codec, UnwrappableCodec<Array<u8>> {
 
     public values: Array<u8>;
 
@@ -23,6 +25,13 @@ export class Hash {
         Bytes.copy(value, this.values);
     }
 
+    /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): Array<u8>{
+        return this.values;
+    }
+    
     /**
     * @description  Encodes Hash as u8[] as per the SCALE codec specification
     */

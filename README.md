@@ -24,6 +24,7 @@ The following table shows the status of the types and their arrays:
 | `Bool` | ✅| ✅|
 | `Hash` |✅ | :heavy_minus_sign: |
 | `String` | ✅|✅ | 
+| `Map` |✅| :heavy_minus_sign: | 
 
 The following table shows the status of the fixed width numbers:
 
@@ -36,7 +37,6 @@ The following table shows the status of the fixed width numbers:
 ## Special Types
 
 - **Compact Int** - [Documentation](https://substrate.dev/docs/en/knowledgebase/advanced/codec#compactgeneral-integers)
-
 
 ## **Getting Started**  
 *You can find more information on AssemblyScript and how to get started with it in the AssemblyScript docs -> [https://www.assemblyscript.org/introduction.html](https://www.assemblyscript.org/introduction.html)*
@@ -61,6 +61,10 @@ Every type has а **toU8a** function. It encodes type value into an array of byt
 import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
 import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
 import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
+// ScaleMap
+const scaleMap = new ScaleMap<Int32, Bool>();
+scaleMap.set(new Int32(1), new Bool(false));
+scaleMap.toU8a() // => [4, 1, 0, 0, 0, 0];
 
 // Bool
 const scaleBool = new Bool(true);
@@ -117,7 +121,7 @@ scaleUInt128.toU8a() // => [0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 Every type has a **static** function **fromU8a**. It decodes an array of bytes to the desired type
 
 ```jsx
-import { Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
+import { ScaleMap, Bool, Byte, ScaleString, Hash, CompactInt } from "as-scale-codec"
 import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
 import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
 
@@ -133,6 +137,10 @@ Byte.fromU8a([0x04, 0x61]); // => new ScaleString('a')
 // Hash
 Hash.fromU8a([0xff, 0x00, 0xab]); 
 // => [0xff, 0x00, 0xab, 0x00, ... 0x00] (32 bytes long)
+
+ScaleMap<Int32, Bool>.fromU8a([4, 1, 0, 0, 0, 0]);
+// => const scaleMap = new ScaleMap<Int32, Bool>()
+// => scaleMap.set(new Int32(1), new Bool(false))
 
 // Compact Int
 CompactInt.fromU8a([0x04]); // => new CompactInt(1)
@@ -243,6 +251,36 @@ bytesReader.readHash();
 // Read Bool
 bytesReader.readBool();
 // => new Bool(false)
+
+// If you have single SCALE encoded type, you can use static decodeInto<T>() function of BytesReader
+
+const uInt64Bytes: u8[] = [1, 0, 0, 0, 0, 0, 0];
+// Read UInt64
+BytesReader.decodeInto<UInt64>(uInt64Bytes);
+// => new UInt64(1)
+
+const hashBytes: u8[] = [0xff, 0x00, 0xab];
+// Read Hash
+BytesReader.decodeInto<Hash>(hashBytes);
+// new Hash([0xff, 0x00, 0xab])
+
+const mapBytes: u8[] = [2, 1, 0, 1, 0, 0, 0, 3, 0, 3, 0, 0, 0];
+// Read ScaleMap
+BytesReader.decodeInto<ScaleMap<UInt16, UInt32>>(mapBytes);
+// => const scaleMap = new ScaleMap<UInt16, UInt32>();
+// => scaleMap.set(new UInt16(1), new UInt32(1))
+// => scaleMap.set(new UInt16(3), new UInt32(3))
+
+const cmpBytes: u8[] = [169, 2];
+// Read CompactInt
+BytesReader.decodeInto<CompactInt>(cmpBytes);
+// new CompactInt(170)
+
+const int8Bytes: u8[] = [0xff];
+// Read Int8
+BytesReader.decodeInto<Int8>(int8Bytes);
+// new Int8(-1)
+
 ```
 
 # Miscellaneous
