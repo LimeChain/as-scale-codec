@@ -17,6 +17,7 @@ import { CompactInt } from "../Int";
 import { AbstractArray } from "./AbstractArray";
 import { DecodedData } from "../interfaces/DecodedData";
 import { ArrayUtils } from "../utils/Arrays";
+import { BytesReader } from "..";
 
 // @ts-ignore
 export class ByteArray extends AbstractArray<Byte, u8> {
@@ -37,7 +38,6 @@ export class ByteArray extends AbstractArray<Byte, u8> {
 
         return result;
     }
-
     /**
     * @description BoolArray elements decryption implementation
     */
@@ -51,12 +51,26 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     }
 
     /**
-     * @description The length of encoded bytes of the ByteArray
+     * @description Returns encoded byte length of the type
      */
-    public encodedLength (): i32 {
-        return (new CompactInt(super.values.length).encodedLength()) + super.values.length;
+    public encodedLength(): i32{
+        return (new CompactInt(this.values.length).encodedLength()) + super.values.length;
     }
+    
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    populateFromBytes(bytes: u8[], index: i32 = 0): void {
+        const bytesReader = new BytesReader(bytes.slice(index));
+        const data = bytesReader.readInto<CompactInt>();
 
+        for(let i: i32 = 0; i < data.value; i++){
+            const element: Byte = bytesReader.readInto<Byte>();
+            this.values.push(element.value);
+        }
+    }
     /**
     * @description Instantiates ScaleByteArray from u8[] SCALE encoded bytes (Decode)
     */

@@ -18,11 +18,15 @@ import { AbstractInt } from "../AbstractInt";
 /** Representation for a UInt32 value in the system. */
 export class UInt32 extends AbstractInt<i32> {
 
-    constructor (value: u32) {
+    constructor (value: u32 = 0) {
         super(value, BIT_LENGTH.INT_32)
     }
 
-    /** Instantiates new UInt32 from u8[] SCALE encoded bytes */
+    /**
+     * @description Instantiates new UInt32 from u8[] SCALE encoded bytes  
+     * NOTE: if the length of the provided value is less than the byte length of the UInt32, 
+     * it is filled with 0 bytes
+     */
     static fromU8a (value: u8[], index: i32 = 0): UInt32 {
         assert(value.length - index > 0, 'UInt32: Invalid bytes provided');
         var res = Bytes.toUint<u32>(value, BIT_LENGTH.INT_32, index);

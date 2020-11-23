@@ -44,11 +44,15 @@ describe("String", () => {
 
         const scaleString1 = ScaleString.fromU8a([0x08, 0x64, 0x61, 0x62, 0x62]);
         expect<Array<u8>>(scaleString1.values).toStrictEqual([0x64, 0x61]);
-        expect<string>(scaleString1.toString()).toStrictEqual("da")
+        expect<string>(scaleString1.toString()).toStrictEqual("da");
     });
 
     itThrows("should throw on incorrect encoding", () => {
         ScaleString.fromU8a([0x04]); // Encoded length = 1, actual data length = 0
+    });
+
+    itThrows('should throw when index is out of range', () => {
+        ScaleString.fromU8a([8, 0, 1, 12, 0, 1, 3], 8);
     });
 });
 

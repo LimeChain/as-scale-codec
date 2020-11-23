@@ -21,8 +21,7 @@ import { BytesBuffer } from "../utils/BytesBuffer";
 export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements UnwrappableCodec<Array<NativeType>>{
 
     public values: Array<NativeType>;
-
-    constructor(input: NativeType[]) {
+    constructor(input: NativeType[] = []) {
         this.values = new Array<NativeType>(input.length);
         Bytes.copy<NativeType>(input, this.values);
     }
@@ -48,6 +47,18 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> impleme
 
         return bytesBuffer.bytes;
     }
+
+    /**
+     * @description Returns encoded byte length of the type
+     */
+    abstract encodedLength(): i32;
+    
+    /**
+     * @description Non-static constructor method used to populate defined properties of the model
+     * @param bytes SCALE encoded bytes
+     * @param index index to start decoding the bytes from
+     */
+    abstract populateFromBytes(bytes: u8[], index: i32): void;
 
     /**
     * @description Each child class has to provide decryption implementation for elements
