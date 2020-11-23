@@ -18,7 +18,7 @@ import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
 import { Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 
-export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements UnwrappableCodec<Array<NativeType>>{
+export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements Codec, UnwrappableCodec<Array<NativeType>>{
 
     public values: Array<NativeType>;
     constructor(input: NativeType[] = []) {

@@ -1,9 +1,12 @@
 import { CompactInt } from ".";
 import { BytesReader } from "./BytesReader";
 import { Codec } from "./interfaces/Codec";
+import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 
-
-export class ScaleMap<K extends Codec, V extends Codec> implements Codec{
+/**
+ * @description SCALE Codec support for native Map type
+ */
+export class ScaleMap<K extends Codec, V extends Codec> implements Codec, UnwrappableCodec<Map<K, V>>{
     /**
      * Map value of ScaleMap
      */
@@ -13,6 +16,12 @@ export class ScaleMap<K extends Codec, V extends Codec> implements Codec{
         this.data = data;
     }
     
+    /**
+     * @description return underlying native type
+     */
+    unwrap(): Map<K, V>{
+        return this.data;
+    }
     /**
      * Check if ScaleMap has given key
      * @param key 

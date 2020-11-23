@@ -127,17 +127,6 @@ export function demonstrate(): void {
     ];
     
     const bytesReader = new BytesReader(bytes);
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInt64().value.toString());
-    trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readUInt32().value.toString());
-    trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readCompactInt().value.toString());
-    trace("ScaleString [56, 97, 115, 45, 115, 99, 97, 108, 101, 45, 99, 111, 100, 101, 99] -> " + bytesReader.readScaleString().valueStr);
-    trace("Hash [128, 1, 10, 0, 0, 0, 2, 2, 1, 123, 33, 3, 1, 35, 34, 5, 8, 22, 52, 1, 0, 0, 0, 1, 1, 1, 56, 21, 142, 13, 13, 1] -> " + bytesReader.readHash().toString());
-    trace("Bool [0] -> " + bytesReader.readBool().toString());
-=======
-=======
->>>>>>> c5b16a487e12849ba7ca606644ddd87747b819d7
     trace("Int64 [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff] -> " + bytesReader.readInto<Int64>().value.toString());
     trace("UInt32 [69, 0, 0, 0] -> " + bytesReader.readInto<UInt32>().value.toString());
     trace("CompactInt [110, 125, 239, 2] -> " + bytesReader.readInto<CompactInt>().value.toString());
@@ -148,9 +137,5 @@ export function demonstrate(): void {
     trace("Int8 [0xff] -> " + BytesReader.decodeInto<Int8>([0xff]).toString());
     trace("UInt8 [123] -> " + BytesReader.decodeInto<UInt8>([123]).toString());
     trace("UInt128Array [0x10, 0x04, 0x0c, 0x0c, 0x10] -> " + BytesReader.decodeInto<UInt128Array>([0x10, 0x04, 0x0c, 0x0c, 0x10]).values.toString());
-<<<<<<< HEAD
     trace("ScaleMap(new Map([[1, false]] -> " + BytesReader.decodeInto<ScaleMap<Int32, Bool>>([4, 1, 0, 0, 0, 0]).toU8a().toString());
->>>>>>> Stashed changes
-=======
->>>>>>> c5b16a487e12849ba7ca606644ddd87747b819d7
 }
