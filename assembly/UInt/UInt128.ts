@@ -119,11 +119,11 @@ export class UInt128 implements UnwrappableCodec<u128> {
     }
 
     eq(other: UInt128): bool {
-        return this._value == other._value;
+        return this._value == other.unwrap();
     }
 
     notEq(other: UInt128): bool {
-        return this._value != other._value;
+        return this._value != other.unwrap();
     }
 
     // Commonly used values of UInt128

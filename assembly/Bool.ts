@@ -58,11 +58,11 @@ export class Bool implements UnwrappableCodec<bool> {
     }
     
     eq(other: Bool): bool {
-        return this._value == other._value;
+        return this._value == other.unwrap();
     }
 
     notEq(other: Bool): bool {
-        return this._value != other._value;
+        return this._value != other.unwrap();
     }
     /**
      * @description The length of Uint8Array when the value is encoded

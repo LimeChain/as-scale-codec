@@ -16,7 +16,9 @@ import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
 import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 
-/** Representation for a Int8 value in the system. */
+/** 
+ * @description Representation for a CompactInt value in the system. 
+*/
 export class CompactInt implements UnwrappableCodec<i64> {
 
     private _value: i64;
@@ -82,11 +84,11 @@ export class CompactInt implements UnwrappableCodec<i64> {
 
 
     eq(other: CompactInt): bool {
-        return this._value == other._value;
+        return this._value == other.unwrap();
     }
 
     notEq(other: CompactInt): bool {
-        return this._value != other._value;
+        return this._value != other.unwrap();
     }
 
     /**
