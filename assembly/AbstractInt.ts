@@ -20,10 +20,6 @@ export abstract class AbstractInt<T extends number> implements UnwrappableCodec<
 
     protected bitLength: i32;
     private _value: T;
-    
-    get value(): T{
-        return this._value;
-    }
 
     constructor (value: T, bitLength: i32) {
         this._value = value;
@@ -40,8 +36,15 @@ export abstract class AbstractInt<T extends number> implements UnwrappableCodec<
     /** Encodes the value as u8[] as per the SCALE codec specification */
     public toU8a (): u8[] {
         let bytesEncoded = new Array<u8>(this.bitLength);
-        Bytes.putUint<T>(bytesEncoded, this.value, this.bitLength);
+        Bytes.putUint<T>(bytesEncoded, this.unwrap(), this.bitLength);
         return bytesEncoded;
+    }
+
+    public eq(other: AbstractInt<T>): bool{
+        return this.unwrap() == other.unwrap();
+    }
+    public notEq(other: AbstractInt<T>): bool{
+        return this.unwrap() != other.unwrap();
     }
 
     /**
@@ -58,7 +61,7 @@ export abstract class AbstractInt<T extends number> implements UnwrappableCodec<
      * @description Returns the string representation of the value
      */
     toString (): string {
-        return this.value.toString();
+        return this.unwrap().toString();
     }
     /**
      * @description The length of Uint8Array when the value is encoded

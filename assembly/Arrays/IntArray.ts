@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { BytesReader } from "..";
 import { CompactInt } from "../Int/CompactInt";
+import { DecodedData } from "../interfaces/DecodedData";
 import { AbstractArray } from "./AbstractArray";
 
-import { DecodedData } from "../interfaces/DecodedData";
-import { ArrayUtils } from "../utils/Arrays";
-import { BytesReader } from "..";
 
 // @ts-ignore
 export class IntArray extends AbstractArray<CompactInt, i64> {
@@ -29,7 +28,7 @@ export class IntArray extends AbstractArray<CompactInt, i64> {
         const compactInt = CompactInt.fromU8a(value);
 
         return new DecodedData<u64>(
-            compactInt.value,
+            compactInt.unwrap(),
             compactInt.encodedLength()
         )
     }
@@ -54,9 +53,9 @@ export class IntArray extends AbstractArray<CompactInt, i64> {
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();
 
-        for(let i: i32 = 0; i < data.value; i++){
+        for(let i: i32 = 0; i < data.unwrap(); i++){
             const element: CompactInt = bytesReader.readInto<CompactInt>();
-            this.values.push(element.value);
+            this.values.push(element.unwrap());
         }
     }
     /**
@@ -68,12 +67,12 @@ export class IntArray extends AbstractArray<CompactInt, i64> {
 
     @inline @operator('==')
     static eq(a: IntArray, b: IntArray): bool {
-        return ArrayUtils.areEqual(a, b);
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: IntArray, b: IntArray): bool {
-        return !ArrayUtils.areEqual(a, b);
+        return a.notEq(b);
     }
 }
 

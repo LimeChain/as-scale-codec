@@ -22,10 +22,6 @@ export class CompactInt implements UnwrappableCodec<i64> {
     private _value: i64;
     protected bitLength: i32;
 
-    get value(): i64{
-        return this._value;
-    }
-
     constructor (value: i64 = 0) {
         this._value = value;
         this.bitLength = CompactInt._computeBitLength(value);
@@ -43,7 +39,7 @@ export class CompactInt implements UnwrappableCodec<i64> {
     */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
-        bytesBuffer.encodeCompactInt(this.value);
+        bytesBuffer.encodeCompactInt(this._value);
 
         return bytesBuffer.bytes;
     }
@@ -62,7 +58,7 @@ export class CompactInt implements UnwrappableCodec<i64> {
     * @description Returns the string representation of the value
     */
     toString (): string {
-        return this.value.toString();
+        return this._value.toString();
     }
 
     /**
@@ -84,6 +80,15 @@ export class CompactInt implements UnwrappableCodec<i64> {
         return this.bitLength;
     }
 
+
+    eq(other: CompactInt): bool {
+        return this._value == other._value;
+    }
+
+    notEq(other: CompactInt): bool {
+        return this._value != other._value;
+    }
+
     /**
      * @description Instantiates Compact Int from u8[] SCALE encoded bytes
      * Compact Int decodes int8, int16, int32, int64 size correctly  
@@ -98,11 +103,11 @@ export class CompactInt implements UnwrappableCodec<i64> {
 
     @inline @operator('==')
     static eq(a: CompactInt, b: CompactInt): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: CompactInt, b: CompactInt): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }

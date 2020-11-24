@@ -94,7 +94,7 @@ export class ScaleMap<K extends Codec, V extends Codec> implements UnwrappableCo
     populateFromBytes(bytes: u8[], index: i32 = 0): void {
         const bytesReader = new BytesReader(bytes.slice(index));
         const lenComp = bytesReader.readInto<CompactInt>();
-        for(let i: i32 = 0; i < lenComp.value; i++){
+        for(let i: i32 = 0; i < lenComp.unwrap(); i++){
             const key = bytesReader.readInto<K>();
             const value = bytesReader.readInto<V>();
             this.data.set(key, value);
@@ -136,7 +136,7 @@ export class ScaleMap<K extends Codec, V extends Codec> implements UnwrappableCo
         const bytesReader = new BytesReader(input);
         const lenComp = bytesReader.readInto<CompactInt>();
 
-        for(let i: i32 = 0; i<lenComp.value; i++){
+        for(let i: i32 = 0; i<lenComp.unwrap(); i++){
             const key = bytesReader.readInto<K>();
             const value = bytesReader.readInto<V>();
             data.set(key, value);

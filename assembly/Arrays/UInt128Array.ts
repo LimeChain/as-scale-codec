@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AbstractArray } from "./AbstractArray";
+import { u128 } from "as-bignum";
+import { BytesReader, CompactInt } from "..";
 import { DecodedData } from "../interfaces/DecodedData";
 import { UInt128 } from "../UInt/UInt128";
-import { u128 } from "as-bignum";
-import { ArrayUtils } from "../utils/Arrays";
-import { BytesReader, CompactInt } from "..";
 import { BIT_LENGTH } from "../utils/Bytes";
+import { AbstractArray } from "./AbstractArray";
 
 // @ts-ignore
 export class UInt128Array extends AbstractArray<UInt128, u128> {
@@ -30,7 +29,7 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
         const u128Instance = UInt128.fromU8a(value);
 
         return new DecodedData<u128>(
-            u128Instance.value,
+            u128Instance.unwrap(),
             u128Instance.encodedLength()
         )
     }
@@ -43,9 +42,9 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
     populateFromBytes(bytes: u8[], index: i32 = 0): void {
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();
-        for(let i: i32 = 0; i < data.value; i++){
+        for(let i: i32 = 0; i < data.unwrap(); i++){
             const element: UInt128 = bytesReader.readInto<UInt128>();
-            this.values.push(element.value);
+            this.values.push(element.unwrap());
         }
     }
 
@@ -65,12 +64,12 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
 
     @inline @operator('==')
     static eq(a: UInt128Array, b: UInt128Array): bool {
-        return ArrayUtils.areEqual(a, b);
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: UInt128Array, b: UInt128Array): bool {
-        return !ArrayUtils.areEqual(a, b);
+        return a.notEq(b);
     }
 }
 

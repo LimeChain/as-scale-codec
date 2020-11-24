@@ -5,17 +5,15 @@
 export namespace ArrayUtils {
 
     /**
-     * Utility function that checks whether every element is equal between 2 arrays
-     * @param a 
-     * @param b 
+     * By given 2 arrays, checks whether their values are equal (strict equal by index)
      */
-    export function areEqual<T>(a: T, b: T): bool {
-        if (a.values.length != b.values.length) {
+    export function areArraysEqual<T>(a: Array<T>, b: Array<T>): bool {
+        if (a.length != b.length) {
             return false;
         }
 
-        for (let i = 0; i < a.values.length; i++) {
-            if (a.values[i] != b.values[i]) {
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) {
                 return false;
             }
         }

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BIT_LENGTH } from "../utils/Bytes";
 import { AbstractInt } from "../AbstractInt";
+import { BIT_LENGTH } from "../utils/Bytes";
 
 /** Representation for a UInt8 value in the system. */
 export class UInt8 extends AbstractInt<u8> {
@@ -34,11 +34,11 @@ export class UInt8 extends AbstractInt<u8> {
 
     @inline @operator('==')
     static eq(a: UInt8, b: UInt8): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: UInt8, b: UInt8): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }

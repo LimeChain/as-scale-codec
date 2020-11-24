@@ -15,6 +15,7 @@
 import { Codec } from "../interfaces/Codec";
 import { DecodedData } from "../interfaces/DecodedData";
 import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
+import { ArrayUtils } from "../utils/Arrays";
 import { Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 
@@ -32,6 +33,14 @@ export abstract class AbstractArray<ScaleType extends Codec, NativeType> impleme
     public unwrap(): Array<NativeType>{
         return this.values;
     }
+
+    public eq(other: AbstractArray<ScaleType, NativeType>): bool{
+        return ArrayUtils.areArraysEqual(this.values, other.values);
+    };
+    
+    public notEq(other: AbstractArray<ScaleType, NativeType>): bool{
+        return !ArrayUtils.areArraysEqual(this.values, other.values);
+    };
     
     /**
     * @description  Encodes values of all elements in u8[] successively as per the SCALE codec specification

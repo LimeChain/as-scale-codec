@@ -18,10 +18,6 @@ import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 export class Bool implements UnwrappableCodec<bool> {
 
     private _value: bool;
-
-    get value(): bool{
-        return this._value;
-    }
     
     constructor (value: bool = false) {
         this._value = value;
@@ -40,7 +36,7 @@ export class Bool implements UnwrappableCodec<bool> {
      */
     toU8a (): u8[] {
         let bytesEncoded = new Array<u8>(1);
-        bytesEncoded[0] = this.value ? 0x01 : 0x00;
+        bytesEncoded[0] = this._value ? 0x01 : 0x00;
         return bytesEncoded;
     }
 
@@ -58,18 +54,22 @@ export class Bool implements UnwrappableCodec<bool> {
      * @description Returns the string representation of the value
      */
     toString (): string {
-        return this.value.toString();
+        return this._value.toString();
+    }
+    
+    eq(other: Bool): bool {
+        return this._value == other._value;
     }
 
+    notEq(other: Bool): bool {
+        return this._value != other._value;
+    }
     /**
      * @description The length of Uint8Array when the value is encoded
      */
     public encodedLength (): i32 {
         return 1;
     }
-    // public decode(bytes: u8[]): bool{
-        
-    // }
 
     /** Instantiates new Bool from u8[] SCALE encoded bytes */
     static fromU8a (value: u8[], index: i32 = 0): Bool {
@@ -80,11 +80,11 @@ export class Bool implements UnwrappableCodec<bool> {
 
     @inline @operator('==')
     static eq(a: Bool, b: Bool): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: Bool, b: Bool): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }
