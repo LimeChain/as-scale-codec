@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bool, Byte, ScaleString, Hash, CompactInt, UInt128Array } from "as-scale-codec"
-import { Int8, Int16, Int32, Int64 } from "as-scale-codec"
-import { UInt8, UInt16, UInt32, UInt64, UInt128 } from "as-scale-codec"
-import { BytesReader } from 'as-scale-codec';
-import { u128 } from "as-bignum"
+import { u128 } from "as-bignum";
+import { Bool, Byte, BytesReader, CompactInt, Hash, Int16, Int32, Int64, Int8, ScaleMap, ScaleString, UInt128, UInt128Array, UInt16, UInt32, UInt64, UInt8 } from "as-scale-codec";
 
 export function demonstrate(): void {
     
@@ -33,6 +30,11 @@ export function demonstrate(): void {
     // String
     const scaleString = new ScaleString("a");
     trace("String(a) -> " + scaleString.toU8a().toString())
+
+    // ScaleMap
+    const scaleMap = new ScaleMap<Int32, Bool>();
+    scaleMap.set(new Int32(1), new Bool(false));
+    trace("ScaleMap(new Map([[1, false]])" + scaleMap.toU8a().toString()); // => [4, 1, 0, 0, 0, 0];
 
     // Hash
     const scaleHash = new Hash([0xff, 0x00, 0xab]);
@@ -135,4 +137,5 @@ export function demonstrate(): void {
     trace("Int8 [0xff] -> " + BytesReader.decodeInto<Int8>([0xff]).toString());
     trace("UInt8 [123] -> " + BytesReader.decodeInto<UInt8>([123]).toString());
     trace("UInt128Array [0x10, 0x04, 0x0c, 0x0c, 0x10] -> " + BytesReader.decodeInto<UInt128Array>([0x10, 0x04, 0x0c, 0x0c, 0x10]).values.toString());
+    trace("ScaleMap(new Map([[1, false]] -> " + BytesReader.decodeInto<ScaleMap<Int32, Bool>>([4, 1, 0, 0, 0, 0]).toU8a().toString());
 }

@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes } from "./utils/Bytes"
 import { ByteArray } from "./Arrays/ByteArray";
+import { Bytes } from "./utils/Bytes";
 
 export class ScaleString extends ByteArray {
 
     private _valueStr: string;
-
-    get valueStr(): string{
-        return this._valueStr;
-    }
 
     constructor (input: string = "") {
         super([]);
@@ -42,7 +38,7 @@ export class ScaleString extends ByteArray {
     populateFromBytes(bytes: u8[], index: i32 = 0): void{
         // constructor
         this._valueStr = ScaleString._computeValueStr(bytes, index);
-        const inputBuffer: ArrayBuffer = String.UTF8.encode(this.valueStr);
+        const inputBuffer: ArrayBuffer = String.UTF8.encode(this._valueStr);
         const u8Input = Uint8Array.wrap(inputBuffer);
 
         for (let i = 0; i < u8Input.length; i++) {
@@ -54,7 +50,7 @@ export class ScaleString extends ByteArray {
      * @description Returns the string representation
      */
     toString (): string {
-        return this.valueStr;
+        return this._valueStr;
     }
 
     /**
@@ -76,5 +72,15 @@ export class ScaleString extends ByteArray {
     */
     static fromU8a (input: u8[], index: i32 = 0): ScaleString {
         return new ScaleString(ScaleString._computeValueStr(input, index));
+    }
+
+    @inline @operator('==')
+    static eq(a: ScaleString, b: ScaleString): bool {
+        return a.eq(b);
+    }
+
+    @inline @operator('!=')
+    static notEq(a: ScaleString, b: ScaleString): bool {
+        return a.notEq(b);
     }
 }

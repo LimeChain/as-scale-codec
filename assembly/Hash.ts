@@ -12,28 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from './interfaces/Codec';
+import { UnwrappableCodec } from './interfaces/UnwrappableCodec';
 import { Bytes } from './utils/Bytes';
 
-export class Hash implements Codec {
+export class Hash implements UnwrappableCodec<Array<u8>> {
 
     private _values: Array<u8>;
 
-    get values(): Array<u8>{
-        return this._values;
-    }
-
     constructor(value: u8[] = []) {
         this._values = new Array<u8>(32);
-        Bytes.copy(value, this.values);
+        Bytes.copy(value, this._values);
     }
 
+    /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): Array<u8>{
+        return this._values;
+    }
+    
     /**
     * @description  Encodes Hash as u8[] as per the SCALE codec specification
     */
     public toU8a (): u8[] {
         const result: u8[] = new Array<u8>(this.encodedLength());
-        Bytes.copy<u8>(this.values, result);
+        Bytes.copy<u8>(this._values, result);
 
         return result;
     }
@@ -46,14 +49,14 @@ export class Hash implements Codec {
     public populateFromBytes(bytes: u8[], index: i32 = 0): void{
         assert(bytes.length - index >= 0, "Hash: Empty bytes array provided");
         this._values = new Array<u8>(32);
-        Bytes.copy(bytes, this.values, 0, index);
+        Bytes.copy(bytes, this._values, 0, index);
     }
 
     /**
     * @description  Return string representation of Hash
     */
     public toString (): string {
-        return "0x" + this.values.join('');
+        return "0x" + this._values.join('');
     }
 
     /**
@@ -66,7 +69,7 @@ export class Hash implements Codec {
         }
 
         const position: i32 = 32 - bytes.length;
-        Bytes.copy<u8>(bytes, hash.values, position);
+        Bytes.copy<u8>(bytes, hash.unwrap(), position);
         return hash;
     }
 
@@ -87,11 +90,10 @@ export class Hash implements Codec {
         return new Hash(input.slice(index));
     }
 
-    @inline @operator('==')
-    static eq(a: Hash, b: Hash): bool {
+    eq(other: Hash): bool {
         let areEqual = true;
-        for (let i = 0; i < a.values.length; i++) {
-            if (a.values[i] != b.values[i]) {
+        for (let i = 0; i < this.unwrap().length; i++) {
+            if (this.unwrap()[i] != other.unwrap()[i]) {
                 areEqual = false;
                 break;
             }
@@ -99,8 +101,17 @@ export class Hash implements Codec {
         return areEqual;
     }
 
+    notEq(other: Hash): bool {
+        return !this.eq(other);
+    }
+
+    @inline @operator('==')
+    static eq(a: Hash, b: Hash): bool {
+        return a.eq(b);
+    }
+
     @inline @operator('!=')
     static notEq(a: Hash, b: Hash): bool {
-        return !Hash.eq(a, b);
+        return a.notEq(b);
     }
 }

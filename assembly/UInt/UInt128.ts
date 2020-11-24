@@ -13,34 +13,38 @@
 // limitations under the License.
 
 import { u128 } from "as-bignum";
-import {BIT_LENGTH, Bytes} from "../utils/Bytes";
-import {Codec} from "../interfaces/Codec";
+import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
+import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 
 /** Representation for a UInt128 value in the system. */
-export class UInt128 implements Codec {
+export class UInt128 implements UnwrappableCodec<u128> {
 
     private _value: u128;
     protected bitLength: i32;
-
-    get value(): u128{
-        return this._value;
-    }
+    
     constructor (value: u128 = u128.Zero) {
         this._value = value;
         this.bitLength = UInt128._computeBitLength(value);
     }
 
+    /**
+     * @description Return inner value
+     */
+    unwrap(): u128{
+        return this._value;
+    }
+    
     /** Encodes the value as u8[] as per the SCALE codec specification */
     toU8a (): u8[] {
         const bytes = new Array<u8>();
-        if (this.value < u128.fromU32(1 << 6)) { // if value < 1 << 6
-            Bytes.appendUint<u8>(bytes, u8(this.value.as<u8>()) << 2, BIT_LENGTH.INT_8); // 1 byte
-        } else if (this.value < u128.fromU32(1 << 14)) { // if value < 1 << 14
-            Bytes.appendUint<u16>(bytes, u16(this.value.as<u16>() << 2) + 1, BIT_LENGTH.INT_16); // 2 bytes
-        } else if (this.value < u128.fromU64(1 << 30)) { // if value < 1 << 30
-            Bytes.appendUint<u32>(bytes, u32(this.value.as<u32>() << 2) + 2, BIT_LENGTH.INT_32); // 4 bytes
+        if (this._value < u128.fromU32(1 << 6)) { // if value < 1 << 6
+            Bytes.appendUint<u8>(bytes, u8(this._value.as<u8>()) << 2, BIT_LENGTH.INT_8); // 1 byte
+        } else if (this._value < u128.fromU32(1 << 14)) { // if value < 1 << 14
+            Bytes.appendUint<u16>(bytes, u16(this._value.as<u16>() << 2) + 1, BIT_LENGTH.INT_16); // 2 bytes
+        } else if (this._value < u128.fromU64(1 << 30)) { // if value < 1 << 30
+            Bytes.appendUint<u32>(bytes, u32(this._value.as<u32>() << 2) + 2, BIT_LENGTH.INT_32); // 4 bytes
         } else {
-            const valueInBytes = this.value.toBytes();
+            const valueInBytes = this._value.toBytes();
             Bytes.trimEmptyBytes(valueInBytes);
 
             const topSixBits: u8 = u8(valueInBytes.length - 4);
@@ -55,7 +59,7 @@ export class UInt128 implements Codec {
     }
 
     toString(): string {
-        return this.value.toString();
+        return this._value.toString();
     }
     /**
      * @description Non-static constructor method used to populate defined properties of the model
@@ -114,14 +118,12 @@ export class UInt128 implements Codec {
         return new UInt128(UInt128._computeValue(input, index));
     }
 
-    @inline @operator('==')
-    static eq(a: UInt128, b: UInt128): bool {
-        return a.value == b.value;
+    eq(other: UInt128): bool {
+        return this._value == other.unwrap();
     }
 
-    @inline @operator('!=')
-    static notEq(a: UInt128, b: UInt128): bool {
-        return a.value != b.value;
+    notEq(other: UInt128): bool {
+        return this._value != other.unwrap();
     }
 
     // Commonly used values of UInt128
@@ -129,4 +131,12 @@ export class UInt128 implements Codec {
     @inline static get One(): UInt128 { return new UInt128(u128.One); }
     @inline static get Min(): UInt128 { return new UInt128(new u128()); }
     @inline static get Max(): UInt128 { return new UInt128(new u128(-1, -1)); }
+
+    static eq(a: UInt128, b: UInt128): bool {
+        return a.eq(b);
+    }
+
+    static notEq(a: UInt128, b: UInt128): bool {
+        return a.notEq(b);
+    }
 }

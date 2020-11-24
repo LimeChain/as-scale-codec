@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { BytesReader, CompactInt } from "..";
+import { DecodedData } from "../interfaces/DecodedData";
+import { ScaleString } from "../ScaleString";
 import { Bytes } from "../utils/Bytes";
 import { AbstractArray } from "./AbstractArray";
-import { ScaleString } from "../ScaleString";
 
-import { DecodedData } from "../interfaces/DecodedData";
-import { ArrayUtils } from "../utils/Arrays";
-import { BytesReader, CompactInt } from "..";
 
 // @ts-ignore
 export class StringArray extends AbstractArray<ScaleString, string>{
@@ -31,7 +30,7 @@ export class StringArray extends AbstractArray<ScaleString, string>{
         const encodedStringLength = i32(stringLength.decBytes + stringLength.value);
 
         return new DecodedData<string>(
-            ScaleString.fromU8a(value.slice(0, encodedStringLength)).valueStr,
+            ScaleString.fromU8a(value.slice(0, encodedStringLength)).toString(),
             encodedStringLength
         )
     }
@@ -57,9 +56,9 @@ export class StringArray extends AbstractArray<ScaleString, string>{
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();
 
-        for(let i: i32 = 0; i < data.value; i++){
+        for(let i: i32 = 0; i < data.unwrap(); i++){
             const element: ScaleString = bytesReader.readInto<ScaleString>();
-            this.values.push(element.valueStr);
+            this.values.push(element.toString());
         }
     }
 
@@ -70,14 +69,13 @@ export class StringArray extends AbstractArray<ScaleString, string>{
         return AbstractArray.fromU8a<StringArray>(input);
     }
 
-
     @inline @operator('==')
     static eq(a: StringArray, b: StringArray): bool {
-        return ArrayUtils.areEqual(a, b);
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: StringArray, b: StringArray): bool {
-        return !ArrayUtils.areEqual(a, b);
+        return a.notEq(b);
     }
 }

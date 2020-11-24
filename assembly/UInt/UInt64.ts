@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes, BIT_LENGTH } from "../utils/Bytes";
 import { AbstractInt } from "../AbstractInt";
+import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 
 /** Representation for a UInt64 value in the system. */
 export class UInt64 extends AbstractInt<u64> {
@@ -35,11 +35,11 @@ export class UInt64 extends AbstractInt<u64> {
 
     @inline @operator('==')
     static eq(a: UInt64, b: UInt64): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: UInt64, b: UInt64): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }

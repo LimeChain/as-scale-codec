@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bool } from "./../Bool";
-import { AbstractArray } from "./AbstractArray"
-
-import { DecodedData } from "../interfaces/DecodedData";
-import { ArrayUtils } from "../utils/Arrays";
 import { BytesReader, CompactInt } from "..";
+import { DecodedData } from "../interfaces/DecodedData";
+import { Bool } from "./../Bool";
+import { AbstractArray } from "./AbstractArray";
+
 
 // @ts-ignore
 export class BoolArray extends AbstractArray<Bool, bool> {
@@ -29,7 +28,7 @@ export class BoolArray extends AbstractArray<Bool, bool> {
         const scaleBool = Bool.fromU8a([value[0]]);
 
         return new DecodedData<bool>(
-            scaleBool.value,
+            scaleBool.unwrap(),
             scaleBool.encodedLength()
         )
     }
@@ -40,7 +39,7 @@ export class BoolArray extends AbstractArray<Bool, bool> {
     public encodedLength(): i32{
         return (new CompactInt(this.values.length).encodedLength()) + super.values.length;
     }
-
+    
     /**
      * @description Non-static constructor method used to populate defined properties of the model
      * @param bytes SCALE encoded bytes
@@ -50,9 +49,9 @@ export class BoolArray extends AbstractArray<Bool, bool> {
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();
 
-        for(let i: i32 = 0; i < data.value - index; i++){
+        for(let i: i32 = 0; i < data.unwrap() - index; i++){
             const element = bytesReader.readInto<Bool>();
-            this.values.push(element.value);
+            this.values.push(element.unwrap());
         }
     }
     /**
@@ -64,11 +63,11 @@ export class BoolArray extends AbstractArray<Bool, bool> {
 
     @inline @operator('==')
     static eq(a: BoolArray, b: BoolArray): bool {
-        return ArrayUtils.areEqual(a, b);
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: BoolArray, b: BoolArray): bool {
-        return !ArrayUtils.areEqual(a, b);
+        return a.notEq(b);
     }
 }

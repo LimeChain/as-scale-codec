@@ -34,11 +34,11 @@ export class Int8 extends AbstractInt<i8> {
 
     @inline @operator('==')
     static eq(a: Int8, b: Int8): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: Int8, b: Int8): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }

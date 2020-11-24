@@ -12,17 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from "./interfaces/Codec";
+import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 import { BIT_LENGTH } from "./utils/Bytes";
 
-export class Byte implements Codec {
+export class Byte implements UnwrappableCodec<u8>{
 
     private _value: u8;
     protected bitLength: i32;
-
-    get value(): u8{
-        return this._value;
-    }
 
     constructor (value: u8 = 0) {
         this._value = value;
@@ -30,10 +26,17 @@ export class Byte implements Codec {
     }
 
     /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): u8{
+        return this._value;
+    }
+    
+    /**
     * @description Encodes Byte as u8[] as per the SCALE codec specification
     */
     public toU8a (): u8[] {
-        return [this.value];
+        return [this._value];
     }
     /**
      * @description Non-static constructor method used to populate defined properties of the model
@@ -45,6 +48,14 @@ export class Byte implements Codec {
         this._value = bytes[index];
     }
 
+    eq(other: Byte): bool {
+        return this._value == other.unwrap();
+    }
+
+    notEq(other: Byte): bool {
+        return this._value != other.unwrap();
+    }
+    
     /**
     * @description The length of Byte when the value is encoded
     */
@@ -60,11 +71,11 @@ export class Byte implements Codec {
 
     @inline @operator('==')
     static eq(a: Byte, b: Byte): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: Byte, b: Byte): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }

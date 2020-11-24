@@ -13,19 +13,35 @@
 // limitations under the License.
 
 import { Codec } from "../interfaces/Codec";
+import { DecodedData } from "../interfaces/DecodedData";
+import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
+import { ArrayUtils } from "../utils/Arrays";
 import { Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
-import { DecodedData } from "../interfaces/DecodedData";
-import { CompactInt } from "..";
 
-export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements Codec{
+export abstract class AbstractArray<ScaleType extends Codec, NativeType> implements UnwrappableCodec<Array<NativeType>>{
 
     public values: Array<NativeType>;
     constructor(input: NativeType[] = []) {
         this.values = new Array<NativeType>(input.length);
         Bytes.copy<NativeType>(input, this.values);
     }
+    
+    /**
+     * @description Returns the inner native value
+     */
+    public unwrap(): Array<NativeType>{
+        return this.values;
+    }
 
+    public eq(other: AbstractArray<ScaleType, NativeType>): bool{
+        return ArrayUtils.areArraysEqual(this.values, other.values);
+    };
+    
+    public notEq(other: AbstractArray<ScaleType, NativeType>): bool{
+        return !ArrayUtils.areArraysEqual(this.values, other.values);
+    };
+    
     /**
     * @description  Encodes values of all elements in u8[] successively as per the SCALE codec specification
     */

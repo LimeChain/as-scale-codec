@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes } from "../utils/Bytes";
-import { Codec } from "../interfaces/Codec";
-import { BIT_LENGTH } from "../utils/Bytes";
+import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
+import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 
-/** Representation for a Int8 value in the system. */
-export class CompactInt implements Codec {
+/** 
+ * @description Representation for a CompactInt value in the system. 
+*/
+export class CompactInt implements UnwrappableCodec<i64> {
 
     private _value: i64;
     protected bitLength: i32;
-
-    get value(): i64{
-        return this._value;
-    }
 
     constructor (value: i64 = 0) {
         this._value = value;
@@ -33,11 +30,18 @@ export class CompactInt implements Codec {
     }
 
     /**
+     * @description Return inner native value
+     */
+    unwrap(): i64{
+        return this._value;
+    }
+
+    /**
     * @description  Encodes the value as u8[] as per the SCALE codec specification
     */
     public toU8a (): u8[] {
         const bytesBuffer = new BytesBuffer();
-        bytesBuffer.encodeCompactInt(this.value);
+        bytesBuffer.encodeCompactInt(this._value);
 
         return bytesBuffer.bytes;
     }
@@ -56,7 +60,7 @@ export class CompactInt implements Codec {
     * @description Returns the string representation of the value
     */
     toString (): string {
-        return this.value.toString();
+        return this._value.toString();
     }
 
     /**
@@ -78,6 +82,15 @@ export class CompactInt implements Codec {
         return this.bitLength;
     }
 
+
+    eq(other: CompactInt): bool {
+        return this._value == other.unwrap();
+    }
+
+    notEq(other: CompactInt): bool {
+        return this._value != other.unwrap();
+    }
+
     /**
      * @description Instantiates Compact Int from u8[] SCALE encoded bytes
      * Compact Int decodes int8, int16, int32, int64 size correctly  
@@ -92,11 +105,11 @@ export class CompactInt implements Codec {
 
     @inline @operator('==')
     static eq(a: CompactInt, b: CompactInt): bool {
-        return a.value == b.value;
+        return a.eq(b);
     }
 
     @inline @operator('!=')
     static notEq(a: CompactInt, b: CompactInt): bool {
-        return a.value != b.value;
+        return a.notEq(b);
     }
 }
