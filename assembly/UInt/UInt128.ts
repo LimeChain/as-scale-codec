@@ -13,12 +13,11 @@
 // limitations under the License.
 
 import { u128 } from "as-bignum";
-import { Codec } from "../interfaces/Codec";
 import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
 import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 
 /** Representation for a UInt128 value in the system. */
-export class UInt128 implements Codec, UnwrappableCodec<u128> {
+export class UInt128 implements UnwrappableCodec<u128> {
 
     private _value: u128;
     protected bitLength: i32;

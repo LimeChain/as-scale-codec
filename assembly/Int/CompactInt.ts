@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from "../interfaces/Codec";
 import { UnwrappableCodec } from "../interfaces/UnwrappableCodec";
 import { BIT_LENGTH, Bytes } from "../utils/Bytes";
 import { BytesBuffer } from "../utils/BytesBuffer";
 
 /** Representation for a Int8 value in the system. */
-export class CompactInt implements Codec, UnwrappableCodec<i64> {
+export class CompactInt implements UnwrappableCodec<i64> {
 
     private _value: i64;
     protected bitLength: i32;

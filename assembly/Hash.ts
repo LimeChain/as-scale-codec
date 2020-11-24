@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from './interfaces/Codec';
 import { UnwrappableCodec } from './interfaces/UnwrappableCodec';
 import { Bytes } from './utils/Bytes';
 
-export class Hash implements Codec, UnwrappableCodec<Array<u8>> {
+export class Hash implements UnwrappableCodec<Array<u8>> {
 
     private _values: Array<u8>;
 

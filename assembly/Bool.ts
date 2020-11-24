@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from "./interfaces/Codec";
 import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 
 /** Representation for a boolean value in the system. */
-export class Bool implements Codec, UnwrappableCodec<bool> {
+export class Bool implements UnwrappableCodec<bool> {
 
     private _value: bool;
 

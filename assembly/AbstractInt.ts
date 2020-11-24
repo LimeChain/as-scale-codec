@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Codec } from "./interfaces/Codec";
 import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 import { Bytes } from "./utils/Bytes";
 
 /** Representation for a Int value in the system. */
-export abstract class AbstractInt<T extends number> implements Codec, UnwrappableCodec<T> {
+export abstract class AbstractInt<T extends number> implements UnwrappableCodec<T> {
 
     protected bitLength: i32;
     private _value: T;

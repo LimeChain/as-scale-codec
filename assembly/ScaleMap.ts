@@ -6,7 +6,7 @@ import { UnwrappableCodec } from "./interfaces/UnwrappableCodec";
 /**
  * @description SCALE Codec support for native Map type
  */
-export class ScaleMap<K extends Codec, V extends Codec> implements Codec, UnwrappableCodec<Map<K, V>>{
+export class ScaleMap<K extends Codec, V extends Codec> implements UnwrappableCodec<Map<K, V>>{
     /**
      * Map value of ScaleMap
      */
