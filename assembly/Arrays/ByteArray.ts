@@ -27,7 +27,7 @@ export class ByteArray extends AbstractArray<Byte, u8> {
     public toHexString (): string {
         let result = "0x";
         for (let i = 0; i < super.values.length; i++) {
-            const str = super.values[i].toString();
+            const str = super.values[i].toString(16);
             if (str.length == 1) {
                 result += "0";
             }

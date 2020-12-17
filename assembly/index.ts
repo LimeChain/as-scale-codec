@@ -4,7 +4,7 @@ export * from "./Byte";
 export * from "./BytesReader";
 export * from "./Hash";
 export * from "./Int";
-export * from "./interfaces/Codec";
+export * from "./interfaces";
 export * from "./ScaleMap";
 export * from "./ScaleString";
 export * from "./UInt";

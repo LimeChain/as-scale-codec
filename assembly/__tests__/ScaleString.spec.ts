@@ -47,6 +47,15 @@ describe("String", () => {
         expect<string>(scaleString1.toString()).toStrictEqual("da");
     });
 
+    it("should encode to hex", () => {
+        const scaleString = new ScaleString("as-scale-codec");
+        expect<string>(scaleString.toHexString()).toStrictEqual("0x61732d7363616c652d636f646563");
+        const scaleString1 = new ScaleString("The 1963 Impala featured rectilinear styling with an engine-turned aluminum rear taillight panel surrounded by a chrome border on SS models.");
+        expect<string>(scaleString1.toHexString()).toStrictEqual("0x546865203139363320496d70616c612066656174757265642072656374696c696e656172207374796c696e67207769746820616e20656e67696e652d7475726e656420616c756d696e756d2072656172207461696c6c696768742070616e656c20737572726f756e6465642062792061206368726f6d6520626f72646572206f6e205353206d6f64656c732e");
+        const scaleString2 = new ScaleString("A set of words that is complete in itself, typically containing a subject and predicate");
+        expect<string>(scaleString2.toHexString()).toStrictEqual("0x4120736574206f6620776f726473207468617420697320636f6d706c65746520696e20697473656c662c207479706963616c6c7920636f6e7461696e696e672061207375626a65637420616e6420707265646963617465");
+    })
+
     itThrows("should throw on incorrect encoding", () => {
         ScaleString.fromU8a([0x04]); // Encoded length = 1, actual data length = 0
     });
