@@ -25,9 +25,9 @@ export namespace ArrayUtils {
      * @param typedArr 
      */
     export function toU8Array(typedArr: Uint8Array): u8[] {
-        let res = new Array<u8>(2);
+        let res: u8[] = [];
         for (let i = 0; i < typedArr.length; i++) {
-            res[i] = typedArr[i];
+            res.push(typedArr[i]);
         }
         return res;
     }
