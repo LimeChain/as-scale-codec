@@ -46,13 +46,15 @@ describe("String", () => {
 
         const map2U8a: u8[] = [
             8, 
-            1, 12, 12, 12, 1, 1, 1, 0, 0, 0, 1, 12, 123, 123, 11, 123, 33, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x07, 0x00, 0x00, 0x00, 0x00, 0x80,
-            0xff, 0x00, 0xab, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+            1, 12, 12, 12, 1, 1, 1, 0, 0, 0, 1, 12, 123, 123, 11, 123, 33, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0xff, 0x00, 0xab, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            64, 226, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ];
         const decodedMap2 = BytesReader.decodeInto<ScaleMap<Hash, UInt128>>(map2U8a);
         const scaleMap2 = new ScaleMap<Hash, UInt128>();
-        scaleMap2.set(new Hash([1, 12, 12, 12, 1, 1, 1, 0, 0, 0, 1, 12, 123, 123, 11, 123, 33, 121]), new UInt128(u128.fromString("549755813888")));
-        scaleMap2.set(new Hash([0xff, 0x00, 0xab]), new UInt128(u128.fromString("18446744073709551615")));
+        scaleMap2.set(new Hash([1, 12, 12, 12, 1, 1, 1, 0, 0, 0, 1, 12, 123, 123, 11, 123, 33, 121]), new UInt128(u128.fromU32(1)));
+        scaleMap2.set(new Hash([0xff, 0x00, 0xab]), new UInt128(u128.fromU32(123456)));
         expect<bool>(decodedMap2.eq(scaleMap2)).toStrictEqual(true);
     })
 })
