@@ -25,8 +25,8 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
     /**
     * @description BoolArray elements decryption implementation
     */
-    public decodeElement (value: u8[]): DecodedData<u128> {
-        const u128Instance = UInt128.fromU8a(value);
+    public decodeElement(value: u8[]): DecodedData<u128> {
+        const u128Instance = UInt128.fromU8a(value.slice(0, BIT_LENGTH.INT_128));
 
         return new DecodedData<u128>(
             u128Instance.unwrap(),
@@ -43,7 +43,7 @@ export class UInt128Array extends AbstractArray<UInt128, u128> {
         const bytesReader = new BytesReader(bytes.slice(index));
         const data = bytesReader.readInto<CompactInt>();
         for(let i: i32 = 0; i < data.unwrap(); i++){
-            const element: UInt128 = bytesReader.readInto<UInt128>();
+            const element: UInt128 = BytesReader.decodeInto<UInt128>(bytesReader.readBytes(BIT_LENGTH.INT_128));
             this.values.push(element.unwrap());
         }
     }

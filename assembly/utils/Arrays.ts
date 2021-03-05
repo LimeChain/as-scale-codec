@@ -19,4 +19,16 @@ export namespace ArrayUtils {
         }
         return true;
     }
+
+    /**
+     * Returns new Array<u8> from Uint8 Typed array
+     * @param typedArr 
+     */
+    export function toU8Array(typedArr: Uint8Array): u8[] {
+        let res: u8[] = [];
+        for (let i = 0; i < typedArr.length; i++) {
+            res.push(typedArr[i]);
+        }
+        return res;
+    }
 }
